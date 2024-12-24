@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+// Here we have some custom colors and fonts
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
