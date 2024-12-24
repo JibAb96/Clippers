@@ -1,6 +1,9 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
+
+// Logo for the website created using tailwind css and fontawesome icon
+
 const Logo = () => {
   return (
     <div className="flex bg-white w-40 justify-center items-center	">
