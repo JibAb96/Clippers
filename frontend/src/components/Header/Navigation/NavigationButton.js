@@ -1,6 +1,8 @@
 import React from "react";
 import { HiMenu, HiUser } from "react-icons/hi";
 
+// Navigation button created using tailwind css and react icons
+
 const NavigationButton = () => {
   return (
     <div className="flex cursor-pointer items-center gap-2 border border-gray-200 rounded-full px-2 py-1.5 hover:shadow-md transition-shadow w-24 h-14 justify-center">
