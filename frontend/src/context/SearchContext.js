@@ -1,13 +1,15 @@
 import React, { createContext, useState } from "react";
-import clippers from "../db";
+import clippers from "../database/clippers";
 export const SearchContext = createContext();
 
 export const SearchProvider = ({ children }) => {
   // These states are for the search bar input, list of filters selected and list of clippers
   // after being filtered by category 
+  
   const [search, setSearch] = useState("");
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [filteredClippers, setFilteredClippers] = useState(clippers);
+  
 
   // This is a function that filter the list of clippers based on the categories in the 
   // selectedFilters state.
@@ -34,7 +36,7 @@ export const SearchProvider = ({ children }) => {
         setFilteredClippers,
         selectedFilters,
         setSelectedFilters,
-        filterClippers
+        filterClippers,
       }}
     >
       {children}
