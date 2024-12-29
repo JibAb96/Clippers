@@ -6,13 +6,13 @@ import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 
 const Logo = () => {
   return (
-    <div className="flex bg-white w-40 justify-center items-center	">
+    <div className="flex bg-transparent w-40 justify-center items-center	">
       <FontAwesomeIcon
         icon={faPaperclip}
-        className="size-7 rotate-180 pl-1 text-skyblue"
+        className="size-7 rotate-180 pl-1 pt-2 text-skyblue"
       />
-      <a href=".">
-        <h1 className="text-skyblue font-DM text-2xl font-bold tracking-wide">
+      <a href="/">
+        <h1 className="text-skyblue font-DM text-2xl font-bold ">
           clippers
         </h1>
       </a>
