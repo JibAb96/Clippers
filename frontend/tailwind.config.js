@@ -5,7 +5,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        skyblue: '#24b5eb', 
+        bluewhite:"#f8f8f8",
+        skyblue: "#24b5eb",
+        paleblue: "#e2e8f0" 
       },
       fontFamily: {
         DM: ["League Spartan"]
