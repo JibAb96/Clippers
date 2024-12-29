@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CTAButton from "../Buttons/CTAButton";
 
 const Register = () => {
+  //Basic Register page
   const [formData, setFormData] = useState({
     fname: "",
     lname: "",
