@@ -4,7 +4,7 @@ import { SearchContext } from "../../context/SearchContext";
 
 const SearchBar = () => {
 // Search Bar designed with tailwind and the input sets the search stat in SearchContext
-  const { setSearch } = useContext(SearchContext);
+  const { setSearch } = useContext(SearchContext); 
   
   return (
     <div className="bg-white flex items-center px-4 py-2 rounded-full border border-gray-300 shadow-md max-w-lg mx-auto font-sans">
