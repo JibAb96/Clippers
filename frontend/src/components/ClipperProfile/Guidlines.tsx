@@ -1,6 +1,10 @@
 import React from "react";
+import { Clipper } from "../../model";
 
-const Guidlines = ({ Clipper }) => {
+type Props = {
+  Clipper: Clipper
+}
+const Guidlines = ({ Clipper }: Props) => {
   //Displaying guideline information for clippers
   return (
     <div className="ml-5 my-3 flex flex-col gap-5 lg:flex-row xl:text-lg xl:mx-20 xl:my-10">

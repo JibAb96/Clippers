@@ -12,7 +12,7 @@ const NavigationButton = () => {
       }
     };
   return (
-    <div>
+    <div className="flex-end">
       <button
         id="dropdownButton"
         onClick={toggleDropdown}

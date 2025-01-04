@@ -1,15 +1,24 @@
 import React from "react";
 // Here we have the structure of the cards of each clip that will be displayed. Styled with
 // tailwindcss.
+
+type Props = {
+  Image: string;
+  ClipperName: string;
+  Status: string;
+  Platform: string;
+  ClipperTitle: string;
+};
+
 const DashboardCard = ({
   Image,
   ClipperName,
   Status,
   Platform,
   ClipperTitle,
-}) => {
-    // Function to set bg color corresponding with status
-  const getStatusColor = (status) => {
+}: Props) => {
+  // Function to set bg color corresponding with status
+  const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case "posted":
         return "bg-green-400";

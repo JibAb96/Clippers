@@ -2,6 +2,7 @@ import React,{ useEffect } from "react";
 import SearchBar from "./SearchBar";
 import ClippersDisplay from "./ClippersDisplay";
 import Filter from "./Filter";
+
 const SearchPage = () => {
   // Search Page so far includes a title, a searc bar, filter and section with clipper profiles
 

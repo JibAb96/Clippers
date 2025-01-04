@@ -9,7 +9,7 @@ const SignIn = () => {
     password: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value} = e.target;
     setFormData((prevData) => ({
         ...prevData,
@@ -48,7 +48,7 @@ const SignIn = () => {
               <input
                 name="email"
                 type="email"
-                autocomplete="email"
+                autoComplete="email"
                 value={formData.email}
                 onChange={handleChange}
                 required
@@ -60,9 +60,9 @@ const SignIn = () => {
               <input
                 name="password"
                 type="password"
-                autocomplete="current-password"
+                autoComplete="current-password"
                 value={formData.password}
-                onChange={handleChange}
+                onChange={(e) => handleChange(e)}
                 required
                 className="bg-gray-100 focus:bg-transparent w-full text-sm px-4 py-3.5 rounded-md outline-gray-800"
                 placeholder="Password"

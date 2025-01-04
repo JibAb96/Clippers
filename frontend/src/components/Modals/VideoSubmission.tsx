@@ -2,9 +2,20 @@ import React, { useEffect } from "react";
 import { useState, useRef } from "react";
 import { X, Upload, Loader } from "lucide-react";
 
-const VideoSubmission = ({ recipientId, onClose, onSubmit }) => {
+type Props = {
+  recipientId: string
+  onClose: () => void
+}
+
+type FormDataType = {
+    title: string
+    description: string
+    date: string
+    videoFile: File | null,
+}
+const VideoSubmission = ({ recipientId, onClose }: Props) => {
   // State for form data and upload progress
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormDataType>({
     title: "",
     description: "",
     date: "",
@@ -16,7 +27,7 @@ const VideoSubmission = ({ recipientId, onClose, onSubmit }) => {
 
   // Handle escape key
   useEffect(() => {
-    const handleEscape = (e) => {
+    const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape" && !isUploading) {
         handleClose();
       }
@@ -28,10 +39,11 @@ const VideoSubmission = ({ recipientId, onClose, onSubmit }) => {
   }, [isUploading]);
 
   // Ref for file input
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Handle file selection
-  const handleFileSelect = (e) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
     const file = e.target.files[0];
 
     // Validate file type and size
@@ -67,11 +79,6 @@ const VideoSubmission = ({ recipientId, onClose, onSubmit }) => {
     onClose();
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    simulateUpload();
-  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -101,7 +108,10 @@ const VideoSubmission = ({ recipientId, onClose, onSubmit }) => {
           Send Video Clip
         </h2>
 
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          simulateUpload();
+        }}>
           {/* Video upload area */}
           <div
             className="border-2 border-dashed rounded-lg p-4 text-center cursor-pointer"

@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { MouseEventHandler, ReactNode } from 'react';
 import { X } from 'lucide-react';
-
-const Modal = ({ isOpen, onClose, children }) => {
+type Props = {
+  isOpen: Boolean
+  onClose: MouseEventHandler<HTMLButtonElement>
+  children: ReactNode
+}
+const Modal = ({ isOpen, onClose, children }: Props) => {
   if (!isOpen) return null; //Nothing to be returned if modal has not been signalled to be open
 
   return (
@@ -9,7 +13,6 @@ const Modal = ({ isOpen, onClose, children }) => {
       {/* Modal overlay */}
       <div 
         className="fixed inset-1 bg-black bg-opacity-50"
-        onClick={onClose}
         aria-hidden="true"
       />
 

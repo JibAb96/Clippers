@@ -3,8 +3,12 @@ import CTAButton from "../Buttons/CTAButton";
 import Modal from "../Modals/Modal";
 import VideoSubmission from "../Modals/VideoSubmission";
 import { followersDisplay } from "../Cards/ClipperCard";
+import { Clipper } from "../../model";
 
-const ClipperInfo = ({ Clipper }) => {
+type Prop = {
+  Clipper: Clipper
+}
+const ClipperInfo = ({ Clipper }: Prop) => {
 
   //This component displays the clippers information and images
   // Also a button to submit a clip to this particular clipper
@@ -61,10 +65,6 @@ const ClipperInfo = ({ Clipper }) => {
         <VideoSubmission
           recipientId="12345"
           onClose={() => setIsModalOpen(false)}
-          onSubmit={(data) => {
-            console.log("Submitted data:", data);
-            setIsModalOpen(false);
-          }}
         />
       </Modal>
     </div>

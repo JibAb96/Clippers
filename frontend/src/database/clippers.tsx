@@ -9,8 +9,9 @@ import MWE1 from "../images/MWE1.png";
 import MWE2 from "../images/MWE2.png";
 import MWE3 from "../images/MWE3.png";
 import MWE4 from "../images/MWE4.png";
+import { Clipper } from "../model";
 
-const clippers = [
+const clippers: Clipper[] = [
   {
     id: 1,
     name: "ImJustBait",

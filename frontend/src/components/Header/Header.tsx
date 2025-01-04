@@ -10,7 +10,7 @@ const Header = () => {
     <div className="w-full absolute top-0 left-0 z-50 py-4 flex justify-between bg-white bg-opacity-10">
       <Logo />
       <CTAButton CustomClass="hidden absolute right-32 top-5" CTAM="Become a Clipper"/>
-      <NavigationButton className="flex-end" />
+      <NavigationButton/>
     </div>
   );
 };

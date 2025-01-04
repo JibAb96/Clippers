@@ -1,11 +1,10 @@
-import React, { useContext } from "react";
-import { SearchContext } from "../../context/SearchContext";
+import React from "react";
+import { useSearchContext } from "../../context/SearchContext";
 // Search Bar for finding clippers, made using tailwind css
 
 const SearchBar = () => {
 // Search Bar designed with tailwind and the input sets the search stat in SearchContext
-  const { setSearch } = useContext(SearchContext); 
-  
+const { setSearch } = useSearchContext();
   return (
     <div className="bg-white flex items-center px-4 py-2 rounded-full border border-gray-300 shadow-md max-w-lg mx-auto font-sans">
       <input

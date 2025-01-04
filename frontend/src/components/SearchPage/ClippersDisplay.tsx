@@ -14,7 +14,7 @@ const ClippersDisplay = () => {
 
   const navigate = useNavigate();
 
-  const handleClick = (id) => {
+  const handleClick = (id: number) => {
     navigate(`/profile/${id}`);
   };
 

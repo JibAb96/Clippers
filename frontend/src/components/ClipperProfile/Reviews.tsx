@@ -1,7 +1,13 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-const Reviews = ({ Clipper }) => {
+import { Clipper } from "../../model";
+
+type Props = {
+  Clipper: Clipper
+}
+
+const Reviews = ({ Clipper }: Props) => {
   //Section of Clipper profiles displaying reviews from other creators.
   return (
     <div className=" ml-5 my-3 xl:ml-20 xl:my-10">

@@ -1,16 +1,17 @@
 import React, { Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-import Header from "./components/Header/Header.js";
-import SearchPage from "./components/SearchPage/SearchPage.js";
-import { SearchProvider } from "./context/SearchContext.js";
-import ClipperProfile from "./components/ClipperProfile/ClipperProfile.js";
-import CreatorDashboard from "./components/CreatorDashboard/CreatorDashboard.js";
-import Loader from "./components/Utilities/Loader.js";
-import Register from "./components/Registration/Register.js";
-import SignIn from "./components/SignIn/SignIn.js";
+import Header from "./components/Header/Header";
+import SearchPage from "./components/SearchPage/SearchPage";
+import { SearchProvider } from "./context/SearchContext";
+import ClipperProfile from "./components/ClipperProfile/ClipperProfile";
+import CreatorDashboard from "./components/CreatorDashboard/CreatorDashboard";
+import Loader from "./components/Utilities/Loader";
+import Register from "./components/Registration/Register";
+import SignIn from "./components/SignIn/SignIn";
 
-function App() {
+
+const App = () => {
   return (
     <Router>
       <SearchProvider>

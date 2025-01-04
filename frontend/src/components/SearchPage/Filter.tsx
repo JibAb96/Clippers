@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlaneDeparture,
@@ -11,11 +11,13 @@ import {
   faShirt,
   faSpa,
 } from "@fortawesome/free-solid-svg-icons";
-import { SearchContext } from "../../context/SearchContext";
+import { Category } from "../../model";
+import { useSearchContext } from "../../context/SearchContext";
+
 
 const Filter = () => {
-  const { selectedFilters, setSelectedFilters } = useContext(SearchContext);
-  const containerRef = useRef(null);
+  const { selectedFilters, setSelectedFilters } = useSearchContext();
+  const containerRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
 //These functions allow for the user to scroll through categories when the screen is smaller 
 //Based on the position of the scroll it also disables the arrow buttons
@@ -49,7 +51,7 @@ const Filter = () => {
     }
   };
 
-  const categories = [
+  const categories: Category[] = [
     { id: 1, icon: faPlaneDeparture, name: "Travel" },
     { id: 2, icon: faMasksTheater, name: "Entertainment" },
     { id: 3, icon: faUtensils, name: "Food" },
@@ -61,7 +63,7 @@ const Filter = () => {
     { id: 9, icon: faShirt, name: "Fashion" },
   ];
 
-  const handleFilterButtonClick = (selectedCategory) => {
+  const handleFilterButtonClick = (selectedCategory: Category) => {
     if (selectedFilters.includes(selectedCategory)) {
       let filters = selectedFilters.filter((el) => el !== selectedCategory);
       setSelectedFilters(filters);
@@ -96,9 +98,9 @@ const Filter = () => {
                   rounded-lg bg-white shadow-sm
                   hover:bg-gray-50 hover:text-skyblue
                   transition-all duration-200
-                  ${selectedFilters?.includes(category.name) ? "text-skyblue ring-2 ring-skyblue" : "text-gray-500"}
+                  ${selectedFilters?.includes(category) ? "text-skyblue ring-2 ring-skyblue" : "text-gray-500"}
                 `}
-                onClick={() => handleFilterButtonClick(category.name)}
+                onClick={() => handleFilterButtonClick(category)}
               >
                 <FontAwesomeIcon 
                   icon={category.icon} 

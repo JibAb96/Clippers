@@ -1,12 +1,22 @@
 import React from "react";
 // Here we have a the structure of the cards each clipper will be displayed on styled with
 // tailwind and some javascript logic to display numbers in a user friendly way
-export const followersDisplay = (followers) => {
+export const followersDisplay = (followers: number) => {
   return followers > 1000000
     ? Math.floor(followers / 1000000) + "M+"
     : followers > 100000
     ? Math.floor(followers / 1000) + "K+"
     : followers;
+};
+
+type Props = {
+  Image: string;
+  ClipperName: string;
+  Niche: string;
+  Platform: string;
+  Followers: number;
+  Price: number;
+  onClick: () => void;
 };
 
 const ClipperCard = ({
@@ -17,7 +27,7 @@ const ClipperCard = ({
   Followers,
   Price,
   onClick,
-}) => {
+}: Props) => {
   return (
     <div
       className="max-w-64 rounded overflow-hidden m-5 cursor-pointer"

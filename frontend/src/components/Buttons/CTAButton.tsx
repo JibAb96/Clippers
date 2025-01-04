@@ -1,6 +1,11 @@
 import React from "react";
 
-const CTAButton = ({CustomClass, CTAM, onClick}) => {
+type Props = {
+  CustomClass: string
+  CTAM: string
+  onClick?: () => void
+}
+const CTAButton = ({CustomClass, CTAM, onClick}: Props) => {
   return (
     // Reusable call to action button 
     <button
