@@ -1,16 +1,10 @@
-import React, { useContext, useEffect } from "react";
-import ClipperCard from "../Cards/ClipperCard.js";
-import { SearchContext } from "../../context/SearchContext.js";
+import React from "react";
+import ClipperCard from "../Cards/ClipperCard";
 import { useNavigate } from "react-router-dom";
+import { useSearchContext } from "../../context/SearchContext";
 
 const ClippersDisplay = () => {
-  const { search, filteredClippers, filterClippers, selectedFilters } =
-    useContext(SearchContext);
-
-  useEffect(() => {
-    filterClippers();
-    // eslint-disable-next-line
-  }, [selectedFilters]);
+  const { search, filteredClippers } = useSearchContext();
 
   const navigate = useNavigate();
 

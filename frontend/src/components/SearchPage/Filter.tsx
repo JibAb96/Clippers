@@ -62,14 +62,15 @@ const Filter = () => {
     { id: 8, icon: faBaseballBatBall, name: "Sport" },
     { id: 9, icon: faShirt, name: "Fashion" },
   ];
-
   const handleFilterButtonClick = (selectedCategory: Category) => {
-    if (selectedFilters.includes(selectedCategory)) {
-      let filters = selectedFilters.filter((el) => el !== selectedCategory);
+    const isFiltered = selectedFilters.some((category) => category.id === selectedCategory.id)
+    if (isFiltered) {
+      const filters = selectedFilters.filter((el) => el.id !== selectedCategory.id);
       setSelectedFilters(filters);
     } else {
       setSelectedFilters([...selectedFilters, selectedCategory]);
     }
+    return
   };
 
   return (
@@ -92,15 +93,15 @@ const Filter = () => {
               className="flex-shrink-0"
             >
               <button
+                onClick={() => handleFilterButtonClick(category)}
                 className={`
                   w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24
                   flex flex-col justify-center items-center
                   rounded-lg bg-white shadow-sm
                   hover:bg-gray-50 hover:text-skyblue
                   transition-all duration-200
-                  ${selectedFilters?.includes(category) ? "text-skyblue ring-2 ring-skyblue" : "text-gray-500"}
+                  ${selectedFilters.some((filter) => filter.id === category.id) ? "text-skyblue ring-2 ring-skyblue" : "text-gray-500"}
                 `}
-                onClick={() => handleFilterButtonClick(category)}
               >
                 <FontAwesomeIcon 
                   icon={category.icon} 

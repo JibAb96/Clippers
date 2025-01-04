@@ -43,11 +43,11 @@ export const SearchProvider = ({ children }: PropsWithChildren) => {
       value={{
         search,
         setSearch,
+        filterClippers,
         filteredClippers,
         setFilteredClippers,
         selectedFilters,
         setSelectedFilters,
-        filterClippers,
       }}
     >
       {children}

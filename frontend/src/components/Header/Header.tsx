@@ -1,7 +1,7 @@
 import React from "react";
-import Logo from "./Logo.js";
-import NavigationButton from "./Navigation/NavigationButton.js";
-import CTAButton from "../Buttons/CTAButton.js";
+import Logo from "./Logo";
+import NavigationButton from "./Navigation/NavigationButton";
+import CTAButton from "../Buttons/CTAButton";
 
 // Header that wil be featured through out the page inclusing Logo, Navigation Button and
 // link to become a clipper 
