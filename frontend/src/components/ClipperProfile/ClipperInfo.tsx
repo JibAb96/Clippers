@@ -1,21 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import CTAButton from "../Buttons/CTAButton";
-import Modal from "../Modals/Modal";
-import VideoSubmission from "../Modals/VideoSubmission";
 import { followersDisplay } from "../Cards/ClipperCard";
 import { Clipper } from "../../model";
-
 type Prop = {
   Clipper: Clipper
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
-const ClipperInfo = ({ Clipper }: Prop) => {
+const ClipperInfo = ({ Clipper, setIsModalOpen }: Prop) => {
 
   //This component displays the clippers information and images
   // Also a button to submit a clip to this particular clipper
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div>
       <div>
         <h1 className="text-3xl my-10 font-semibold text-gray-900 text-center sm:text-left sm:ml-10 md:ml-20 sm:mt-10 sm:mb-5">
           {Clipper.name}
@@ -61,13 +57,6 @@ const ClipperInfo = ({ Clipper }: Prop) => {
           </div>
         </div>
       </div>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <VideoSubmission
-          recipientId="12345"
-          onClose={() => setIsModalOpen(false)}
-        />
-      </Modal>
-    </div>
   );
 };
 export default ClipperInfo;
