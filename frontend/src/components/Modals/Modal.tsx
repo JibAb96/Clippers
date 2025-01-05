@@ -1,36 +1,22 @@
-import React, { MouseEventHandler, ReactNode } from 'react';
-import { X } from 'lucide-react';
+import React, { MouseEventHandler, ReactNode } from "react";
+
 type Props = {
-  isOpen: Boolean
-  onClose: MouseEventHandler<HTMLButtonElement>
-  children: ReactNode
-}
+  isOpen: Boolean;
+  onClose: MouseEventHandler<HTMLButtonElement>;
+  children: ReactNode;
+};
+
 const Modal = ({ isOpen, onClose, children }: Props) => {
   if (!isOpen) return null; //Nothing to be returned if modal has not been signalled to be open
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex justify-center align-center mt-4">
       {/* Modal overlay */}
-      <div 
+      <div
         className="fixed inset-1 bg-black bg-opacity-50"
         aria-hidden="true"
       />
-
-      {/* Modal content */}
-      <div 
-        role="dialog"
-        aria-labelledby="modal-title"
-        className="relative bg-white rounded-lg m-5 p-6 w-full max-w-lg"
-      >
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4"
-          aria-label="Close modal"
-        >
-          <X className="h-6 w-6" />
-        </button>
-        {children}
-      </div>
+      {children}
     </div>
   );
 };
