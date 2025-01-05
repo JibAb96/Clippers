@@ -1,6 +1,5 @@
 import React from "react";
 import { Clipper } from "../../model";
-
 type Props = {
   Clipper: Clipper
 }
@@ -40,8 +39,8 @@ const Guidlines = ({ Clipper }: Props) => {
       <div>
         <h1 className="text-skyblue text-xl font-semibold sm:text-2xl xl:text-3xl">Custom Guidlines</h1>
         <div className="xl:mt-5 font-medium flex flex-col xl:gap-4">
-          {Clipper.guidelines.map((guideline) => (
-            <p>{guideline}</p>
+          {Clipper.guidelines.map((guideline, index) => (
+            <p key={index}>{guideline}</p>
           ))}
         </div>
       </div>
