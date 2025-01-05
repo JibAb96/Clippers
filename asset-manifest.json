@@ -1,0 +1,32 @@
+{
+  "files": {
+    "main.css": "/Clippers/static/css/main.bec7dbd2.css",
+    "main.js": "/Clippers/static/js/main.aaeb8639.js",
+    "static/media/Imjustbait_post3.png": "/Clippers/static/media/Imjustbait_post3.ec175c51ada30c2a690c.png",
+    "static/media/Imjustbait_post4.png": "/Clippers/static/media/Imjustbait_post4.f39425e2d164c2804f1d.png",
+    "static/media/thumbnail.png": "/Clippers/static/media/thumbnail.b41a305d82110f311bea.png",
+    "static/media/ImJustBait_post1.png": "/Clippers/static/media/ImJustBait_post1.8f7a66b91c5f3f6a8bf4.png",
+    "static/media/Imjustbait_post2.png": "/Clippers/static/media/Imjustbait_post2.6599f10dc788ace02541.png",
+    "static/media/MWE4.png": "/Clippers/static/media/MWE4.ef3e61efae7947b60b87.png",
+    "static/media/MWE1.png": "/Clippers/static/media/MWE1.aa2ff7be4f95b72bec06.png",
+    "static/media/MWE2.png": "/Clippers/static/media/MWE2.10e3bbb5aa5c17c21a11.png",
+    "static/media/MWE3.png": "/Clippers/static/media/MWE3.4de75c9529586438f301.png",
+    "static/media/Thumbnail-JH.jpg": "/Clippers/static/media/Thumbnail-JH.7e6670515b2b783e1212.jpg",
+    "static/media/thumbnail-egypt.jpeg": "/Clippers/static/media/thumbnail-egypt.3f2e4495daa8f59ad804.jpeg",
+    "static/media/Thumnail-1.webp": "/Clippers/static/media/Thumnail-1.3ea74b9fcab37adc4ee4.webp",
+    "static/media/Thumnail-vegan.png": "/Clippers/static/media/Thumnail-vegan.5ee27a178ce5c7f48f57.png",
+    "static/media/Thumnail-coding.jpg": "/Clippers/static/media/Thumnail-coding.65364f53f7c72ca77c7c.jpg",
+    "static/media/Thumbnail-sleep.jpg": "/Clippers/static/media/Thumbnail-sleep.e9d1888cf498fd4689b2.jpg",
+    "static/media/Thumbnail-TM.jpg": "/Clippers/static/media/Thumbnail-TM.10cd63fd7c1e807ca0e6.jpg",
+    "static/media/Thumbnail-fitness.jpg": "/Clippers/static/media/Thumbnail-fitness.1351c02b456bfff2aa82.jpg",
+    "static/media/IMJUSTBAIT-Thumb.jpg": "/Clippers/static/media/IMJUSTBAIT-Thumb.dd43910d2d0eff065dd0.jpg",
+    "static/media/maliworldent-thumb.jpg": "/Clippers/static/media/maliworldent-thumb.23447b3cce15530554fd.jpg",
+    "index.html": "/Clippers/index.html",
+    "main.bec7dbd2.css.map": "/Clippers/static/css/main.bec7dbd2.css.map",
+    "main.aaeb8639.js.map": "/Clippers/static/js/main.aaeb8639.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bec7dbd2.css",
+    "static/js/main.aaeb8639.js"
+  ]
+}
