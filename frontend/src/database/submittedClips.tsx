@@ -1,77 +1,71 @@
-import Atlantis from "../images/Thumbnail-JH.jpg";
-import BookRecommendation from "../images/Thumbnail-TM.jpg";
-import TimeManagement from "../images/Thumnail-1.webp";
-import StayFit from "../images/Thumbnail-fitness.jpg";
-import BetterSleep from "../images/Thumbnail-sleep.jpg";
-import CodingHacks from "../images/Thumnail-coding.jpg";
-import VeganRecipes from "../images/Thumnail-vegan.png";
-import AncientEgypt from "../images/thumbnail-egypt.jpeg";
-//Information for clips submitted by user
-const submittedClips = [
+import Thumbnail from "../images/thumbnail.png";
+import { Clip } from "../model";
+
+const submittedClips: Clip[] = [
   {
     id: 1,
-    name: "Is Atlantis Real?",
-    status: "Posted",
-    clipper: "ImJustBait",
+    name: "Content Strategy 101",
+    status: "Ready For Upload",
+    user: "SocialMediaGuru",
     platform: "Instagram",
-    thumbnail: Atlantis,
+    thumbnail: Thumbnail,
   },
   {
     id: 2,
-    name: "Book Recommendations",
-    status: "Pending",
-    clipper: "Naseeha",
-    platform: "TikTok",
-    thumbnail: BookRecommendation,
+    name: "Top 10 Marketing Tools",
+    status: "Ready For Upload",
+    user: "MarketingWizard",
+    platform: "YouTube",
+    thumbnail: Thumbnail,
   },
   {
     id: 3,
-    name: "Manage Your Time",
-    status: "Rejected",
-    clipper: "ProductivityGuru",
-    platform: "YouTube",
-    thumbnail: TimeManagement,
+    name: "Mastering Public Speaking",
+    status: "New Submission",
+    user: "SpeechMaster",
+    platform: "TikTok",
+    thumbnail: Thumbnail,
   },
   {
     id: 4,
-    name: "How to Stay Fit",
-    status: "Posted",
-    clipper: "FitnessPro",
+    name: "Creative Video Editing Tips",
+    status: "Ready For Upload",
+    user: "EditingPro",
     platform: "YouTube",
-    thumbnail: StayFit,
+    thumbnail: Thumbnail,
   },
   {
     id: 5,
-    name: "10 Tips for Better Sleep",
-    status: "Pending",
-    clipper: "SleepWell",
+    name: "How to Start Freelancing",
+    status: "Posted",
+    user: "FreelanceAce",
     platform: "Instagram",
-    thumbnail: BetterSleep,
+    thumbnail: Thumbnail,
   },
   {
     id: 6,
-    name: "Top 5 Coding Hacks",
+    name: "Improve Your Writing Skills",
     status: "Rejected",
-    clipper: "CodeMaster",
+    user: "WritingExpert",
     platform: "TikTok",
-    thumbnail: CodingHacks,
+    thumbnail: Thumbnail,
   },
   {
     id: 7,
-    name: "Easy Vegan Recipes",
-    status: "Posted",
-    clipper: "HealthyEats",
+    name: "Beginner’s Guide to Blogging",
+    status: "New Submission",
+    user: "BloggingStarter",
     platform: "YouTube",
-    thumbnail: VeganRecipes,
+    thumbnail: Thumbnail,
   },
   {
     id: 8,
-    name: "Exploring Ancient Egypt",
-    status: "Pending",
-    clipper: "HistoryBuff",
+    name: "Social Media Growth Hacks",
+    status: "New Submission",
+    user: "GrowthHacker",
     platform: "Instagram",
-    thumbnail: AncientEgypt,
+    thumbnail: Thumbnail,
   },
 ];
 
-export default submittedClips
+export default submittedClips;
