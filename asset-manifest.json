@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Clippers/static/css/main.bec7dbd2.css",
-    "main.js": "/Clippers/static/js/main.91e072db.js",
+    "main.js": "/Clippers/static/js/main.b24545f3.js",
     "static/media/Imjustbait_post3.png": "/Clippers/static/media/Imjustbait_post3.ec175c51ada30c2a690c.png",
     "static/media/Imjustbait_post4.png": "/Clippers/static/media/Imjustbait_post4.f39425e2d164c2804f1d.png",
     "static/media/thumbnail.png": "/Clippers/static/media/thumbnail.b41a305d82110f311bea.png",
@@ -23,10 +23,10 @@
     "static/media/maliworldent-thumb.jpg": "/Clippers/static/media/maliworldent-thumb.23447b3cce15530554fd.jpg",
     "index.html": "/Clippers/index.html",
     "main.bec7dbd2.css.map": "/Clippers/static/css/main.bec7dbd2.css.map",
-    "main.91e072db.js.map": "/Clippers/static/js/main.91e072db.js.map"
+    "main.b24545f3.js.map": "/Clippers/static/js/main.b24545f3.js.map"
   },
   "entrypoints": [
     "static/css/main.bec7dbd2.css",
-    "static/js/main.91e072db.js"
+    "static/js/main.b24545f3.js"
   ]
 }
