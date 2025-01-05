@@ -1,4 +1,4 @@
-import React,{ useEffect } from "react";
+import React, { useEffect } from "react";
 import SearchBar from "./SearchBar";
 import ClippersDisplay from "./ClippersDisplay";
 import Filter from "./Filter";
@@ -6,12 +6,15 @@ import { useSearchContext } from "../../context/SearchContext";
 
 const SearchPage = () => {
   // Search Page so far includes a title, a searc bar, filter and section with clipper profiles
- const {filterClippers, selectedFilters} = useSearchContext();
+  const { filterClippers, selectedFilters } = useSearchContext();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   useEffect(() => {
     filterClippers();
-    window.scrollTo(0, 0)
     // eslint-disable-next-line
-  }, [selectedFilters])
+  }, [selectedFilters]);
 
   return (
     <div className="pt-20">
