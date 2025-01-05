@@ -14,13 +14,12 @@ import {
 import { Category } from "../../model";
 import { useSearchContext } from "../../context/SearchContext";
 
-
 const Filter = () => {
   const { selectedFilters, setSelectedFilters } = useSearchContext();
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
-//These functions allow for the user to scroll through categories when the screen is smaller 
-//Based on the position of the scroll it also disables the arrow buttons
+  //These functions allow for the user to scroll through categories when the screen is smaller
+  //Based on the position of the scroll it also disables the arrow buttons
   const scrollLeft = () => {
     if (containerRef.current) {
       const newPosition = Math.max(
@@ -63,14 +62,18 @@ const Filter = () => {
     { id: 9, icon: faShirt, name: "Fashion" },
   ];
   const handleFilterButtonClick = (selectedCategory: Category) => {
-    const isFiltered = selectedFilters.some((category) => category.id === selectedCategory.id)
+    const isFiltered = selectedFilters.some(
+      (category) => category.id === selectedCategory.id
+    );
     if (isFiltered) {
-      const filters = selectedFilters.filter((el) => el.id !== selectedCategory.id);
+      const filters = selectedFilters.filter(
+        (el) => el.id !== selectedCategory.id
+      );
       setSelectedFilters(filters);
     } else {
       setSelectedFilters([...selectedFilters, selectedCategory]);
     }
-    return
+    return;
   };
 
   return (
@@ -88,10 +91,7 @@ const Filter = () => {
       >
         <div className="flex gap-4 md:gap-6 lg:gap-8 my-4">
           {categories.map((category) => (
-            <div
-              key={category.id}
-              className="flex-shrink-0"
-            >
+            <div key={category.id} className="flex-shrink-0">
               <button
                 onClick={() => handleFilterButtonClick(category)}
                 className={`
@@ -100,11 +100,15 @@ const Filter = () => {
                   rounded-lg bg-white shadow-sm
                   hover:bg-gray-50 hover:text-skyblue
                   transition-all duration-200
-                  ${selectedFilters.some((filter) => filter.id === category.id) ? "text-skyblue ring-2 ring-skyblue" : "text-gray-500"}
+                  ${
+                    selectedFilters.some((filter) => filter.id === category.id)
+                      ? "text-skyblue ring-2 ring-skyblue"
+                      : "text-gray-500"
+                  }
                 `}
               >
-                <FontAwesomeIcon 
-                  icon={category.icon} 
+                <FontAwesomeIcon
+                  icon={category.icon}
                   className="text-lg sm:text-xl md:text-2xl lg:text-3xl mb-1"
                 />
                 <p className="text-[10px] sm:text-xs font-medium">
@@ -121,7 +125,8 @@ const Filter = () => {
         disabled={
           containerRef.current
             ? scrollPosition >=
-              containerRef.current.scrollWidth - containerRef.current.offsetWidth
+              containerRef.current.scrollWidth -
+                containerRef.current.offsetWidth
             : false
         }
       >

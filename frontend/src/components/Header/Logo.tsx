@@ -12,9 +12,7 @@ const Logo = () => {
         className="size-7 rotate-180 pl-1 pt-2 text-skyblue"
       />
       <a href="/">
-        <h1 className="text-skyblue font-DM text-2xl font-bold ">
-          clippers
-        </h1>
+        <h1 className="text-skyblue font-DM text-2xl font-bold ">clippers</h1>
       </a>
     </div>
   );

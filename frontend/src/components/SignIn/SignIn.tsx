@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
-
   //Sign page for users
   const [formData, setFormData] = useState({
     email: "",
@@ -10,12 +9,12 @@ const SignIn = () => {
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value} = e.target;
+    const { name, value } = e.target;
     setFormData((prevData) => ({
-        ...prevData,
-        [name]: value
-    }))
-  }
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const navigate = useNavigate();
   return (

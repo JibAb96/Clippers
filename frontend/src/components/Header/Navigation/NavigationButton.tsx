@@ -4,13 +4,13 @@ import { HiMenu, HiUser } from "react-icons/hi";
 // Navigation button created using tailwind css and react icons
 
 const NavigationButton = () => {
-    // Toggle dropdown visibility
-    const toggleDropdown = () => {
-      const dropdown = document.getElementById("dropdown");
-      if (dropdown) {
-        dropdown.classList.toggle("hidden");
-      }
-    };
+  // Toggle dropdown visibility
+  const toggleDropdown = () => {
+    const dropdown = document.getElementById("dropdown");
+    if (dropdown) {
+      dropdown.classList.toggle("hidden");
+    }
+  };
   return (
     <div className="flex-end">
       <button
@@ -54,7 +54,7 @@ const NavigationButton = () => {
               href="."
               className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
             >
-              About 
+              About
             </a>
           </li>
           <li>

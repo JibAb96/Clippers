@@ -29,19 +29,22 @@ const clippers: Clipper[] = [
       {
         creator: "Rockstar Games",
         stars: 5,
-        review: '"The attention to detail, creative transitions, and ability to highlight key moments made each clip feel like a masterpiece. We\'d gladly collaborate again—our worlds have never looked better."'
+        review:
+          '"The attention to detail, creative transitions, and ability to highlight key moments made each clip feel like a masterpiece. We\'d gladly collaborate again—our worlds have never looked better."',
       },
       {
         creator: "Sports Illustrated",
         stars: 5,
-        review: '"Nailed the edits and timing, making my content shine across multiple platforms. My audience engagement skyrocketed! Highly recommend for creators looking to expand their reach."'
+        review:
+          '"Nailed the edits and timing, making my content shine across multiple platforms. My audience engagement skyrocketed! Highly recommend for creators looking to expand their reach."',
       },
       {
         creator: "BohooMan",
         stars: 5,
-        review: '"Collaborating with ImJustBait through the Clipper platform was a seamless experience for BoohooMAN. The clips were dynamic, engaging, and drove significant traffic to our platforms. A top-notch partner for content creation—highly recommended!"'
-      }
-    ]
+        review:
+          '"Collaborating with ImJustBait through the Clipper platform was a seamless experience for BoohooMAN. The clips were dynamic, engaging, and drove significant traffic to our platforms. A top-notch partner for content creation—highly recommended!"',
+      },
+    ],
   },
   {
     id: 2,
@@ -60,19 +63,22 @@ const clippers: Clipper[] = [
       {
         creator: "Unknown Records",
         stars: 5,
-        review: '"Their platform was perfect for launching our new artists. The cultural insight and trend awareness really helped us connect with our target audience."'
+        review:
+          '"Their platform was perfect for launching our new artists. The cultural insight and trend awareness really helped us connect with our target audience."',
       },
       {
         creator: "AfroBeats Daily",
         stars: 4,
-        review: '"Great eye for emerging talent and cultural movements. Their promotional strategy helped us discover several breakthrough artists."'
+        review:
+          '"Great eye for emerging talent and cultural movements. Their promotional strategy helped us discover several breakthrough artists."',
       },
       {
         creator: "BET International",
         stars: 5,
-        review: '"maliworldent has consistently delivered quality content that resonates with our audience. Their cultural understanding is unmatched."'
-      }
-    ]
+        review:
+          '"maliworldent has consistently delivered quality content that resonates with our audience. Their cultural understanding is unmatched."',
+      },
+    ],
   },
   {
     id: 3,
@@ -91,19 +97,22 @@ const clippers: Clipper[] = [
       {
         creator: "Houston Rockets",
         stars: 5,
-        review: '"Perfect platform for reaching our local fanbase. Their community engagement is incredible."'
+        review:
+          '"Perfect platform for reaching our local fanbase. Their community engagement is incredible."',
       },
       {
         creator: "Travis Scott",
         stars: 5,
-        review: '"Nobody knows Houston like HoustonPlug. They\'ve been crucial for connecting with the city."'
+        review:
+          '"Nobody knows Houston like HoustonPlug. They\'ve been crucial for connecting with the city."',
       },
       {
         creator: "Live Nation Texas",
         stars: 4,
-        review: '"Excellent partner for promoting our Houston events. Their local influence is unmatched."'
-      }
-    ]
+        review:
+          '"Excellent partner for promoting our Houston events. Their local influence is unmatched."',
+      },
+    ],
   },
   {
     id: 4,
@@ -122,19 +131,22 @@ const clippers: Clipper[] = [
       {
         creator: "Nike Basketball",
         stars: 5,
-        review: '"Their highlight compilations are next level. Perfect platform for showcasing our athletes."'
+        review:
+          '"Their highlight compilations are next level. Perfect platform for showcasing our athletes."',
       },
       {
         creator: "NBA G League",
         stars: 5,
-        review: '"Exceptional at spotlighting rising talent. Their content consistently drives engagement."'
+        review:
+          '"Exceptional at spotlighting rising talent. Their content consistently drives engagement."',
       },
       {
         creator: "Wilson Sports",
         stars: 4,
-        review: '"Great partner for our basketball equipment launches. They know how to create buzz."'
-      }
-    ]
+        review:
+          '"Great partner for our basketball equipment launches. They know how to create buzz."',
+      },
+    ],
   },
   {
     id: 5,
@@ -153,19 +165,22 @@ const clippers: Clipper[] = [
       {
         creator: "NewEgg",
         stars: 5,
-        review: '"Their flash deal promotions consistently drive significant traffic and conversions."'
+        review:
+          '"Their flash deal promotions consistently drive significant traffic and conversions."',
       },
       {
         creator: "Logitech",
         stars: 4,
-        review: '"Excellent platform for reaching budget-conscious tech enthusiasts."'
+        review:
+          '"Excellent platform for reaching budget-conscious tech enthusiasts."',
       },
       {
         creator: "Best Buy",
         stars: 5,
-        review: '"Perfect partner for time-sensitive promotions. Their audience is highly engaged."'
-      }
-    ]
+        review:
+          '"Perfect partner for time-sensitive promotions. Their audience is highly engaged."',
+      },
+    ],
   },
   {
     id: 6,
@@ -184,19 +199,22 @@ const clippers: Clipper[] = [
       {
         creator: "Xbox Game Studios",
         stars: 5,
-        review: '"Their gaming commentary and community engagement are outstanding. Perfect for game launches."'
+        review:
+          '"Their gaming commentary and community engagement are outstanding. Perfect for game launches."',
       },
       {
         creator: "Razer",
         stars: 5,
-        review: '"Excellent platform for reaching dedicated gamers. Their content quality is consistently high."'
+        review:
+          '"Excellent platform for reaching dedicated gamers. Their content quality is consistently high."',
       },
       {
         creator: "Epic Games",
         stars: 4,
-        review: '"Great partner for game promotions. Their audience insights help drive successful campaigns."'
-      }
-    ]
+        review:
+          '"Great partner for game promotions. Their audience insights help drive successful campaigns."',
+      },
+    ],
   },
   {
     id: 7,
@@ -215,19 +233,22 @@ const clippers: Clipper[] = [
       {
         creator: "Gymshark",
         stars: 5,
-        review: '"Their motivational content style perfectly aligns with our brand. Excellent engagement rates."'
+        review:
+          '"Their motivational content style perfectly aligns with our brand. Excellent engagement rates."',
       },
       {
         creator: "MyProtein",
         stars: 4,
-        review: '"Great platform for reaching fitness enthusiasts. Their quick workout tips format works well."'
+        review:
+          '"Great platform for reaching fitness enthusiasts. Their quick workout tips format works well."',
       },
       {
         creator: "Under Armour",
         stars: 5,
-        review: '"Perfect partner for our fitness gear launches. They understand the athletic mindset."'
-      }
-    ]
+        review:
+          '"Perfect partner for our fitness gear launches. They understand the athletic mindset."',
+      },
+    ],
   },
   {
     id: 8,
@@ -246,19 +267,22 @@ const clippers: Clipper[] = [
       {
         creator: "HelloFresh",
         stars: 5,
-        review: '"Their recipe content drives incredible engagement. Perfect for showcasing our meal kits."'
+        review:
+          '"Their recipe content drives incredible engagement. Perfect for showcasing our meal kits."',
       },
       {
         creator: "Tasty",
         stars: 5,
-        review: '"Excellent collaborator for recipe content. Their production quality is consistently high."'
+        review:
+          '"Excellent collaborator for recipe content. Their production quality is consistently high."',
       },
       {
         creator: "DoorDash",
         stars: 4,
-        review: '"Great partner for local restaurant promotions. Their food content really drives orders."'
-      }
-    ]
+        review:
+          '"Great partner for local restaurant promotions. Their food content really drives orders."',
+      },
+    ],
   },
   {
     id: 9,
@@ -277,19 +301,22 @@ const clippers: Clipper[] = [
       {
         creator: "ASOS",
         stars: 5,
-        review: '"Their trend forecasting and sustainable fashion focus align perfectly with our brand values."'
+        review:
+          '"Their trend forecasting and sustainable fashion focus align perfectly with our brand values."',
       },
       {
         creator: "H&M",
         stars: 4,
-        review: '"Excellent platform for reaching fashion-conscious consumers. Great seasonal content."'
+        review:
+          '"Excellent platform for reaching fashion-conscious consumers. Great seasonal content."',
       },
       {
         creator: "Patagonia",
         stars: 5,
-        review: '"Perfect partner for promoting sustainable fashion. Their audience is highly engaged."'
-      }
-    ]
+        review:
+          '"Perfect partner for promoting sustainable fashion. Their audience is highly engaged."',
+      },
+    ],
   },
   {
     id: 10,
@@ -308,19 +335,22 @@ const clippers: Clipper[] = [
       {
         creator: "Netflix Is A Joke",
         stars: 5,
-        review: '"Their viral comedy content consistently delivers. Perfect for promoting our comedy specials."'
+        review:
+          '"Their viral comedy content consistently delivers. Perfect for promoting our comedy specials."',
       },
       {
         creator: "Comedy Central",
         stars: 5,
-        review: '"Excellent platform for reaching younger comedy fans. Their content curation is spot-on."'
+        review:
+          '"Excellent platform for reaching younger comedy fans. Their content curation is spot-on."',
       },
       {
         creator: "Just For Laughs",
         stars: 4,
-        review: '"Great partner for promoting comedy events. They know what makes content go viral."'
-      }
-    ]
+        review:
+          '"Great partner for promoting comedy events. They know what makes content go viral."',
+      },
+    ],
   },
   {
     id: 11,
@@ -339,19 +369,22 @@ const clippers: Clipper[] = [
       {
         creator: "Chewy",
         stars: 5,
-        review: '"Their pet content drives incredible engagement. Perfect for our product launches."'
+        review:
+          '"Their pet content drives incredible engagement. Perfect for our product launches."',
       },
       {
         creator: "ASPCA",
         stars: 5,
-        review: '"Excellent platform for promoting pet adoption. Their audience is truly passionate."'
+        review:
+          '"Excellent platform for promoting pet adoption. Their audience is truly passionate."',
       },
       {
         creator: "Petco",
         stars: 4,
-        review: '"Great partner for pet care awareness campaigns. Their content really connects."'
-      }
-    ]
+        review:
+          '"Great partner for pet care awareness campaigns. Their content really connects."',
+      },
+    ],
   },
   {
     id: 12,
@@ -370,19 +403,22 @@ const clippers: Clipper[] = [
       {
         creator: "StockX",
         stars: 5,
-        review: '"Their sneaker drop coverage is unmatched. Perfect for driving hype and sales."'
+        review:
+          '"Their sneaker drop coverage is unmatched. Perfect for driving hype and sales."',
       },
       {
         creator: "GOAT",
         stars: 4,
-        review: '"Excellent platform for reaching sneakerheads. Their streetwear knowledge is extensive."'
+        review:
+          '"Excellent platform for reaching sneakerheads. Their streetwear knowledge is extensive."',
       },
       {
         creator: "Nike SNKRS",
         stars: 5,
-        review: '"Perfect partner for limited releases. They know how to build anticipation."'
-      }
-    ]
+        review:
+          '"Perfect partner for limited releases. They know how to build anticipation."',
+      },
+    ],
   },
   {
     id: 13,
@@ -401,19 +437,22 @@ const clippers: Clipper[] = [
       {
         creator: "Supreme",
         stars: 5,
-        review: '"Their urban culture coverage is authentic. Perfect for reaching our core audience."'
+        review:
+          '"Their urban culture coverage is authentic. Perfect for reaching our core audience."',
       },
       {
         creator: "Complex",
         stars: 4,
-        review: '"Excellent platform for street art and music content. Their cultural insight is valuable."'
+        review:
+          '"Excellent platform for street art and music content. Their cultural insight is valuable."',
       },
       {
         creator: "Def Jam",
         stars: 5,
-        review: '"Great partner for urban music promotion. They really understand the culture."'
-      }
-    ]
+        review:
+          '"Great partner for urban music promotion. They really understand the culture."',
+      },
+    ],
   },
   {
     id: 14,
@@ -429,19 +468,22 @@ const clippers: Clipper[] = [
       {
         creator: "Airbnb",
         stars: 5,
-        review: '"Their hidden gems content drives significant bookings. Perfect for showcasing unique stays."'
+        review:
+          '"Their hidden gems content drives significant bookings. Perfect for showcasing unique stays."',
       },
       {
         creator: "Lonely Planet",
         stars: 4,
-        review: '"Excellent platform for eco-friendly travel content. Their audience is very engaged."'
+        review:
+          '"Excellent platform for eco-friendly travel content. Their audience is very engaged."',
       },
       {
         creator: "Expedia",
         stars: 5,
-        review: '"Perfect partner for travel promotions. Their content inspires wanderlust."'
-      }
-    ]
+        review:
+          '"Perfect partner for travel promotions. Their content inspires wanderlust."',
+      },
+    ],
   },
   {
     id: 15,
@@ -457,19 +499,22 @@ const clippers: Clipper[] = [
       {
         creator: "Artsy",
         stars: 5,
-        review: '"Their emerging artist coverage is fantastic. Perfect for discovering new talent."'
+        review:
+          '"Their emerging artist coverage is fantastic. Perfect for discovering new talent."',
       },
       {
         creator: "Saatchi Art",
         stars: 4,
-        review: '"Excellent platform for diverse art forms. Their curation is thoughtful."'
+        review:
+          '"Excellent platform for diverse art forms. Their curation is thoughtful."',
       },
       {
         creator: "Art Basel",
         stars: 5,
-        review: '"Great partner for promoting art events. Their audience is highly engaged."'
-      }
-    ]
+        review:
+          '"Great partner for promoting art events. Their audience is highly engaged."',
+      },
+    ],
   },
   {
     id: 16,
@@ -488,19 +533,22 @@ const clippers: Clipper[] = [
       {
         creator: "Sephora",
         stars: 5,
-        review: '"Their beauty tutorials drive significant sales. Perfect for product launches."'
+        review:
+          '"Their beauty tutorials drive significant sales. Perfect for product launches."',
       },
       {
         creator: "NYX Cosmetics",
         stars: 4,
-        review: '"Excellent platform for affordable beauty content. Their tutorials are very accessible."'
+        review:
+          '"Excellent platform for affordable beauty content. Their tutorials are very accessible."',
       },
       {
         creator: "Morphe",
         stars: 5,
-        review: '"Perfect partner for makeup tutorials. Their content really connects with our audience."'
-      }
-    ]
+        review:
+          '"Perfect partner for makeup tutorials. Their content really connects with our audience."',
+      },
+    ],
   },
   {
     id: 17,
@@ -519,19 +567,22 @@ const clippers: Clipper[] = [
       {
         creator: "ESPN",
         stars: 5,
-        review: '"Their sports coverage drives incredible engagement. Perfect for major events."'
+        review:
+          '"Their sports coverage drives incredible engagement. Perfect for major events."',
       },
       {
         creator: "Nike",
         stars: 4,
-        review: '"Excellent platform for sports content. Their highlight reels are outstanding."'
+        review:
+          '"Excellent platform for sports content. Their highlight reels are outstanding."',
       },
       {
         creator: "Bleacher Report",
         stars: 5,
-        review: '"Great partner for sports coverage. Their stats and polls really engage fans."'
-      }
-    ]
+        review:
+          '"Great partner for sports coverage. Their stats and polls really engage fans."',
+      },
+    ],
   },
   {
     id: 18,
@@ -547,19 +598,22 @@ const clippers: Clipper[] = [
       {
         creator: "A24",
         stars: 5,
-        review: '"Their movie coverage drives incredible buzz. Perfect for indie film promotion."'
+        review:
+          '"Their movie coverage drives incredible buzz. Perfect for indie film promotion."',
       },
       {
         creator: "IMAX",
         stars: 4,
-        review: '"Excellent platform for movie promotion. Their reviews really influence audiences."'
+        review:
+          '"Excellent platform for movie promotion. Their reviews really influence audiences."',
       },
       {
         creator: "Universal Pictures",
         stars: 5,
-        review: '"Perfect partner for movie launches. Their content builds great anticipation."'
-      }
-    ]
+        review:
+          '"Perfect partner for movie launches. Their content builds great anticipation."',
+      },
+    ],
   },
   {
     id: 19,
@@ -575,20 +629,22 @@ const clippers: Clipper[] = [
       {
         creator: "Samsung",
         stars: 5,
-        review: '"Their in-depth reviews are incredibly thorough. Perfect for product launches."'
+        review:
+          '"Their in-depth reviews are incredibly thorough. Perfect for product launches."',
       },
       {
         creator: "OnePlus",
         stars: 4,
-        review: '"Excellent platform for tech comparisons. Their analysis is always objective."'
+        review:
+          '"Excellent platform for tech comparisons. Their analysis is always objective."',
       },
       {
         creator: "Intel",
         stars: 5,
-        review: '"Great partner for product reviews. Their technical knowledge is impressive."'
-      }
-    ]
-    
+        review:
+          '"Great partner for product reviews. Their technical knowledge is impressive."',
+      },
+    ],
   },
   {
     id: 20,
@@ -607,19 +663,22 @@ const clippers: Clipper[] = [
       {
         creator: "Tesla",
         stars: 5,
-        review: '"Their EV content drives significant interest. Perfect for showcasing innovation."'
+        review:
+          '"Their EV content drives significant interest. Perfect for showcasing innovation."',
       },
       {
         creator: "BMW",
         stars: 4,
-        review: '"Excellent platform for automotive design content. Their audience is very engaged."'
+        review:
+          '"Excellent platform for automotive design content. Their audience is very engaged."',
       },
       {
         creator: "Toyota",
         stars: 5,
-        review: '"Perfect partner for eco-friendly vehicle promotion. Their content really connects."'
-      }
-    ]
+        review:
+          '"Perfect partner for eco-friendly vehicle promotion. Their content really connects."',
+      },
+    ],
   },
 ];
 

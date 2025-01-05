@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import ClipStatusHeadings from "../Utilities/ClipStatusHeadings";
 import DashboardSections from "../Utilities/DashboardSections";
-import SubmittedClips from "../Utilities/SubmittedClips";
+import SubmittedClips from "../Utilities/DisplayClips";
 import { useSearchContext } from "../../context/SearchContext";
 import submittedClips from "../../database/submittedClips";
 
