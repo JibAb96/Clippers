@@ -9,7 +9,7 @@ import CreatorDashboard from "./components/CreatorDashboard/CreatorDashboard";
 import Loader from "./components/Utilities/Loader";
 import Register from "./components/Registration/Register";
 import SignIn from "./components/SignIn/SignIn";
-
+import ClipperDashboard from "./components/ClipperDashboard/ClipperDashboard";
 
 const App = () => {
   return (
@@ -21,6 +21,7 @@ const App = () => {
             <Route path="/" element={<SearchPage />} />
             <Route path="/profile/:id" element={<ClipperProfile />} />
             <Route path="/dashboard" element={<CreatorDashboard />} />
+            <Route path="/clipper" element={<ClipperDashboard />} />
             <Route path="/register" element={<Register />} />
             <Route path="/signin" element={<SignIn />} />
           </Routes>
@@ -28,6 +29,6 @@ const App = () => {
       </SearchProvider>
     </Router>
   );
-}
+};
 
 export default App;
