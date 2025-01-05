@@ -25,7 +25,10 @@ const DashboardCard = ({
       case "rejected":
         return "bg-red-600";
       case "pending":
+      case "ready for upload":
         return "bg-yellow-400";
+      case "new submission":
+        return "bg-skyblue";
       default:
         return "bg-gray-400";
     }
