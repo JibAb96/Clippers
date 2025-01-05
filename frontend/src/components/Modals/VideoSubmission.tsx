@@ -3,16 +3,16 @@ import { useState, useRef } from "react";
 import { X, Upload, Loader } from "lucide-react";
 
 type Props = {
-  recipientId: string
-  onClose: () => void
-}
+  recipientId: string;
+  onClose: () => void;
+};
 
 type FormDataType = {
-    title: string
-    description: string
-    date: string
-    videoFile: File | null,
-}
+  title: string;
+  description: string;
+  date: string;
+  videoFile: File | null;
+};
 const VideoSubmission = ({ recipientId, onClose }: Props) => {
   // State for form data and upload progress
   const [formData, setFormData] = useState<FormDataType>({
@@ -79,12 +79,11 @@ const VideoSubmission = ({ recipientId, onClose }: Props) => {
     onClose();
   };
 
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div>
       {/* Modal overlay */}
       <div
-        className="fixed inset-0 bg-black bg-opacity-50"
+        className="fixed inset-0 bg-black bg-opacity-50 w-fit"
         onClick={isUploading ? undefined : handleClose}
         aria-hidden="true"
       />
@@ -93,7 +92,13 @@ const VideoSubmission = ({ recipientId, onClose }: Props) => {
       <div
         role="dialog"
         aria-labelledby="modal-title"
-        className="relative bg-white rounded-lg p-6 w-full max-w-lg"
+        className="relative bg-white rounded-lg p-6 max-w-lg max-h-[90vh] overflow-y-auto  [&::-webkit-scrollbar]:w-2
+  [&::-webkit-scrollbar-track]:rounded-full
+  [&::-webkit-scrollbar-track]:bg-gray-100
+  [&::-webkit-scrollbar-thumb]:rounded-full
+  [&::-webkit-scrollbar-thumb]:bg-gray-300
+  dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+  dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
       >
         <button
           onClick={handleClose}
@@ -108,13 +113,15 @@ const VideoSubmission = ({ recipientId, onClose }: Props) => {
           Send Video Clip
         </h2>
 
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          simulateUpload();
-        }}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            simulateUpload();
+          }}
+        >
           {/* Video upload area */}
           <div
-            className="border-2 border-dashed rounded-lg p-4 text-center cursor-pointer"
+            className="border-2 w-fit mx-auto border-dashed rounded-lg p-1 text-center cursor-pointer"
             onClick={() => fileInputRef.current?.click()}
           >
             <input
@@ -126,11 +133,7 @@ const VideoSubmission = ({ recipientId, onClose }: Props) => {
             />
 
             {previewUrl ? (
-              <video
-                src={previewUrl}
-                className="max-h-48 mx-auto mb-2"
-                controls
-              />
+              <video src={previewUrl} className="max-h-64" controls />
             ) : (
               <div className="py-8">
                 <Upload className="mx-auto h-12 w-12 text-gray-400 mb-2" />
@@ -215,7 +218,13 @@ const VideoSubmission = ({ recipientId, onClose }: Props) => {
           {/* Submit button */}
           <button
             type="submit"
-            disabled={isUploading || !formData.videoFile || !formData.title || !formData.date || !formData.description}
+            disabled={
+              isUploading ||
+              !formData.videoFile ||
+              !formData.title ||
+              !formData.date ||
+              !formData.description
+            }
             className="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
             {isUploading ? (
