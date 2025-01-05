@@ -18,12 +18,12 @@ const App = () => {
         <Header />
         <Suspense fallback={<Loader />}>
           <Routes>
-            <Route path="/" element={<SearchPage />} />
-            <Route path="/profile/:id" element={<ClipperProfile />} />
-            <Route path="/dashboard" element={<CreatorDashboard />} />
-            <Route path="/clipper" element={<ClipperDashboard />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/signin" element={<SignIn />} />
+            <Route path="/Clippers" element={<SearchPage />} />
+            <Route path="/Clippers/profile/:id" element={<ClipperProfile />} />
+            <Route path="/Clippers/dashboard" element={<CreatorDashboard />} />
+            <Route path="/Clippers/clipper" element={<ClipperDashboard />} />
+            <Route path="/Clippers/register" element={<Register />} />
+            <Route path="/Clippers/signin" element={<SignIn />} />
           </Routes>
         </Suspense>
       </SearchProvider>
