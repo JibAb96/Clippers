@@ -8,7 +8,7 @@ const Guidlines = ({ Clipper }: Props) => {
   return (
     <div className="ml-5 my-3 flex flex-col gap-5 lg:flex-row xl:text-lg xl:mx-20 xl:my-10">
       <div>
-        <h1 className="text-skyblue font-semibold text-xl sm:text-2xl  xl:text-3xl">
+        <h1 className="text-secondary font-semibold text-xl sm:text-2xl  xl:text-3xl">
           Submission Guidlines
         </h1>
         <div className="xl:mt-5 font-medium flex flex-col gap-2 xl:gap-4 ">
@@ -37,7 +37,7 @@ const Guidlines = ({ Clipper }: Props) => {
         </div>
       </div>
       <div>
-        <h1 className="text-skyblue text-xl font-semibold sm:text-2xl xl:text-3xl">Custom Guidlines</h1>
+        <h1 className="text-secondary text-xl font-semibold sm:text-2xl xl:text-3xl">Custom Guidlines</h1>
         <div className="xl:mt-5 font-medium flex flex-col xl:gap-4">
           {Clipper.guidelines.map((guideline, index) => (
             <p key={index}>{guideline}</p>

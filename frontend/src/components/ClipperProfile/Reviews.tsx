@@ -10,7 +10,7 @@ const Reviews = ({ Clipper }: Props) => {
   //Section of Clipper profiles displaying reviews from other creators.
   return (
     <div className=" ml-5 my-3 xl:ml-20 xl:my-10">
-      <h1 className="text-skyblue font-semibold text-xl sm:text-2xl  xl:text-3xl">Creator Reviews</h1>
+      <h1 className="text-secondary font-semibold text-xl sm:text-2xl  xl:text-3xl">Creator Reviews</h1>
       <div>
         {Clipper.reviews.map((review, index) => (
           <div key={index} className="mt-5 xl:mt-10">

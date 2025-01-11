@@ -23,7 +23,7 @@ const SearchPage = () => {
   }, [selectedFilters]); // Dependency array ensures this effect runs when selectedFilters change
 
   return (
-    <div className="pt-10 lg:pt-56 bg-[#FAFAFA]">
+    <div className="pt-10 lg:pt-56 bg-primary">
       <hr className="md:mt-5" /> {/* Horizontal line to separate sections */}
       <Filter /> {/* Render the Filter component for the user to select filters */}
       <ClippersDisplay /> {/* Render the ClippersDisplay component to show filtered clippers */}

@@ -35,7 +35,7 @@ const SearchBar = ({
       />
       <button
         type="button" // Button for submitting the search, although functionality is not implemented here
-        className="ml-2 bg-skyblue hover:bg-blue-600 text-white text-base rounded-full p-2 flex justify-center items-center" // Tailwind styling for button
+        className="ml-2 bg-secondary hover:bg-blue-600 text-white text-base rounded-full p-2 flex justify-center items-center" // Tailwind styling for button
       >
         {/*Search icon from lucide-react with styling*/}
         <Search className="text-white" size={20} />

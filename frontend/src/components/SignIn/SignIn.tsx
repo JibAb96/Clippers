@@ -29,11 +29,11 @@ const SignIn = () => {
   return (
     <div className="font-[sans-serif]">
       <Background>
-        <div className="min-h-screen flex fle-col items-center justify-center lg:p-6 p-4">
+        <div className="min-h-screen flex fle-col items-center justify-center">
           <div className="grid md:grid-cols-2 items-center gap-10 max-w-6xl w-full">
             <div>
               <h2 className="text-4xl  font-extrabold lg:leading-[50px] ">
-                <span className="text-skyblue">Seamless Login</span> for Exclusive Access
+                <span className="text-secondary">Seamless Login</span> for Exclusive Access
               </h2>
               <p className="text-sm mt-6 ">
                 Immerse yourself in a hassle-free login journey with our
@@ -42,7 +42,7 @@ const SignIn = () => {
               </p>
               <p className="text-sm mt-6 ">
                 Don't have an account{" "}
-                <a href="/register" className=" font-semibold underline ml-1 text-skyblue">
+                <a href="/register" className=" font-semibold underline ml-1 text-secondary">
                   Register here
                 </a>
               </p>
@@ -81,7 +81,7 @@ const SignIn = () => {
               <div className="text-sm text-right">
                 <a
                   href="."
-                  className="text-skyblue font-semibold hover:underline"
+                  className="text-secondary font-semibold hover:underline"
                 >
                   Forgot your password?
                 </a>

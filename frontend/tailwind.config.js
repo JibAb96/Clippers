@@ -1,12 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 // Here we have some custom colors and fonts
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx,css}"],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       colors: {
         primary: "#FAFAFA",
-        skyblue: "#24b5eb",
+        secondary: "#D20B4E",
       },
       fontFamily: {
         DM: ["League Spartan"]

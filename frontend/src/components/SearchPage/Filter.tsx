@@ -141,7 +141,7 @@ const Filter = () => {
 
       {/* Left scroll button */}
       <button
-        className="z-10 bg-white bg-opacity-90 hover:text-skyblue text-black font-bold py-2 px-2 disabled:opacity-0"
+        className="z-10 bg-white bg-opacity-90 hover:text-secondary text-black font-bold py-2 px-2 disabled:opacity-0"
         onClick={scrollLeft}
         disabled={scrollPosition === 0}
       >
@@ -162,15 +162,15 @@ const Filter = () => {
                 className={`
                    sm:w-20 sm:h-20 md:w-24 md:h-24
                   flex flex-col justify-center items-center
-                  rounded-lg transition-all duration-200 
+                  rounded-lg transition-all duration-200 text-gray-500
                   ${
                     selectedFilters.some(
                       (filter) => filter.id === category.id
-                    ) && "text-skyblue sm:border sm:border-skyblue"
+                    ) && "text-secondary sm:border sm:border-secondary"
                   } ${
                   disableButtons && disabledButtons.includes(category.id)
-                    ? "text-[#FAFAFA] sm:cursor-not-allowed"
-                    : "md:hover:text-skyblue"
+                    ? "text-primary sm:cursor-not-allowed"
+                    : "md:hover:text-secondary"
                 }
                 `}
                 disabled={
@@ -192,7 +192,7 @@ const Filter = () => {
 
       {/* Right scroll button */}
       <button
-        className="absolute right-0 z-10 bg-white bg-opacity-90 hover:text-skyblue text-black font-bold py-2 px-2 disabled:opacity-0"
+        className="absolute right-0 z-10 bg-white bg-opacity-90 hover:text-secondary text-black font-bold py-2 px-2 disabled:opacity-0"
         onClick={scrollRight}
         disabled={
           containerRef.current
