@@ -142,7 +142,16 @@ const VideoSubmission = ({ recipientId, onClose }: Props) => {
               </div>
             )}
           </div>
-
+          {/* Thumbnail upload area */}
+          <label className="block text-sm font-medium mb-1" htmlFor="thumbnail">
+            Upload Thumbnail:
+          </label>
+          <input
+            type="file"
+            id="file-upload"
+            accept=".jpg,.jpeg"
+            className="w-full p-2 border rounded"
+          />
           {/* Title field */}
           <div>
             <label htmlFor="title" className="block text-sm font-medium mb-1">
