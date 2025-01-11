@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Logo from "./Logo";
-import NavigationButton from "./Navigation/NavigationButton";
+import Logo from "../Utilities/Logo";
+import NavigationButton from "../Navigation/NavigationButton";
 import CTAButton from "../Buttons/CTAButton";
 import { useLocation, useNavigate } from "react-router-dom";
-import SearchBar from "./SearchBar";
+import SearchBar from "../Utilities/SearchBar";
 
 /**
  * Header Component
