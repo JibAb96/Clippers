@@ -33,8 +33,8 @@ const ClipperProfile = () => {
 
   //Page renders the clippers information, guidelines and reviews
   return (
-    <div>
-      <div className=" pt-20">
+    <div className="pt-14 bg-primary">
+      <div>
         <ClipperInfo Clipper={clipper} setIsModalOpen={setIsModalOpen} />
         <hr />
         <Guidlines Clipper={clipper} />
