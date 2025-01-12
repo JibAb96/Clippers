@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/Clippers/static/css/main.3d6b8245.css",
-    "main.js": "/Clippers/static/js/main.819c544a.js",
+    "main.css": "/Clippers/static/css/main.aae2ab71.css",
+    "main.js": "/Clippers/static/js/main.ca3920aa.js",
     "static/media/Imjustbait_post3.png": "/Clippers/static/media/Imjustbait_post3.ec175c51ada30c2a690c.png",
     "static/media/Imjustbait_post4.png": "/Clippers/static/media/Imjustbait_post4.f39425e2d164c2804f1d.png",
     "static/media/thumbnail.png": "/Clippers/static/media/thumbnail.b41a305d82110f311bea.png",
@@ -22,11 +22,11 @@
     "static/media/IMJUSTBAIT-Thumb.jpg": "/Clippers/static/media/IMJUSTBAIT-Thumb.dd43910d2d0eff065dd0.jpg",
     "static/media/maliworldent-thumb.jpg": "/Clippers/static/media/maliworldent-thumb.23447b3cce15530554fd.jpg",
     "index.html": "/Clippers/index.html",
-    "main.3d6b8245.css.map": "/Clippers/static/css/main.3d6b8245.css.map",
-    "main.819c544a.js.map": "/Clippers/static/js/main.819c544a.js.map"
+    "main.aae2ab71.css.map": "/Clippers/static/css/main.aae2ab71.css.map",
+    "main.ca3920aa.js.map": "/Clippers/static/js/main.ca3920aa.js.map"
   },
   "entrypoints": [
-    "static/css/main.3d6b8245.css",
-    "static/js/main.819c544a.js"
+    "static/css/main.aae2ab71.css",
+    "static/js/main.ca3920aa.js"
   ]
 }
