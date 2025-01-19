@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from "react";
 
 const Background = ({children}: PropsWithChildren) => {
   return (
-    <div className="area">
+    <div className="area min-h-screen flex flex-col relative">
       <ul className="circles">
         <li></li>
         <li></li>
@@ -15,7 +15,7 @@ const Background = ({children}: PropsWithChildren) => {
         <li></li>
         <li></li>
       </ul>
-      <div className="relative z-100">{children}</div>
+      <div className="relartive z-10 flex-1">{children}</div>
     </div>
   );
 };
