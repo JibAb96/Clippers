@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { Clipper, Category, Clip, ClippersReducer, Action } from "../model";
 import clippers from "../database/clippers";
+import { Profile } from "../model";
 
 // Define the type for the context to ensure proper data structure and type safety
 type SearchContextType = {
@@ -23,6 +24,10 @@ type SearchContextType = {
   isSignedIn: boolean; // Boolean to track if the user is signed in
   setIsSignedIn: React.Dispatch<React.SetStateAction<boolean>>; // Function to update sign-in status
   dispatch: React.ActionDispatch<[actions: Action]>; // Function to dispatch actions for reducer
+  user: Profile | null; // This state holds the information of the current user that is signed in
+  setUser: React.Dispatch<React.SetStateAction<Profile | null>>;// Function to update current user signed in
+  selectedClip: Clip;
+  setSelectedClip: React.Dispatch<React.SetStateAction<Clip>>;
 };
 
 // Create a context for the search functionality with a defined type
@@ -40,12 +45,21 @@ export const SearchProvider = ({ children }: PropsWithChildren) => {
   const [status, setStatus] = useState<string>(""); // Initialize status filter state
   const [filteredClips, setFilteredClips] = useState<Clip[]>([]); // Initialize filtered clips state
   const [isSignedIn, setIsSignedIn] = useState(false); // Initialize sign-in state
+  const [user, setUser] = useState<Profile | null>(null) //State controlling the user that is currently signed in
+  const [selectedClip, setSelectedClip] = useState<Clip>({
+    id: 0,
+    title: "",
+    status: "Pending Review",
+    user: "",
+    platform: "Instagram",
+    thumbnail: "",
+  }); //State revealing information og clips that have been selected on a dashboard
 
   // Function to filter the clips based on the selected status
   const filterClips = (clips: Clip[]) => {
-    if (clips) {
+    
       // If status filter is set, filter clips based on the status
-      if (status) {
+     if (clips && status) {
         let tempClips = clips.filter((clip: Clip) => clip.status === status);
         setFilteredClips(tempClips.flat()); // Set filtered clips after status filter
       } else {
@@ -53,7 +67,7 @@ export const SearchProvider = ({ children }: PropsWithChildren) => {
         setFilteredClips(clips);
       }
     }
-  };
+  ;
 
   return (
     <SearchContext.Provider
@@ -71,6 +85,10 @@ export const SearchProvider = ({ children }: PropsWithChildren) => {
         status, // Provide current status filter
         isSignedIn, // Provide sign-in status
         setIsSignedIn, // Provide function to update sign-in status
+        user, //Provides user information
+        setUser, //Provide function to set user information for user thats logged in
+        selectedClip,//This state provide information on clips selected on dashboard
+        setSelectedClip //This state allows for selectClip to be updated to the selected clip
       }}
     >
       {children}
