@@ -17,3 +17,7 @@ declare module "*.webp" {
   const path: string;
   export default path;
 }
+declare module '*.mp4' {
+  const src: string;
+  export default src;
+}
