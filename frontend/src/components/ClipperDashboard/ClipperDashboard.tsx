@@ -1,12 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ClipStatusHeadings from "../Utilities/ClipStatusHeadings";
 import DashboardSections from "../Utilities/DashboardSections";
-import SubmittedClips from "../Utilities/DisplayClips";
+import DisplayClips from "../Utilities/DisplayClips";
 import { useSearchContext } from "../../context/SearchContext";
 import submittedClips from "../../database/submittedClips";
+import Modal from "../Modals/Modal";
+import SubmittedClip from "../Modals/SubmittedClip";
 
 const ClipperDashboard = () => {
   const { filteredClips, filterClips, status } = useSearchContext();
+  const [isClipModalOpen, setIsClipModalOpen] = useState(false);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -18,25 +22,34 @@ const ClipperDashboard = () => {
 
   return (
     <div>
-      <div className="bg-gradient-to-r from-blue-300 to-blue-500  pt-20">
-        <h1 className="text-3xl my-10 font-semibold text-white text-center sm:text-left sm:ml-10">
-          Clipper Dashboard
-        </h1>
+      <div className="bg-primary pt-24">
+        <div className="flex flex-col gap-2 ml-10">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+            Clipper Dashboard
+          </h1>
+          <p className="text-sm sm:text-base text-gray-600">
+            Manage and track all the video clips submitted to you in one place
+          </p>
+        </div>
         <ClipStatusHeadings
           Clips={submittedClips}
-          HeadingOne="Ready For Upload"
+          HeadingOne="New Submission"
           HeadingTwo="Posted"
           HeadingThree="Rejected"
-          HeadingFour="New Submission"
         />
         <DashboardSections
           HeadingOne="New Submission"
-          HeadingTwo="Ready For Upload"
-          HeadingThree="Posted"
-          HeadingFour="Rejected"
+          HeadingTwo="Posted"
+          HeadingThree="Rejected"
         />
-        <SubmittedClips filteredClips={filteredClips} />
+        <DisplayClips
+          filteredClips={filteredClips}
+          setIsClipModalOpen={setIsClipModalOpen}
+        />
       </div>
+      <Modal isOpen={isClipModalOpen}>
+        <SubmittedClip onClose={() => setIsClipModalOpen(false)} />
+      </Modal>
     </div>
   );
 };
