@@ -10,11 +10,14 @@ import Register from "./components/Registration/Register";
 import SignIn from "./components/SignIn/SignIn";
 import ClipperDashboard from "./components/ClipperDashboard/ClipperDashboard";
 import Header from "./components/Header/Header";
+import UserProfile from "./components/UserProfile/UserProfile";
+import Layout from "./components/Layout/Layout";
+
 const App = () => {
   return (
     <Router basename="/Clippers">
       <SearchProvider>
-        <Header />
+        <Layout>
         <Suspense fallback={<Loader />}>
           <Routes>
             <Route path="/" element={<SearchPage />} />
@@ -23,8 +26,10 @@ const App = () => {
             <Route path="/clipper" element={<ClipperDashboard />} />
             <Route path="/register" element={<Register />} />
             <Route path="/signin" element={<SignIn />} />
+            <Route path="/profile" element={<UserProfile/>} />
           </Routes>
         </Suspense>
+        </Layout>
       </SearchProvider>
     </Router>
   );
