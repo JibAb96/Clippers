@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import ClipStatusHeadings from "../Utilities/ClipStatusHeadings";
-import SubmittedClips from "../Utilities/DisplayClips";
+import DisplayClips from "../Utilities/DisplayClips";
 import DashboardSections from "../Utilities/DashboardSections";
 import sentClips from "../../database/sentClips";
 import { useSearchContext } from "../../context/SearchContext";
@@ -17,22 +17,27 @@ const CreatorDashboard = () => {
   }, [status]);
 
   return (
-    <div className="bg-gradient-to-r from-blue-800 to-skyblue pt-20">
-      <h1 className="text-3xl my-10 font-semibold text-white text-center sm:text-left sm:ml-10">
-        Creator Dashboard
-      </h1>
+    <div className="bg-primary pt-10">
+      <div className="flex flex-col gap-2 mt-16 ml-10">
+        <h1 className="text-2xl sm:text-3xl font-bold">
+          Creator Dashboard
+        </h1>
+        <h2 className="text-sm sm:text-base text-tertiary">
+          Manage and track all your submitted video clih2s in one place
+        </h2>
+      </div>
       <ClipStatusHeadings
         Clips={sentClips}
-        HeadingOne="Pending"
+        HeadingOne="Pending Review"
         HeadingTwo="Posted"
         HeadingThree="Rejected"
       />
       <DashboardSections
-        HeadingOne="Pending"
+        HeadingOne="Pending Review"
         HeadingTwo="Posted"
         HeadingThree="Rejected"
       />
-      <SubmittedClips filteredClips={filteredClips} />
+      <DisplayClips filteredClips={filteredClips} />
     </div>
   );
 };
