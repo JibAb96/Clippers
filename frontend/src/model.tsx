@@ -36,12 +36,12 @@ export type Category = {
 
 // Type definition for SentClip status, representing the state of a sent clip
 export type SentClip = {
-  status: "Rejected" | "Pending" | "Posted"; // Possible states for a sent clip
+  status: "Rejected" | "Pending Review" | "Posted" ; // Possible states for a sent clip
 };
 
 // Type definition for SubmittedClip status, representing the state of a submitted clip
 export type SubmittedClip = {
-  status: "New Submission" | "Rejected" | "Ready For Upload" | "Posted"; // Possible states for a submitted clip
+  status: "New Submission" | "Rejected" | "Posted"; // Possible states for a submitted clip
 };
 
 // CombinedStatus type, which includes the statuses from both SentClip and SubmittedClip
@@ -50,10 +50,11 @@ type CombinedStatus = SentClip["status"] | SubmittedClip["status"];
 // Type definition for a Clip, which represents a submitted or sent clip with its status
 export type Clip = {
   id: number;
-  name: string;
+  title: string; //The title of the clip
   status: CombinedStatus; // The status of the clip (can be one of the combined statuses)
   user: string; // The user who submitted the clip
   platform: "Instagram" | "X" | "TikTok" | "YouTube"; // Platform where the clip is posted
+  video?: string; //This will contain the video clip
   thumbnail: string; // Thumbnail image for the clip
 };
 
@@ -108,4 +109,18 @@ export const ClippersReducer = (filteredClippers: Clipper[], actions: Action) =>
       // If no known action type, return the clippers unchanged
       return clippers;
   }
+};
+export type Profile = {
+  id: number;
+  role: "clipper" | "creator";
+  name: string;
+  brand_name: string;
+  brandImage: string;
+  socialMediaHandles: { platform: string; handle: string }[];
+  email: string;
+  niche: string;
+  guidelines?: string[]; // Only for Clippers - Up to 4 guidlines
+  engagementImages?: string[]; // Only for Clippers - Up to 4 images 
+  followers?: number; // Only for Clippers
+  pricePerPost?: number; // Only for Clippers
 };
