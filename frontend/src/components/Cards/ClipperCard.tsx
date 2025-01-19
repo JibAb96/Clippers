@@ -60,7 +60,7 @@ const ClipperCard = ({
         {/* Clipper name displayed prominently */}
         <div className="font-semibold text-xl">{ClipperName}</div>
         {/* Platform and follower count displayed in a secondary style */}
-        <div className="flex font-medium text-l text-[#7A7A7A]">
+        <div className="flex font-medium text-l text-tertiary">
           {Platform}, {" "}
           {followersDisplay(Followers)} followers
         </div>
