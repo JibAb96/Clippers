@@ -5,7 +5,7 @@ import ClipperInfo from "./ClipperInfo";
 import Guidlines from "./Guidlines";
 import Reviews from "./Reviews";
 import Modal from "../Modals/Modal";
-import VideoSubmission from "../Modals/VideoSubmission";
+import ClipSubmission from "../Modals/ClipSubmission";
 
 const ClipperProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,21 +33,19 @@ const ClipperProfile = () => {
 
   //Page renders the clippers information, guidelines and reviews
   return (
-    <div className="pt-14 bg-primary">
-      <div>
+      <div className="pt-4 md:pt-16 bg-primary">
         <ClipperInfo Clipper={clipper} setIsModalOpen={setIsModalOpen} />
         <hr />
         <Guidlines Clipper={clipper} />
         <hr />
         <Reviews Clipper={clipper} />
-        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <VideoSubmission
+        <Modal isOpen={isModalOpen}>
+          <ClipSubmission
             recipientId="12345"
             onClose={() => setIsModalOpen(false)}
           />
         </Modal>
       </div>
-    </div>
   );
 };
 
