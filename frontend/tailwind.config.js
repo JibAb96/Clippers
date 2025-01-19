@@ -7,9 +7,11 @@ module.exports = {
       colors: {
         primary: "#FAFAFA",
         secondary: "#D20B4E",
+        tertiary: "#7A6E6E",
+        quarternary: "#FFFAFC"
       },
       fontFamily: {
-        DM: ["League Spartan"]
+        leagueSpartan: ["League Spartan"]
      }
     },
   },
