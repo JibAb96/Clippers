@@ -4,6 +4,7 @@ import NavigationButton from "../Navigation/NavigationButton";
 import CTAButton from "../Buttons/CTAButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import SearchBar from "../Utilities/SearchBar";
+import { useSearchContext } from "../../context/SearchContext";
 
 /**
  * Header Component
@@ -20,6 +21,7 @@ import SearchBar from "../Utilities/SearchBar";
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useSearchContext();
 
   // State management for UI interactions
   const [isScrolled, setIsScrolled] = useState(false);        // Tracks if page is scrolled past threshold
@@ -38,23 +40,34 @@ const Header = () => {
 
   // Handle scroll events and update UI accordingly
   useEffect(() => {
+    if (!isSearchPage) return; // Early return if not on search page
+  
+    // Create media query for lg breakpoint (1024px)
+    const mediaQuery = window.matchMedia('(min-width: 1024px)');
+    
     const handleScroll = () => {
+      // Only run if media query matches
+      if (!mediaQuery.matches) return;
+  
       const scrollPosition = window.scrollY;
-      
       // Update states based on scroll position
       setIsScrolled(scrollPosition > 100);
       setIsTitleHidden(scrollPosition > 100);
-      
       // Collapse search bar if expanded and user scrolls past threshold
       if (scrollPosition > 50 && isSearchExpanded) {
         setIsSearchExpanded(false);
       }
     };
-
-    // Add scroll event listener with cleanup
+  
+    // Add scroll event listener if conditions are met
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isSearchExpanded]);
+    
+    // Cleanup function
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isSearchExpanded, isSearchPage]);
+  
 
   /**
    * Toggles search bar expansion state when scrolled
@@ -68,7 +81,7 @@ const Header = () => {
   };
 
   return (
-    <>
+    <header>
       {/* Spacer div that adjusts height based on scroll position */}
       <div
         className={`h-${isScrolled ? `lg:24` : `lg:40`} transition-all duration-300`}
@@ -76,20 +89,20 @@ const Header = () => {
 
       {/* Main header container with dynamic height and positioning */}
       <div
-        className={`lg:fixed w-full bg-[#FAFAFA] z-50 top-0 left-0 right-0 transition-all duration-300 ease-in-out  ${
-          !isSearchPage ? `md:h-20` : isScrolled && !isSearchExpanded ? `md:h-24` : `md:h-56`
-        } `}
-      >
+        className={
+          ` w-full z-50 top-0 left-0 right-0 lg:transition-all lg:duration-300 lg:ease-in-out
+          ${isSearchPage ? isScrolled && !isSearchExpanded ? `lg:fixed md:h-20 bg-primary`: `lg:fixed md:h-56 ` : `h-20 absolute`} `}>
         {/* Upper section containing logo, CTA button, and navigation */}
         <div
-          className={`w-full top-0 left-0 py-4 flex justify-between transition-all duration-300
+          className={`w-full top-0 left-0 py-4 flex justify-between lg:transition-all lg:duration-300
             ${isScrolled && !isSearchExpanded ? "lg:h-24" : "lg:h-20"}`}
         >
           <Logo />
           <CTAButton
             CustomClass="hidden absolute right-32 top-5"
-            CTAM="Become a Clipper"
+            Text={user?.role !== "clipper" ? "Become a Clipper" : "Become a Creator"}
             onClick={() => navigate("/clipper")}
+            AriaLabel="navigation-button"
           />
           <NavigationButton />
         </div>
@@ -100,9 +113,9 @@ const Header = () => {
             {/* Title section with conditional visibility */}
             {!isTitleHidden && (
               <div>
-                <h1 className="font-bold font-DM text-3xl text-black text-center pt-1 transition-all duration-300 ease-in-out">
+                <h1 className="font-bold font-leagueSpartan text-3xl text-black text-center pt-8 md:pt-1 lg:transition-all lg:duration-300 lg:ease-in-out">
                   Discover
-                  <span className="text-skyblue font-DM font-bold tracking-wide">
+                  <span className="text-secondary font-DM font-bold tracking-wide">
                     {" "}
                     clippers
                   </span>
@@ -125,7 +138,7 @@ const Header = () => {
           </div>
         )}
       </div>
-    </>
+    </header>
   );
 };
 
