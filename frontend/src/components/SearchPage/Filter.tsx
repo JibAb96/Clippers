@@ -122,18 +122,20 @@ const Filter = () => {
       {/* Sort button */}
       <div className="ml-5  mb-2">
         <button
-          className="h-8 w-8 bg-white text-center rounded-full border-2 border-gray-500 sm:w-12 sm:h-12"
+          className="h-8 w-8 bg-white text-center rounded-full sm:w-12 sm:h-12"
           onClick={handleSortButtonClick}
+          aria-label="Button to sort clippers by price"
         >
           {!isAscending ? (
             <FontAwesomeIcon
               icon={faArrowUp}
-              className="text-lg text-gray-500 sm:text-xl md:text-2xl lg:text-2xl"
+              className="text-lg text-secondary sm:text-xl md:text-2xl lg:text-2xl"
+              aria-hidden="false"
             />
           ) : (
             <FontAwesomeIcon
               icon={faArrowDown}
-              className="text-lg text-gray-500 sm:text-xl md:text-2xl lg:text-2xl"
+              className="text-lg text-secondary sm:text-xl md:text-2xl lg:text-2xl"
             />
           )}
         </button>
@@ -156,32 +158,41 @@ const Filter = () => {
         {/* Render category buttons */}
         <div className="flex gap-6 md:gap-6 lg:gap-6 my-4">
           {categories.map((category: Category) => (
-            <div key={category.id} className="flex-shrink-0">
+            <div
+              key={category.id}
+              className="flex-shrink-0"
+              aria-label={`This is an icon that represents the ${category.name} category`}
+            >
               <button
                 onClick={() => handleCategoryButtonClick(category)}
                 className={`
                    sm:w-20 sm:h-20 md:w-24 md:h-24
                   flex flex-col justify-center items-center
-                  rounded-lg transition-all duration-200 text-gray-500
+                  rounded-lg transition-all duration-200
                   ${
                     selectedFilters.some(
                       (filter) => filter.id === category.id
                     ) && "text-secondary sm:border sm:border-secondary"
                   } ${
-                  disableButtons && disabledButtons.includes(category.id)
-                    ? "text-primary sm:cursor-not-allowed"
-                    : "md:hover:text-secondary"
+                  disableButtons &&
+                  disabledButtons.includes(category.id) &&
+                  "text-primary sm:cursor-not-allowed"
                 }
                 `}
                 disabled={
                   disableButtons && disabledButtons.includes(category.id)
                 }
+                aria-label={`This is a button that shows clipper with in ${category.name} category`}
               >
                 <FontAwesomeIcon
                   icon={category.icon}
                   className="text-lg sm:text-xl md:text-2xl lg:text-2xl mb-1"
+                  aria-hidden="false"
+                  aria-label={`This is an icon that represents the ${category.name} category`}
                 />
-                <p className="text-[10px] sm:text-xs font-medium">
+                <p
+                  className="text-[10px] sm:text-xs font-medium"
+                >
                   {category.name}
                 </p>
               </button>
