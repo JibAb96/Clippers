@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSearchContext } from "../../context/SearchContext";
 import Background from "../Utilities/Background";
+import { userProfiles } from "../../database/userProfiles";
 
 const SignIn = () => {
   //Sign page for users
@@ -10,7 +11,7 @@ const SignIn = () => {
     password: "",
   });
 
-  const { setIsSignedIn } = useSearchContext();
+  const { setIsSignedIn, setUser } = useSearchContext();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -21,20 +22,23 @@ const SignIn = () => {
 
   const navigate = useNavigate();
 
+  const user = userProfiles[0];
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSignedIn(true);
-    navigate("/dashboard");
-  }
+    user.role === "creator" ? navigate("/") : navigate("/clipper");
+    setUser(user);
+  };
   return (
-    <div className="font-[sans-serif]">
       <Background>
-        <div className="min-h-screen flex fle-col items-center justify-center">
+        <div className="min-h-full flex flex-col items-center justify-center pt-24 lg:pt-24">
           <div className="grid md:grid-cols-2 items-center gap-10 max-w-6xl w-full">
-            <div>
-              <h2 className="text-4xl  font-extrabold lg:leading-[50px] ">
-                <span className="text-secondary">Seamless Login</span> for Exclusive Access
-              </h2>
+            <div className="p-4">
+              <h1 className="text-4xl  font-extrabold lg:leading-[50px] ">
+                <span className="text-secondary">Seamless Login</span> for
+                Exclusive Access
+              </h1>
               <p className="text-sm mt-6 ">
                 Immerse yourself in a hassle-free login journey with our
                 intuitively designed login form. Effortlessly access your
@@ -42,7 +46,10 @@ const SignIn = () => {
               </p>
               <p className="text-sm mt-6 ">
                 Don't have an account{" "}
-                <a href="/register" className=" font-semibold underline ml-1 text-secondary">
+                <a
+                  href="/register"
+                  className=" font-semibold underline ml-1 text-secondary"
+                >
                   Register here
                 </a>
               </p>
@@ -50,12 +57,16 @@ const SignIn = () => {
 
             <form
               onSubmit={(e) => handleSubmit(e)}
-              className="bg-white border border-gray-500 rounded-xl px-6 py-8 space-y-6 max-w-md md:ml-auto w-full"
+              className="bg-white sm:shadow-lg sm:rounded-xl px-6 py-8 space-y-6 max-w-md mx-auto md:ml-auto w-full"
             >
-              <h3 className="text-3xl font-extrabold mb-12">Sign in</h3>
+              <h2 className="text-3xl font-extrabold mb-12">Sign in</h2>
 
               <div>
+                <label className="font-bold" htmlFor="email">
+                  Email
+                </label>
                 <input
+                  id="email"
                   name="email"
                   type="email"
                   autoComplete="email"
@@ -67,7 +78,11 @@ const SignIn = () => {
                 />
               </div>
               <div>
+                <label className="font-bold" htmlFor="password">
+                  Password
+                </label>
                 <input
+                  id="password"
                   name="password"
                   type="password"
                   autoComplete="current-password"
@@ -98,7 +113,6 @@ const SignIn = () => {
           </div>
         </div>
       </Background>
-    </div>
   );
 };
 
