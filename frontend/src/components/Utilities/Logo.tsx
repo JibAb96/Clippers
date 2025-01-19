@@ -10,10 +10,11 @@ const Logo = () => {
     <div className="flex bg-transparent w-40 justify-center items-center	">
       <FontAwesomeIcon
         icon={faPaperclip}
+        aria-hidden="false"
         className="size-7 rotate-180 pl-1 pt-2 text-secondary"
       />
       <Link to="/">
-        <h1 className="text-secondary font-DM text-2xl font-bold ">clippers</h1>
+        <div className="text-secondary font-leagueSpartan text-2xl font-bold ">clippers</div>
       </Link>
     </div>
   );
