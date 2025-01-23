@@ -3,11 +3,11 @@ import ClippersDisplay from "./ClippersDisplay";
 import Filter from "./Filter";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../state/store";
-import { filterClippers } from "../../state/FilterClippers/filterClippers";
+import { filterClippers } from "../../state/Clippers/filterClippers";
 
 const SearchPage = () => {
-  // Destructuring context values for dispatch function and selectedFilters from the SearchContext
-  const selectedCategory = useSelector((state: RootState) => state.selectCategory.value)
+  // Destructuring contexts for dispatch function and selectedFilters from the SearchContext
+  const selectedCategory = useSelector((state: RootState) => state.selectCategory)
   const dispatch = useDispatch();
   // Effect hook to ensure the page scrolls to the top when the component mounts
   useEffect(() => {
