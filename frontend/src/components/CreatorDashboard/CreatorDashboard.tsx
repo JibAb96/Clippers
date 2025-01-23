@@ -3,18 +3,20 @@ import ClipStatusHeadings from "../Utilities/ClipStatusHeadings";
 import DisplayClips from "../Utilities/DisplayClips";
 import DashboardSections from "../Utilities/DashboardSections";
 import sentClips from "../../database/sentClips";
-import { useSearchContext } from "../../context/SearchContext";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../state/store";
+import { filterClips } from "../../state/Clips/clips";
 
 const CreatorDashboard = () => {
-  const { filteredClips, filterClips, status } = useSearchContext();
+  const status = useSelector((state: RootState) => state.status)
+  const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
-    filterClips(sentClips);
-    // eslint-disable-next-line
-  }, [status]);
+    dispatch(filterClips({status: status, clips: sentClips}))
+  }, [status, dispatch]);
 
   return (
     <div className="bg-primary pt-10">
@@ -37,7 +39,7 @@ const CreatorDashboard = () => {
         HeadingTwo="Posted"
         HeadingThree="Rejected"
       />
-      <DisplayClips filteredClips={filteredClips} />
+      <DisplayClips />
     </div>
   );
 };
