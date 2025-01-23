@@ -2,11 +2,13 @@ import React from "react";
 import ClipperCard from "../Cards/ClipperCard";
 import { useNavigate } from "react-router-dom";
 import { useSearchContext } from "../../context/SearchContext";
+import { useSelector } from "react-redux";
+import { RootState } from "../../state/store";
 
 const ClippersDisplay = () => {
   // Extracting search term and filtered clippers data from the SearchContext
-  const { search, filteredClippers } = useSearchContext();
-
+  const { filteredClippers } = useSearchContext();
+  const search = useSelector((state: RootState) => {return state.search.value})
   // React Router's navigation hook for programmatic navigation
   const navigate = useNavigate();
 
