@@ -1,14 +1,18 @@
 import React from "react";
 import ClipperCard from "../Cards/ClipperCard";
 import { useNavigate } from "react-router-dom";
-import { useSearchContext } from "../../context/SearchContext";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state/store";
+import { Clipper } from "../../model";
 
 const ClippersDisplay = () => {
   // Extracting search term and filtered clippers data from the SearchContext
-  const { filteredClippers } = useSearchContext();
-  const search = useSelector((state: RootState) => {return state.search.value})
+  const filteredClippers: Clipper[] = useSelector(
+    (state: RootState) => state.clippers
+  );
+  const search = useSelector((state: RootState) => {
+    return state.search.value;
+  });
   // React Router's navigation hook for programmatic navigation
   const navigate = useNavigate();
 
@@ -29,11 +33,10 @@ const ClippersDisplay = () => {
       */}
       <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-center">
         {filteredClippers
-          // Filter logic: checks if the search input matches the clipper name (case insensitive)
           .filter((clipper) =>
-            search.toLowerCase() === "" // If search input is empty, include all clippers
+            search.toLowerCase() === ""
               ? clipper
-              : clipper.name.toLowerCase().includes(search.toLowerCase()) // Otherwise, include matching clippers
+              : clipper.name.toLowerCase().includes(search.toLowerCase())
           )
           .map((clipper) => (
             // Render ClipperCard for each filtered clipper
