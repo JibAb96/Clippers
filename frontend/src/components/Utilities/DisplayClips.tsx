@@ -1,23 +1,22 @@
 import React, { useEffect } from "react";
 import DashboardCard from "../Cards/DashboardCard";
-import { useSearchContext } from "../../context/SearchContext";
-import { Clip } from "../../model";
+import { useSelector } from "react-redux";
+import { RootState } from "../../state/store";
 type Props = {
-  filteredClips: Clip[];
   setIsClipModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const DisplayClips = ({ filteredClips, setIsClipModalOpen }: Props) => {
-  const { status } = useSearchContext();
+const DisplayClips = ({ setIsClipModalOpen }: Props) => {
+  const status = useSelector((state: RootState) => state.status)
+  const clips = useSelector((state: RootState) => state.clips)
 
   useEffect(() => {
-    // eslint-disable-next-line
   }, [status]);
   //Section of the dashboard displaying all submitted clips and their status
 
   return (
     <div className="flex flex-wrap justify-center gap-5 ">
-      {filteredClips.map((clip) => (
+      {clips.map((clip) => (
         <DashboardCard
           key={clip.id}
           clip={clip}
