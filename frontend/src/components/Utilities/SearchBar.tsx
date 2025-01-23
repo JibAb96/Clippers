@@ -1,6 +1,7 @@
 import React from "react";
-import { useSearchContext } from "../../context/SearchContext"; // Importing the custom hook for accessing global search state
 import { Search } from "lucide-react"; // Importing the Search icon from lucide-react library
+import { useDispatch } from "react-redux";
+import { setSearch } from "../../state/SearchClippers/searchClippers";
 
 // Props definition for SearchBar component with type annotations for better TypeScript support
 type Props = {
@@ -14,9 +15,8 @@ const SearchBar = ({
   isSearchExpanded,
   handleSearchClick,
 }: Props) => {
-  // Use the custom context hook to manage the search state (better readability and encapsulation)
-  const { setSearch } = useSearchContext();
-
+  // Use the redux useDispatch hook to manage the search state
+  const dispatch = useDispatch();
   return (
     <div
       onClick={handleSearchClick} // Triggers the passed function when the search bar is clicked
@@ -29,10 +29,10 @@ const SearchBar = ({
     >
       <input
         type="text" // Standard input field for text search
-        onChange={(e) => setSearch(e.target.value)} // Update search state on text change
+        onChange={(e) => dispatch(setSearch(e.target.value))} // Update search state on text change
         placeholder="Search for clippers" // Placeholder text to guide the user
         className="w-full outline-none bg-transparent pl-4 text-base text-gray-700 placeholder-gray-400" // Tailwind styling for input field
-        aria-label="search-bar"   
+        aria-label="search-bar"
       />
       <button
         type="button" // Button for submitting the search, although functionality is not implemented here
@@ -40,7 +40,7 @@ const SearchBar = ({
         aria-label="search button added for styling"
       >
         {/*Search icon from lucide-react with styling*/}
-        <Search className="text-white" size={20} aria-hidden="false"/>
+        <Search className="text-white" size={20} aria-hidden="false" />
       </button>
     </div>
   );
