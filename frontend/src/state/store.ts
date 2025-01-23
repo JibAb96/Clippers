@@ -1,12 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
-import searchReducer from "./SearchClippers/searchClippers";
-import selectCategoryReducer from "./FilterClippers/selectCategory"
-import filterClippersReducer from "./FilterClippers/filterClippers"
+import searchReducer from "./Clippers/searchClippers";
+import selectCategoryReducer from "./Clippers/selectCategory";
+import filterClippersReducer from "./Clippers/filterClippers";
+import selectedClipReducer from "./Clip/selectedClip";
+import statusReducer from "./Clips/clipStatus"
+import clipsReducer from "./Clips/clips"
+import isSignedInReducer from "./isSignedIn/isSignedIn"
 export const store = configureStore({
   reducer: {
     search: searchReducer,
     selectCategory: selectCategoryReducer,
-    clippers: filterClippersReducer
+    clippers: filterClippersReducer,
+    clip: selectedClipReducer,
+    status: statusReducer,
+    clips: clipsReducer,
+    isSignedIn: isSignedInReducer,
   },
 });
 
