@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { X } from "lucide-react";
-import { useSearchContext } from "../../context/SearchContext";
 import EmptyButton from "../Buttons/EmptyButton";
+import { useSelector } from "react-redux";
+import { RootState } from "../../state/store";
 
 type Props = {
   onClose: () => void;
@@ -11,18 +12,16 @@ const SubmittedClip = ({ onClose }: Props) => {
   // State for form data and upload progress
 
   // Handle escape key
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-    window.addEventListener("keydown", handleEscape);
-    return () => window.removeEventListener("keydown", handleEscape);
-    // eslint-disable-next-line
-  }, []);
+  const handleEscape = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      onClose();
+    }
+  };
+  window.addEventListener("keydown", handleEscape);
+  window.removeEventListener("keydown", handleEscape);
 
-  const { selectedClip } = useSearchContext();
+  const clip = useSelector((state: RootState) => state.clip)
+
   return (
     <div>
       {/* Modal content */}
@@ -36,28 +35,28 @@ const SubmittedClip = ({ onClose }: Props) => {
       </button>
       <div className="sm:flex sm:flex-col sm:gap-6">
         <h2 id="modal-title" className="text-xl font-bold mb-4">
-          {selectedClip.title}
+          {clip.title}
         </h2>
         <div className="grid sm:grid-cols-2 gap-2">
           {/*Video Display*/}
           <div className="w-full aspect-9/16">
-            {selectedClip.video ? (
+            {clip.video ? (
               <video
                 className="rounded-xl"
                 controls
-                src={selectedClip.video}
-                aria-label={selectedClip.title}
+                src={clip.video}
+                aria-label={clip.title}
               />
             ) : (
               <img
                 className="rounded-xl"
-                src={selectedClip.thumbnail}
-                aria-label={selectedClip.title}
+                src={clip.thumbnail}
+                aria-label={clip.title}
               />
             )}
           </div>
           <div className="flex flex-col gap-1 mt-4 sm:mt-0">
-            {selectedClip.status !== "New Submission" && (
+            {clip.status !== "New Submission" && (
               <h2 className="font-medium">
                 For any enquiries concerning this clip email us at
                 clippers@gmail.com
@@ -65,8 +64,8 @@ const SubmittedClip = ({ onClose }: Props) => {
             )}
             {/* Info panel with card effect */}
             <div className="space-y-4 bg-gray-50 dark:bg-neutral-800/50 p-6 rounded-xl">
-              <InfoRow label="Creator" value={selectedClip.user} />
-              <InfoRow label="Platform" value={selectedClip.platform} />
+              <InfoRow label="Creator" value={clip.user} />
+              <InfoRow label="Platform" value={clip.platform} />
               <InfoRow label="Purpose" value="Marketing" />
               <div className="font-medium text-gray-600 dark:text-gray-400">
                 Description
@@ -76,7 +75,7 @@ const SubmittedClip = ({ onClose }: Props) => {
                 is a video to go viral, this is a
               </div>
             </div>
-            {selectedClip.status === "New Submission" && (
+            {clip.status === "New Submission" && (
               <div className="mx-auto flex gap-2">
                 <EmptyButton
                   Text="Accept"
