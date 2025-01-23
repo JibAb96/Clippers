@@ -45,7 +45,7 @@ export type SubmittedClip = {
 };
 
 // CombinedStatus type, which includes the statuses from both SentClip and SubmittedClip
-export type CombinedStatus = SentClip["status"] | SubmittedClip["status"];
+export type CombinedStatus = SentClip["status"] | SubmittedClip["status"] | "";
 
 // Type definition for a Clip, which represents a submitted or sent clip with its status
 export type Clip = {
