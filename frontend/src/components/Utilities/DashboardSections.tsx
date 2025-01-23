@@ -1,5 +1,6 @@
 import React from "react";
-import { useSearchContext } from "../../context/SearchContext";
+import { useDispatch } from "react-redux";
+import { setStatus } from "../../state/Clips/clipStatus";
 
 type Props = {
   HeadingOne: string;
@@ -12,14 +13,13 @@ const DashboardSections = ({
   HeadingTwo,
   HeadingThree,
 }: Props) => {
-  const { setStatus } = useSearchContext();
-
+  const dispatch = useDispatch();
   return (
     <nav className="max-w-fit bg-white px-10 m-auto rounded-xl mb-3 sm:mx-0 sm:mx-10 sm:max-w-full sm:p-5">
       <div className="flex flex-col sm:flex-row items-center justify-center gap-2 w-full">
         {/* All Clips */}
         <button
-          onClick={() => setStatus("")}
+          onClick={() => dispatch(setStatus(""))}
           className="group relative w-full sm:w-auto px-6 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2"
         >
           <span className="text-gray-700 font-medium group-hover:text-gray-900">
@@ -29,7 +29,7 @@ const DashboardSections = ({
         </button>
         {/* HeadingOne */}
         <button
-          onClick={() => setStatus(HeadingOne)}
+          onClick={() => dispatch(setStatus(HeadingOne))}
           className="group relative w-full sm:w-auto px-6 py-3 rounded-lg transition-all duration-200 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2"
         >
           <span className="text-[#187AA0] font-medium group-hover:text-blue-700">
@@ -40,7 +40,7 @@ const DashboardSections = ({
 
         {/* HeadingTwo */}
         <button
-          onClick={() => setStatus(HeadingTwo)}
+          onClick={() => dispatch(setStatus(HeadingTwo))}
           className="group relative w-full sm:w-auto px-6 py-3 rounded-lg transition-all duration-200 hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-green-200 focus:ring-offset-2"
         >
           <span className="text-green-700 font-medium group-hover:text-green-700">
@@ -51,7 +51,7 @@ const DashboardSections = ({
 
         {/* HeadingThree */}
         <button
-          onClick={() => setStatus(HeadingThree)}
+          onClick={() => dispatch(setStatus(HeadingThree))}
           className="group relative w-full sm:w-auto px-6 py-3 rounded-lg transition-all duration-200 hover:bg-rose-50 focus:outline-none focus:ring-2 focus:ring-rose-200 focus:ring-offset-2"
         >
           <span className="text-red-600 font-medium group-hover:text-red-600">
