@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { HiMenu, HiUser } from "react-icons/hi";
 import { Link } from "react-router-dom";
-import { useSearchContext } from "../../context/SearchContext";
+import { userProfiles } from "../../database/userProfiles";
+import { useSelector } from "react-redux";
+import { RootState } from "../../state/store";
 
 // Navigation button created using tailwind css and react icons
 
 const NavigationButton = () => {
   // Toggle dropdown visibility
-
-  const { isSignedIn, user } = useSearchContext();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const isSignedIn = useSelector((state: RootState) => state.isSignedIn)
+  const user = userProfiles[0]
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
