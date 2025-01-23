@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import ClippersDisplay from "./ClippersDisplay"; 
-import Filter from "./Filter"; 
-import { useSearchContext } from "../../context/SearchContext"; 
-import { ACTIONS } from "../../model";
+import Filter from "./Filter";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../state/store";
+import { filterClippers } from "../../state/FilterClippers/filterClippers";
 
 const SearchPage = () => {
   // Destructuring context values for dispatch function and selectedFilters from the SearchContext
-  const { dispatch, selectedFilters } = useSearchContext();
-
+  const selectedCategory = useSelector((state: RootState) => state.selectCategory.value)
+  const dispatch = useDispatch();
   // Effect hook to ensure the page scrolls to the top when the component mounts
   useEffect(() => {
     window.scrollTo(0, 0); // Scroll to top
@@ -15,12 +16,9 @@ const SearchPage = () => {
 
   // Effect hook to dispatch an action to filter clippers when selectedFilters change
   useEffect(() => {
-    dispatch({
-      type: ACTIONS.FILTER_CLIPPERS, // Dispatch the action to filter the clippers
-      payload: { selectedFilters: selectedFilters }, // Pass the selected filters as payload
-    });
+    dispatch(filterClippers(selectedCategory))
     // eslint-disable-next-line
-  }, [selectedFilters]); // Dependency array ensures this effect runs when selectedFilters change
+  }, [selectedCategory]); // Dependency array ensures this effect runs when selectedCategory change
 
   return (
     <div className="pt-10 lg:pt-56 bg-primary">
