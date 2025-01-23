@@ -2,23 +2,22 @@ import React, { useEffect, useState } from "react";
 import ClipStatusHeadings from "../Utilities/ClipStatusHeadings";
 import DashboardSections from "../Utilities/DashboardSections";
 import DisplayClips from "../Utilities/DisplayClips";
-import { useSearchContext } from "../../context/SearchContext";
 import submittedClips from "../../database/submittedClips";
 import Modal from "../Modals/Modal";
 import SubmittedClip from "../Modals/SubmittedClip";
+import { RootState } from "../../state/store";
+import { useDispatch, useSelector } from "react-redux";
+import { filterClips } from "../../state/Clips/clips";
 
 const ClipperDashboard = () => {
-  const { filteredClips, filterClips, status } = useSearchContext();
   const [isClipModalOpen, setIsClipModalOpen] = useState(false);
+  const status = useSelector((state: RootState) => state.status);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
-    filterClips(submittedClips);
-    // eslint-disable-next-line
-  }, [status]);
+    dispatch(filterClips({ status: status, clips: submittedClips }));
+  }, [status, dispatch]);
 
   return (
     <div>
@@ -43,7 +42,6 @@ const ClipperDashboard = () => {
           HeadingThree="Rejected"
         />
         <DisplayClips
-          filteredClips={filteredClips}
           setIsClipModalOpen={setIsClipModalOpen}
         />
       </div>
