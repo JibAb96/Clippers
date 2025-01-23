@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSearchContext } from "../../context/SearchContext";
 import Background from "../Utilities/Background";
-import { userProfiles } from "../../database/userProfiles";
+import { useDispatch } from "react-redux";
+import { setIsSignedIn } from "../../state/isSignedIn/isSignedIn";
 
 const SignIn = () => {
   //Sign page for users
@@ -11,7 +11,8 @@ const SignIn = () => {
     password: "",
   });
 
-  const { setIsSignedIn, setUser } = useSearchContext();
+  const dispatch = useDispatch();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -22,13 +23,10 @@ const SignIn = () => {
 
   const navigate = useNavigate();
 
-  const user = userProfiles[0];
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSignedIn(true);
-    user.role === "creator" ? navigate("/") : navigate("/clipper");
-    setUser(user);
+    dispatch(setIsSignedIn());
+    navigate("/")
   };
   return (
       <Background>
