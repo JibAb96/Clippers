@@ -1,6 +1,7 @@
 import React from "react";
 import { Clip } from "../../model";
-import { useSearchContext } from "../../context/SearchContext";
+import { useDispatch } from "react-redux";
+import { selectClip } from "../../state/Clip/selectedClip";
 // Here we have the structure of the cards of each clip that will be displayed. Styled with
 // tailwindcss.
 
@@ -13,8 +14,7 @@ const DashboardCard = ({
   clip,
   openModal,
 }: Props) => {
-
-  const { setSelectedClip } = useSearchContext();
+  const dispatch = useDispatch();
   // Function to set bg color corresponding with status
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
@@ -35,7 +35,7 @@ const DashboardCard = ({
   const statusStyle = getStatusColor(clip.status);
 
   const onClick = () => {
-    openModal && setSelectedClip(clip);
+    openModal && dispatch(selectClip(clip));
     openModal && openModal(true);
   }
 
