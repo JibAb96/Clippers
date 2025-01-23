@@ -22,13 +22,13 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../state/store";
-import { chooseCategory, reinitialiseCategory } from "../../state/FilterClippers/selectCategory";
-import { sortByPrice } from "../../state/FilterClippers/filterClippers";
+import { chooseCategory, reinitialiseCategory } from "../../state/Clippers/selectCategory";
+import { sortByPrice } from "../../state/Clippers/filterClippers";
 
 // Main Filter component
 const Filter = () => {
   // Context hook to get selected filters and dispatch function for state updates
-  const selectedFilters = useSelector((state: RootState) => state.selectCategory.value);
+  const selectedFilters = useSelector((state: RootState) => state.selectCategory);
   const dispatch = useDispatch();
   // Refs and state hooks for managing scroll position and button states
   const containerRef = useRef<HTMLDivElement>(null);
