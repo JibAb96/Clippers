@@ -13,20 +13,23 @@ import {
   faArrowUp,
   faArrowDown,
 } from "@fortawesome/free-solid-svg-icons";
-import { ACTIONS, Category } from "../../model";
-import { useSearchContext } from "../../context/SearchContext";
+import { Category } from "../../model";
 import {
   faInstagram,
   faTiktok,
   faXTwitter,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../state/store";
+import { chooseCategory, reinitialiseCategory } from "../../state/FilterClippers/selectCategory";
+import { sortByPrice } from "../../state/FilterClippers/filterClippers";
 
 // Main Filter component
 const Filter = () => {
   // Context hook to get selected filters and dispatch function for state updates
-  const { selectedFilters, setSelectedFilters, dispatch } = useSearchContext();
-
+  const selectedFilters = useSelector((state: RootState) => state.selectCategory.value);
+  const dispatch = useDispatch();
   // Refs and state hooks for managing scroll position and button states
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -92,7 +95,7 @@ const Filter = () => {
     const isFiltered = selectedFilters.length > 0;
     if (isFiltered) {
       // If filters are already applied, clear them and enable all buttons
-      setSelectedFilters([]);
+      dispatch(reinitialiseCategory());
       setDisableButtons(false);
     } else {
       // If no filters are applied, disable all buttons except the clicked category
@@ -102,19 +105,15 @@ const Filter = () => {
           .filter((id) => id !== selectedCategory.id),
       ]);
       setDisableButtons(true);
-      console.log(disabledButtons);
       // Set the clicked category as the selected filter
-      setSelectedFilters([selectedCategory]);
+      dispatch(chooseCategory(selectedCategory));
     }
   };
 
   // Function to handle the sort button click (toggle sorting order)
   const handleSortButtonClick = () => {
     setIsAscending(!isAscending);
-    dispatch({
-      type: ACTIONS.SORT_CLIPPERS,
-      payload: { isAscending: isAscending },
-    });
+    dispatch(sortByPrice(isAscending));
   };
 
   return (
