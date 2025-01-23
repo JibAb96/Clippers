@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Clippers/static/css/main.c3fcac11.css",
-    "main.js": "/Clippers/static/js/main.49eb29ee.js",
+    "main.js": "/Clippers/static/js/main.6a8ac8a6.js",
     "static/media/ssstik.io_@rajdeen1213_1734714797123.mp4": "/Clippers/static/media/ssstik.io_@rajdeen1213_1734714797123.407f931606ba4c72c23c.mp4",
     "static/media/Imjustbait_post3.png": "/Clippers/static/media/Imjustbait_post3.ec175c51ada30c2a690c.png",
     "static/media/Imjustbait_post4.png": "/Clippers/static/media/Imjustbait_post4.f39425e2d164c2804f1d.png",
@@ -24,10 +24,10 @@
     "static/media/maliworldent-thumb.jpg": "/Clippers/static/media/maliworldent-thumb.23447b3cce15530554fd.jpg",
     "index.html": "/Clippers/index.html",
     "main.c3fcac11.css.map": "/Clippers/static/css/main.c3fcac11.css.map",
-    "main.49eb29ee.js.map": "/Clippers/static/js/main.49eb29ee.js.map"
+    "main.6a8ac8a6.js.map": "/Clippers/static/js/main.6a8ac8a6.js.map"
   },
   "entrypoints": [
     "static/css/main.c3fcac11.css",
-    "static/js/main.49eb29ee.js"
+    "static/js/main.6a8ac8a6.js"
   ]
 }
