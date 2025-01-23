@@ -4,7 +4,7 @@ import NavigationButton from "../Navigation/NavigationButton";
 import CTAButton from "../Buttons/CTAButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import SearchBar from "../Utilities/SearchBar";
-import { useSearchContext } from "../../context/SearchContext";
+import { userProfiles } from "../../database/userProfiles";
 
 /**
  * Header Component
@@ -21,8 +21,7 @@ import { useSearchContext } from "../../context/SearchContext";
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useSearchContext();
-
+  const user = userProfiles[0]
   // State management for UI interactions
   const [isScrolled, setIsScrolled] = useState(false);        // Tracks if page is scrolled past threshold
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);  // Controls search bar expansion
@@ -101,7 +100,7 @@ const Header = () => {
           <CTAButton
             CustomClass="hidden absolute right-32 top-5"
             Text={user?.role !== "clipper" ? "Become a Clipper" : "Become a Creator"}
-            onClick={() => navigate("/registrater")}
+            onClick={() => navigate("/register")}
             AriaLabel="navigation-button"
           />
           <NavigationButton />
