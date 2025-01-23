@@ -2,7 +2,6 @@ import React, { Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import SearchPage from "./components/SearchPage/SearchPage";
-import { SearchProvider } from "./context/SearchContext";
 import ClipperProfile from "./components/ClipperProfile/ClipperProfile";
 import CreatorDashboard from "./components/CreatorDashboard/CreatorDashboard";
 import Loader from "./components/Utilities/Loader";
@@ -15,7 +14,6 @@ import Layout from "./components/Layout/Layout";
 const App = () => {
   return (
     <Router basename="/Clippers">
-      <SearchProvider>
         <Layout>
         <Suspense fallback={<Loader />}>
           <Routes>
@@ -29,7 +27,6 @@ const App = () => {
           </Routes>
         </Suspense>
         </Layout>
-      </SearchProvider>
     </Router>
   );
 };
