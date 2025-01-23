@@ -1,7 +1,7 @@
 import React from "react";
 import { Search } from "lucide-react"; // Importing the Search icon from lucide-react library
 import { useDispatch } from "react-redux";
-import { setSearch } from "../../state/SearchClippers/searchClippers";
+import { setSearch } from "../../state/Clippers/searchClippers";
 
 // Props definition for SearchBar component with type annotations for better TypeScript support
 type Props = {
