@@ -101,7 +101,7 @@ const Header = () => {
           <CTAButton
             CustomClass="hidden absolute right-32 top-5"
             Text={user?.role !== "clipper" ? "Become a Clipper" : "Become a Creator"}
-            onClick={() => navigate("/clipper")}
+            onClick={() => navigate("/registrater")}
             AriaLabel="navigation-button"
           />
           <NavigationButton />
