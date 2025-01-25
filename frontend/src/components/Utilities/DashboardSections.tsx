@@ -22,7 +22,7 @@ const DashboardSections = ({
           onClick={() => dispatch(setStatus(""))}
           className="group relative w-full sm:w-auto px-6 py-3 rounded-lg transition-all duration-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2"
         >
-          <span className="text-gray-700 font-medium group-hover:text-gray-900">
+          <span className="font-medium group-hover:text-gray-900">
             All Clips
           </span>
           <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gray-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-200" />
@@ -32,7 +32,7 @@ const DashboardSections = ({
           onClick={() => dispatch(setStatus(HeadingOne))}
           className="group relative w-full sm:w-auto px-6 py-3 rounded-lg transition-all duration-200 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2"
         >
-          <span className="text-[#187AA0] font-medium group-hover:text-blue-700">
+          <span className="group-hover:text-[#187AA0] font-medium group-hover:text-blue-700">
             {HeadingOne}
           </span>
           <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-200" />
@@ -43,7 +43,7 @@ const DashboardSections = ({
           onClick={() => dispatch(setStatus(HeadingTwo))}
           className="group relative w-full sm:w-auto px-6 py-3 rounded-lg transition-all duration-200 hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-green-200 focus:ring-offset-2"
         >
-          <span className="text-green-700 font-medium group-hover:text-green-700">
+          <span className="font-medium group-hover:text-green-700">
             {HeadingTwo}
           </span>
           <span className="absolute bottom-0 left-0 w-full h-0.5 bg-green-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-200" />
@@ -54,7 +54,7 @@ const DashboardSections = ({
           onClick={() => dispatch(setStatus(HeadingThree))}
           className="group relative w-full sm:w-auto px-6 py-3 rounded-lg transition-all duration-200 hover:bg-rose-50 focus:outline-none focus:ring-2 focus:ring-rose-200 focus:ring-offset-2"
         >
-          <span className="text-red-600 font-medium group-hover:text-red-600">
+          <span className="group-hover:text-red-600 font-medium group-hover:text-red-600">
             {HeadingThree}
           </span>
           <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#D20B4E] scale-x-0 group-hover:scale-x-100 transition-transform duration-200" />
