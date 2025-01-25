@@ -242,7 +242,7 @@ const ClipSubmission = ({ recipientId, onClose }: Props) => {
             className="block text-sm font-semibold mb-1 text-secondary"
           >
             Description{" "}
-            <span className="text-tertiary">(maximum 96 characters)</span>
+            <span className="text-tertiary">(maximum 179 characters)</span>
           </label>
           <textarea
             id="description"
@@ -255,7 +255,7 @@ const ClipSubmission = ({ recipientId, onClose }: Props) => {
             }
             className="w-full p-2 border rounded"
             rows={3}
-            maxLength={96}
+            maxLength={179}
           />
         </div>
 
