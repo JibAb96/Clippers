@@ -16,7 +16,7 @@ const Modal = ({ isOpen, children }: Props) => {
         aria-hidden="true"
       />
       <div
-        className="relative bg-primary rounded-lg max-w-[18rem] sm:max-w-lg p-6 
+        className="relative bg-primary rounded-lg max-w-[18rem] sm:max-w-3xl p-6 
     max-h-[90vh] overflow-y-auto
     [&::-webkit-scrollbar]:w-2
     [&::-webkit-scrollbar-track]:rounded-full
