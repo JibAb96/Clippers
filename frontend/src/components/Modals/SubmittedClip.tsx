@@ -20,7 +20,7 @@ const SubmittedClip = ({ onClose }: Props) => {
   window.addEventListener("keydown", handleEscape);
   window.removeEventListener("keydown", handleEscape);
 
-  const clip = useSelector((state: RootState) => state.clip)
+  const clip = useSelector((state: RootState) => state.clip);
 
   return (
     <div>
@@ -34,15 +34,15 @@ const SubmittedClip = ({ onClose }: Props) => {
         <X className="h-6 w-6" />
       </button>
       <div className="sm:flex sm:flex-col sm:gap-6">
-        <h2 id="modal-title" className="text-xl font-bold mb-4">
+        <h2 id="modal-title" className="text-xl text-center font-bold mb-4">
           {clip.title}
         </h2>
-        <div className="grid sm:grid-cols-2 gap-2">
+        <div className="flex sm:flex-cols gap-2">
           {/*Video Display*/}
-          <div className="w-full aspect-9/16">
+          <div className="aspect-9/16 max-w-xs">
             {clip.video ? (
               <video
-                className="rounded-xl"
+                className="rounded-xl max-w-[14rem]"
                 controls
                 src={clip.video}
                 aria-label={clip.title}
@@ -55,7 +55,7 @@ const SubmittedClip = ({ onClose }: Props) => {
               />
             )}
           </div>
-          <div className="flex flex-col gap-1 mt-4 sm:mt-0">
+          <div className="flex flex-col gap-4 mt-4 sm:mt-0">
             {clip.status !== "New Submission" && (
               <h2 className="font-medium">
                 For any enquiries concerning this clip email us at
@@ -63,20 +63,21 @@ const SubmittedClip = ({ onClose }: Props) => {
               </h2>
             )}
             {/* Info panel with card effect */}
-            <div className="space-y-4 bg-gray-50 dark:bg-neutral-800/50 p-6 rounded-xl">
+            <div className="space-y-4 bg-primary p-6 rounded-xl shadow-sm flex-grow">
               <InfoRow label="Creator" value={clip.user} />
               <InfoRow label="Platform" value={clip.platform} />
               <InfoRow label="Purpose" value="Marketing" />
-              <div className="font-medium text-gray-600 dark:text-gray-400">
+              <div className="font-bold text-[#D20B4E]/80 mt-4">
                 Description
               </div>
-              <div className="text-gray-900 dark:text-white">
-                This is a video to go viral, This is a video to go viral, This
-                is a video to go viral, this is a
+              <div className="font-normal">
+                This video is going to be viral, This video is going to be
+                viral, This video is going to be viral, This video is going to
+                be viral, This video is going to be viral, This video is.
               </div>
             </div>
             {clip.status === "New Submission" && (
-              <div className="mx-auto flex gap-2">
+              <div className="mx-auto flex gap-2 sticky bottom-0">
                 <EmptyButton
                   Text="Accept"
                   AriaLabel="Accept submitted clip for posting"
@@ -98,11 +99,9 @@ const SubmittedClip = ({ onClose }: Props) => {
 
 // Helper component for info rows
 const InfoRow = ({ label, value }: { label: string; value: string }) => (
-  <div className="flex justify-between items-center border-b border-gray-200 dark:border-neutral-700 pb-3 last:border-0 last:pb-0">
-    <span className="font-medium text-gray-600 dark:text-gray-400">
-      {label}
-    </span>
-    <span className="text-gray-900 dark:text-white">{value}</span>
+  <div className="flex justify-between gap-48 items-center border-b pb-3 last:border-0 last:pb-0">
+    <span className="font-bold text-secondary">{label}</span>
+    <span className="font-medium">{value}</span>
   </div>
 );
 export default SubmittedClip;
