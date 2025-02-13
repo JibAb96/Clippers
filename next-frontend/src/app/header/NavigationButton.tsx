@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import { HiMenu, HiUser } from "react-icons/hi";
 import Link from "next/link";
@@ -42,6 +42,7 @@ const NavigationButton = () => {
           >
             <li>
               <Link
+                onClick={closeDropdown}
                 href="/"
                 className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
               >
