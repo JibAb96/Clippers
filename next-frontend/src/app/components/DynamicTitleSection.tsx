@@ -68,7 +68,7 @@ const DynamicTitleSection = () => {
       {/* Search bar container with dynamic positioning */}
       <div
         className={`${
-          isScrolled && !isSearchExpanded ? `md:mt-[-64]` : `pt-8 md:pt-12 `
+          isScrolled && !isSearchExpanded ? `md:-mt-16` : `pt-8 md:pt-12 `
         } px-2 sm:px-10`}
       >
         <SearchBar
