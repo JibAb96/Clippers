@@ -26,7 +26,7 @@ const Form = () => {
       const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(setIsSignedIn());
-        dispatch(setUser(userProfiles[1]))
+        dispatch(setUser(userProfiles[0]))
         router.push("/");
       };
   return ( 
