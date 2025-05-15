@@ -4,7 +4,7 @@ import ClipperCard from "./ClipperCard";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { filterClippers } from "@/state/Clippers/clippers";
 import { fetchClippers } from "@/state/Clippers/clipperThunks";
-import { Clipper } from "../../../model";
+import { Clipper } from "../../model";
 import Thumbnail from "../../assets/images/thumbnail.png";
 
 const ClippersDisplay = () => {

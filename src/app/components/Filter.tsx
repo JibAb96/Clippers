@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -14,14 +14,17 @@ import {
   faArrowUp,
   faArrowDown,
 } from "@fortawesome/free-solid-svg-icons";
-import { Category } from "../../../model";
+import { Category } from "../../model";
 import {
   faInstagram,
   faTiktok,
   faXTwitter,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
-import { chooseCategory, reinitialiseCategory } from "../../state/Clippers/selectCategory";
+import {
+  chooseCategory,
+  reinitialiseCategory,
+} from "../../state/Clippers/selectCategory";
 import { sortByPrice } from "../../state/Clippers/clippers";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { capitalizeFirstLetter } from "@/lib/utils";
@@ -190,9 +193,7 @@ const Filter = () => {
                   aria-hidden="false"
                   aria-label={`This is an icon that represents the ${category.name} category`}
                 />
-                <p
-                  className="text-[10px] sm:text-xs font-medium"
-                >
+                <p className="text-[10px] sm:text-xs font-medium">
                   {capitalizeFirstLetter(category.name)}
                 </p>
               </button>

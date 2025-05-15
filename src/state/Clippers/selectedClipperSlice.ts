@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Clipper, PortfolioImage } from "../../../model";
+import { Clipper, PortfolioImage } from "../../model";
 import {
   getClipperById,
   getClipperPortfolioImages,

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Clip } from "../../../model";
+import { Clip } from "../../model";
 import thumbnail from "../../assets/images/thumbnail.png";
 
 const initialState: Clip = {
@@ -15,7 +15,7 @@ const selectedClip = createSlice({
   name: "clip",
   initialState,
   reducers: {
-    selectClip: (state, action) => action.payload
+    selectClip: (state, action) => action.payload,
   },
 });
 

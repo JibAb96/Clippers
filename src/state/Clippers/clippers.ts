@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Category, Clipper } from "../../../model";
+import { Category, Clipper } from "../../model";
 import { fetchClippers, searchClippers } from "./clipperThunks";
 
 interface ClippersState {

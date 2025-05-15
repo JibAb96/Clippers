@@ -3,7 +3,7 @@ import React from "react";
 import Image from "next/image";
 import CTAButton from "../../../../components/CTAButton";
 import { followersDisplay } from "../../../components/ClipperCard";
-import { Clipper, PortfolioImage } from "../../../../../model";
+import { Clipper, PortfolioImage } from "../../../../model";
 import Modal from "@/components/Modal";
 import ClipSubmission from "./ClipSubmission";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
@@ -74,7 +74,9 @@ const ClipperInfo = ({
               {followersDisplay(clipper.followerCount)} followers
             </span>
           </p>
-          <p className="text-xl font-medium">{capitalizeFirstLetter(clipper.niche)}</p>
+          <p className="text-xl font-medium">
+            {capitalizeFirstLetter(clipper.niche)}
+          </p>
         </div>
         <div className=" mt-2 lg:mr-0  lg:flex lg:gap-20 xl:gap-48">
           <CTAButton

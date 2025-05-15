@@ -1,8 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Category } from "../../../model";
+import { Category } from "../../model";
 
-
-const initialState: Category[] = []
+const initialState: Category[] = [];
 
 const selectCategory = createSlice({
   name: "selectedCategory",
@@ -10,9 +9,8 @@ const selectCategory = createSlice({
   reducers: {
     chooseCategory: (state, action) => {
       state.push(action.payload);
-      
     },
-    reinitialiseCategory: () => [], 
+    reinitialiseCategory: () => [],
   },
 });
 
