@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Clipper, Creator } from "../../../model";
+import { Clipper, Creator } from "../../model";
 import api from "../../services/api"; // Assuming you have an api utility at src/utils/api.ts
 
 // Define a more specific error type

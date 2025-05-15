@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Clipper, Creator } from "../../../model";
+import { Clipper, Creator } from "../../model";
 import { getCreatorProfileById, getClipperProfileById } from "./profileThunks";
 
 export interface ProfileState<T> {
