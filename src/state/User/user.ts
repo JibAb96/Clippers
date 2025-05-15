@@ -148,7 +148,20 @@ const userSlice = createSlice({
       })
       .addCase(loginCreator.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
+        let msg = "Login failed. Please check your credentials.";
+        if (
+          action.payload &&
+          typeof action.payload === "object" &&
+          "message" in action.payload &&
+          typeof (action.payload as { message?: unknown }).message === "string"
+        ) {
+          msg = (action.payload as { message: string }).message;
+        } else if (typeof action.payload === "string") {
+          msg = action.payload;
+        } else if (action.error?.message) {
+          msg = action.error.message;
+        }
+        state.error = msg;
         state.user = null;
         state.token = null;
         state.userType = null;
@@ -170,7 +183,20 @@ const userSlice = createSlice({
       })
       .addCase(loginClipper.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
+        let msg = "Login failed. Please check your credentials.";
+        if (
+          action.payload &&
+          typeof action.payload === "object" &&
+          "message" in action.payload &&
+          typeof (action.payload as { message?: unknown }).message === "string"
+        ) {
+          msg = (action.payload as { message: string }).message;
+        } else if (typeof action.payload === "string") {
+          msg = action.payload;
+        } else if (action.error?.message) {
+          msg = action.error.message;
+        }
+        state.error = msg;
         state.user = null;
         state.token = null;
         state.userType = null;
@@ -202,7 +228,21 @@ const userSlice = createSlice({
           state.user.id === action.meta.arg
         ) {
           state.portfolioLoading = false;
-          state.portfolioError = action.payload as string;
+          let msg = "Failed to load portfolio images.";
+          if (
+            action.payload &&
+            typeof action.payload === "object" &&
+            "message" in action.payload &&
+            typeof (action.payload as { message?: unknown }).message ===
+              "string"
+          ) {
+            msg = (action.payload as { message: string }).message;
+          } else if (typeof action.payload === "string") {
+            msg = action.payload;
+          } else if (action.error?.message) {
+            msg = action.error.message;
+          }
+          state.portfolioError = msg;
         }
       })
       // Handle getCurrentUserProfile
@@ -223,7 +263,20 @@ const userSlice = createSlice({
       })
       .addCase(getCurrentUserProfile.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
+        let msg = "Failed to fetch user profile.";
+        if (
+          action.payload &&
+          typeof action.payload === "object" &&
+          "message" in action.payload &&
+          typeof (action.payload as { message?: unknown }).message === "string"
+        ) {
+          msg = (action.payload as { message: string }).message;
+        } else if (typeof action.payload === "string") {
+          msg = action.payload;
+        } else if (action.error?.message) {
+          msg = action.error.message;
+        }
+        state.error = msg;
       })
       // Handle updateCreatorProfile
       .addCase(updateCreatorProfile.pending, (state) => {
@@ -239,7 +292,20 @@ const userSlice = createSlice({
       })
       .addCase(updateCreatorProfile.rejected, (state, action) => {
         state.profileUpdateLoading = false;
-        state.profileUpdateError = action.payload as string;
+        let msg = "Failed to update creator profile.";
+        if (
+          action.payload &&
+          typeof action.payload === "object" &&
+          "message" in action.payload &&
+          typeof (action.payload as { message?: unknown }).message === "string"
+        ) {
+          msg = (action.payload as { message: string }).message;
+        } else if (typeof action.payload === "string") {
+          msg = action.payload;
+        } else if (action.error?.message) {
+          msg = action.error.message;
+        }
+        state.profileUpdateError = msg;
       })
       // Handle updateClipperProfile
       .addCase(updateClipperProfile.pending, (state) => {
@@ -255,7 +321,20 @@ const userSlice = createSlice({
       })
       .addCase(updateClipperProfile.rejected, (state, action) => {
         state.profileUpdateLoading = false;
-        state.profileUpdateError = action.payload as string;
+        let msg = "Failed to update clipper profile.";
+        if (
+          action.payload &&
+          typeof action.payload === "object" &&
+          "message" in action.payload &&
+          typeof (action.payload as { message?: unknown }).message === "string"
+        ) {
+          msg = (action.payload as { message: string }).message;
+        } else if (typeof action.payload === "string") {
+          msg = action.payload;
+        } else if (action.error?.message) {
+          msg = action.error.message;
+        }
+        state.profileUpdateError = msg;
       })
       // Handle uploadCreatorProfileImage
       .addCase(uploadCreatorProfileImage.pending, (state) => {
@@ -279,10 +358,20 @@ const userSlice = createSlice({
       )
       .addCase(uploadCreatorProfileImage.rejected, (state, action) => {
         state.imageUploadLoading = false;
-        state.imageUploadError =
-          (action.payload as string) ||
-          action.error.message ||
-          "Creator image upload failed";
+        let msg = "Creator image upload failed.";
+        if (
+          action.payload &&
+          typeof action.payload === "object" &&
+          "message" in action.payload &&
+          typeof (action.payload as { message?: unknown }).message === "string"
+        ) {
+          msg = (action.payload as { message: string }).message;
+        } else if (typeof action.payload === "string") {
+          msg = action.payload;
+        } else if (action.error?.message) {
+          msg = action.error.message;
+        }
+        state.imageUploadError = msg;
       })
       // Handle uploadClipperProfileImage
       .addCase(uploadClipperProfileImage.pending, (state) => {
@@ -306,10 +395,20 @@ const userSlice = createSlice({
       )
       .addCase(uploadClipperProfileImage.rejected, (state, action) => {
         state.imageUploadLoading = false;
-        state.imageUploadError =
-          (action.payload as string) ||
-          action.error.message ||
-          "Clipper image upload failed";
+        let msg = "Clipper image upload failed.";
+        if (
+          action.payload &&
+          typeof action.payload === "object" &&
+          "message" in action.payload &&
+          typeof (action.payload as { message?: unknown }).message === "string"
+        ) {
+          msg = (action.payload as { message: string }).message;
+        } else if (typeof action.payload === "string") {
+          msg = action.payload;
+        } else if (action.error?.message) {
+          msg = action.error.message;
+        }
+        state.imageUploadError = msg;
       })
       // Handle deleteCreatorProfileImage
       .addCase(deleteCreatorProfileImage.pending, (state) => {
@@ -337,7 +436,20 @@ const userSlice = createSlice({
       )
       .addCase(deleteCreatorProfileImage.rejected, (state, action) => {
         state.imageUploadLoading = false;
-        state.imageUploadError = action.payload as string;
+        let msg = "Failed to delete creator profile image.";
+        if (
+          action.payload &&
+          typeof action.payload === "object" &&
+          "message" in action.payload &&
+          typeof (action.payload as { message?: unknown }).message === "string"
+        ) {
+          msg = (action.payload as { message: string }).message;
+        } else if (typeof action.payload === "string") {
+          msg = action.payload;
+        } else if (action.error?.message) {
+          msg = action.error.message;
+        }
+        state.imageUploadError = msg;
       })
       // Handle deleteClipperProfileImage
       .addCase(deleteClipperProfileImage.pending, (state) => {
@@ -365,7 +477,20 @@ const userSlice = createSlice({
       )
       .addCase(deleteClipperProfileImage.rejected, (state, action) => {
         state.imageUploadLoading = false;
-        state.imageUploadError = action.payload as string;
+        let msg = "Failed to delete clipper profile image.";
+        if (
+          action.payload &&
+          typeof action.payload === "object" &&
+          "message" in action.payload &&
+          typeof (action.payload as { message?: unknown }).message === "string"
+        ) {
+          msg = (action.payload as { message: string }).message;
+        } else if (typeof action.payload === "string") {
+          msg = action.payload;
+        } else if (action.error?.message) {
+          msg = action.error.message;
+        }
+        state.imageUploadError = msg;
       })
       // Handle deleteCurrentUserAccount
       .addCase(deleteCurrentUserAccount.pending, (state) => {
@@ -390,13 +515,35 @@ const userSlice = createSlice({
             localStorage.removeItem("userType");
           } else {
             state.loading = false;
-            state.error = action.payload.message || "Failed to delete account.";
+            let msg = "Failed to delete account.";
+            if (
+              action.payload.message &&
+              typeof action.payload.message === "string"
+            ) {
+              msg = action.payload.message;
+            } else if (action.payload.message) {
+              msg = action.payload.message.toString();
+            }
+            state.error = msg;
           }
         }
       )
       .addCase(deleteCurrentUserAccount.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
+        let msg = "Failed to delete account.";
+        if (
+          action.payload &&
+          typeof action.payload === "object" &&
+          "message" in action.payload &&
+          typeof (action.payload as { message?: unknown }).message === "string"
+        ) {
+          msg = (action.payload as { message: string }).message;
+        } else if (typeof action.payload === "string") {
+          msg = action.payload;
+        } else if (action.error?.message) {
+          msg = action.error.message;
+        }
+        state.error = msg;
       })
       // --- Portfolio Image Management for Clippers ---
       .addCase(uploadPortfolioImages.pending, (state) => {
@@ -423,7 +570,21 @@ const userSlice = createSlice({
       .addCase(uploadPortfolioImages.rejected, (state, action) => {
         if (state.userType === "clipper") {
           state.portfolioLoading = false;
-          state.portfolioError = action.payload as string;
+          let msg = "Failed to upload portfolio images.";
+          if (
+            action.payload &&
+            typeof action.payload === "object" &&
+            "message" in action.payload &&
+            typeof (action.payload as { message?: unknown }).message ===
+              "string"
+          ) {
+            msg = (action.payload as { message: string }).message;
+          } else if (typeof action.payload === "string") {
+            msg = action.payload;
+          } else if (action.error?.message) {
+            msg = action.error.message;
+          }
+          state.portfolioError = msg;
         }
       })
       .addCase(deletePortfolioImageById.pending, (state) => {
@@ -455,7 +616,21 @@ const userSlice = createSlice({
       .addCase(deletePortfolioImageById.rejected, (state, action) => {
         if (state.userType === "clipper") {
           state.portfolioLoading = false;
-          state.portfolioError = action.payload as string;
+          let msg = "Failed to delete portfolio image.";
+          if (
+            action.payload &&
+            typeof action.payload === "object" &&
+            "message" in action.payload &&
+            typeof (action.payload as { message?: unknown }).message ===
+              "string"
+          ) {
+            msg = (action.payload as { message: string }).message;
+          } else if (typeof action.payload === "string") {
+            msg = action.payload;
+          } else if (action.error?.message) {
+            msg = action.error.message;
+          }
+          state.portfolioError = msg;
         }
       });
   },
