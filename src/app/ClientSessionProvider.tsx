@@ -28,5 +28,5 @@ export default function ClientSessionProvider() {
     }
   }, [dispatch]);
 
-  return null; // This component doesn't render anything itself
+  return null;
 }
