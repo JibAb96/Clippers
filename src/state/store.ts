@@ -4,7 +4,7 @@ import searchReducer from "./Clippers/searchClippers";
 import selectCategoryReducer from "./Clippers/selectCategory";
 import filterClippersReducer from "./Clippers/clippers";
 import selectedClipperReducer from "./Clippers/selectedClipperSlice";
-import selectedClipReducer from "./Clip/selectedClip";
+
 import clipsReducer from "./Clips/clipsSlice";
 import isSignedInReducer from "./isSignedIn/isSignedIn";
 import isOpenReducer from "./Modal/isOpen";
@@ -21,7 +21,7 @@ export const store = configureStore({
     selectCategory: selectCategoryReducer,
     clippers: filterClippersReducer,
     selectedClipper: selectedClipperReducer,
-    clip: selectedClipReducer,
+
     clips: clipsReducer,
     isSignedIn: isSignedInReducer,
     isOpen: isOpenReducer,
