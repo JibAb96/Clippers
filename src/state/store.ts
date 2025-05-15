@@ -9,7 +9,12 @@ import clipsReducer from "./Clips/clipsSlice";
 import isSignedInReducer from "./isSignedIn/isSignedIn";
 import isOpenReducer from "./Modal/isOpen";
 import userReducer from "./User/user";
-import statusReducer from "./Clips/statusSlice";  
+import statusReducer from "./Clips/statusSlice";
+import {
+  creatorProfileReducer,
+  clipperProfileReducer,
+} from "./Profiles/profileSlices";
+
 export const store = configureStore({
   reducer: {
     search: searchReducer,
@@ -22,6 +27,8 @@ export const store = configureStore({
     isOpen: isOpenReducer,
     user: userReducer,
     status: statusReducer,
+    creatorProfile: creatorProfileReducer,
+    clipperProfile: clipperProfileReducer,
   },
 });
 
