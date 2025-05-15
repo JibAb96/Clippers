@@ -1,15 +1,50 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { Clip, ClipStatus } from "../../../state/Clips/clipsSlice"; // Assuming Clip and ClipStatus are exported from clipsSlice
-import { useAppDispatch } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { setSubmittedClip } from "@/state/Modal/isOpen"; // This is for opening the modal
 import { setSelectedClip } from "../../../state/Clips/clipsSlice"; // Correct action for selected clip state
+import { RootState } from "@/state/store";
+import {
+  getCreatorProfileById,
+  getClipperProfileById,
+} from "@/state/Profiles/profileThunks";
+import {
+  clearCreatorProfile,
+  clearClipperProfile,
+} from "@/state/Profiles/profileSlices";
 // Here we have the structure of the cards of each clip that will be displayed. Styled with
 // tailwindcss.
 
 const DashboardCard = ({ clip }: { clip: Clip }) => {
   const dispatch = useAppDispatch();
+  const { userType } = useAppSelector((state: RootState) => state.user);
+  const {
+    profile: creatorProfile,
+    loading: creatorLoading,
+    error: creatorError,
+  } = useAppSelector((state: RootState) => state.creatorProfile);
+  const {
+    profile: clipperProfile,
+    loading: clipperLoading,
+    error: clipperError,
+  } = useAppSelector((state: RootState) => state.clipperProfile);
+
+  useEffect(() => {
+    if (userType === "clipper" && clip.creatorId) {
+      dispatch(getCreatorProfileById(clip.creatorId));
+      return () => {
+        dispatch(clearCreatorProfile());
+      };
+    } else if (userType === "creator" && clip.clipperId) {
+      dispatch(getClipperProfileById(clip.clipperId));
+      return () => {
+        dispatch(clearClipperProfile());
+      };
+    }
+  }, [dispatch, userType, clip.creatorId, clip.clipperId]);
+
   // Function to set bg color corresponding with status
   const getStatusTextAndColor = (status: ClipStatus) => {
     switch (status) {
@@ -41,9 +76,18 @@ const DashboardCard = ({ clip }: { clip: Clip }) => {
   );
 
   const onClick = () => {
-    dispatch(setSubmittedClip()); // Opens the modal (assuming this is its role)
+    dispatch(setSubmittedClip()); // Opens the modal 
     dispatch(setSelectedClip(clip)); // Sets the selected clip in our new clipsSlice state
   };
+
+  const profileName =
+    userType === "clipper"
+      ? creatorProfile?.brandName
+      : clipperProfile?.brandName;
+
+  const isLoadingProfile =
+    userType === "clipper" ? creatorLoading : clipperLoading;
+  const profileError = userType === "clipper" ? creatorError : clipperError;
 
   return (
     <div
@@ -54,7 +98,7 @@ const DashboardCard = ({ clip }: { clip: Clip }) => {
         <Image
           className="object-cover rounded-2xl"
           src={clip.thumbnailUrl}
-          alt={"This is a a thumbnail for the clip " + clip.id}
+          alt={`Thumbnail for clip ${clip.id}`}
           fill
         />
       </div>
@@ -63,11 +107,25 @@ const DashboardCard = ({ clip }: { clip: Clip }) => {
           {statusText}
         </div>
         <div>
-          <div className="font-semibold text-xl">{clip.status}</div>
-          <div className="font-medium text-l text-tertiary">
-            {clip.creatorId}
+          <div
+            className="font-semibold text-xl truncate"
+            title={clip.description}
+          >
+            {clip.description || "Clip Title Placeholder"}
           </div>
-          <div className="font-medium text-l">{clip.creatorId}</div>
+          <div className="font-medium text-l text-tertiary">
+            {isLoadingProfile ? (
+              <span>Loading profile...</span>
+            ) : profileError ? (
+              <span className="text-red-500">Error loading profile</span>
+            ) : profileName ? (
+              <span>{profileName}</span>
+            ) : (
+              <span>
+                {userType === "clipper" ? clip.creatorId : clip.clipperId}
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>
