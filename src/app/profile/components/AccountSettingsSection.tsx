@@ -27,11 +27,9 @@ import { logout } from "@/state/User/user"; // To log out after successful delet
 import { useToast } from "@/hooks/use-toast"; // Import custom hook
 import { useRouter } from "next/navigation"; // To redirect after account deletion
 
-interface Props {
-  userId: string; // User ID for confirmation, though backend uses token
-}
 
-const AccountSettingsSection: React.FC<Props> = ({ userId }) => {
+
+const AccountSettingsSection = () => {
   const { toast } = useToast(); // Use the custom hook
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -54,7 +52,7 @@ const AccountSettingsSection: React.FC<Props> = ({ userId }) => {
       setTimeout(() => {
         router.push("/"); // Or your login page
       }, 1500);
-    } catch (error: any) {
+    } catch (error) {
       const message =
         typeof error === "string"
           ? error
