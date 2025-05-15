@@ -38,6 +38,21 @@ export type Clipper = {
   brandProfilePicture: string | null;
 };
 
+// Type definition for a creator (an entity that represents a creator profile)
+export type Creator = {
+  id: string;
+  fullName: string;
+  brandName: string;
+  email: string;
+  socialMediaHandle: string;
+  platform: string;
+  niche: string;
+  country: string;
+  brandProfilePicture: string | null;
+};
+
+
+
 // Type definition for a Category, which includes an icon (FontAwesome) and a name
 export type Category = {
   id: number;
