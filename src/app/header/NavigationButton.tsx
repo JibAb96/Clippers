@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../hooks";
 import Modal from "@/components/Modal";
 import LogoutModal from "../components/LogoutModal";
 import { logout } from "../../state/User/user";
+import { useRouter } from "next/navigation";
 
 // Navigation button created using tailwind css and react icons
 
@@ -15,8 +16,9 @@ const NavigationButton = () => {
   const { user, userType, token } = useAppSelector((state) => state.user);
   const open = useAppSelector((state) => state.isOpen.logout);
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
-  const toggleDropdown = () => {
+    const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
   const closeDropdown = () => {
@@ -26,6 +28,7 @@ const NavigationButton = () => {
   const handleLogout = () => {
     dispatch(logout());
     closeDropdown();
+    router.push("/");
   };
 
   const isSignedIn = !!token && !!user;
