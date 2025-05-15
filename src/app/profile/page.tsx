@@ -90,7 +90,7 @@ const UserProfilePage = () => {
         />
       )}
 
-      <AccountSettingsSection userId={user.id as string} />
+      <AccountSettingsSection />
     </div>
   );
 };
