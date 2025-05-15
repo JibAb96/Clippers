@@ -22,7 +22,8 @@ const SubmittedClip = () => {
     };
   }, [dispatch]);
 
-  const clip = useAppSelector((state) => state.clip);
+  const clip = useAppSelector((state) => state.clips.selectedClip);
+
   console.log(clip);
   return (
     <div>
@@ -37,19 +38,19 @@ const SubmittedClip = () => {
       </button>
       <div className="sm:flex sm:flex-col sm:gap-6">
         <h2 id="modal-title" className="text-xl text-center font-bold mb-4">
-          {clip.title}
+          {clip?.id}
         </h2>
         <div className="flex sm:flex-cols gap-2">
           {/*Video Display*/}
           <div className="aspect-9/16 max-w-xs">
             <video controls>
-              <source src={clip.clipUrl} type="video/mp4" />
+              <source src={clip?.clipUrl || ""} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>
           <div className="flex flex-col gap-4 mt-4 sm:mt-0">
             <div className="sm:ml-6">
-              {clip.status !== "New Submission" && (
+              {clip?.status !== "pending" && (
                 <h2 className="font-medium">
                   For any enquiries concerning this <hr />
                   clip email us at clippers@gmail.com
@@ -58,8 +59,8 @@ const SubmittedClip = () => {
             </div>
             {/* Info panel with card effect */}
             <div className="space-y-4 bg-primary p-6 rounded-xl shadow-sm flex-grow">
-              <InfoRow label="Creator" value={clip.user} />
-              <InfoRow label="Platform" value={clip.platform} />
+              <InfoRow label="Creator" value={clip?.status || ""} />
+              <InfoRow label="Platform" value={clip?.status || ""} />
               <InfoRow label="Purpose" value="Marketing" />
               <div className="font-bold text-[#D20B4E]/80 mt-4">
                 Description
@@ -70,7 +71,7 @@ const SubmittedClip = () => {
                 be viral, This video is going to be viral, This video is.
               </div>
             </div>
-            {clip.status === "New Submission" && (
+            {clip?.status === "pending" && (
               <div className="mx-auto flex gap-2 sticky bottom-0">
                 <EmptyButton
                   Text="Accept"
