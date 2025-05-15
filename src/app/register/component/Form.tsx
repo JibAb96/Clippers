@@ -15,7 +15,7 @@ import {
   uploadCreatorImage,
   uploadClipperImage,
 } from "../../../state/User/userProfileThunks";
-import type { RegistrationApiResponse } from "../../../../model";
+import type { RegistrationApiResponse } from "../../../model";
 
 // Options for Platform select, derived from DTO/Schema
 const platformOptions = [
