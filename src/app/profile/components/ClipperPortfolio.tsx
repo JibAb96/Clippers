@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import Image from "next/image";
 import { getClipperPortfolioImages } from "@/state/Clippers/clipperThunks";
-import { PortfolioImage } from "../../../../model";
+import { PortfolioImage } from "../../../model";
 import { RootState } from "@/state/store";
 
 interface ClipperPortfolioProps {
