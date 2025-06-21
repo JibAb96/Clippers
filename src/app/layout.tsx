@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import Header from "./header/Header";
+import Header from "./components/Header";
+import Footer from "../components/Footer";
 import { Geist, League_Spartan } from "next/font/google";
 import "./globals.css";
-import StoreProvider from "../state/StoreProvider";
 import { Toaster } from "@/components/ui/toaster";
-import ClientSessionProvider from "./ClientSessionProvider";
-
+import { Providers } from "@/app/components/Providers";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -23,21 +22,21 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <StoreProvider>
-      <ClientSessionProvider />
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${leagueSpartan.variable} antialiased`}
-        >
-          <Header />
-          <main>{children}</main>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${leagueSpartan.variable}`}>
+        <Providers>
+          <div className="antialiased">
+            <Header />
+            <main>{children}</main>
+            <Footer />
+          </div>
           <Toaster />
-        </body>
-      </html>
-    </StoreProvider>
+        </Providers>
+      </body>
+    </html>
   );
 }
