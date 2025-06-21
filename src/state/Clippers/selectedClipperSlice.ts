@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Clipper, PortfolioImage } from "../../model";
+import { createSlice } from "@reduxjs/toolkit";
+import { Clipper, Guidelines, PortfolioImage } from "../../model";
 import {
   getClipperById,
   getClipperPortfolioImages,
@@ -9,7 +9,7 @@ import {
 interface SelectedClipperState {
   clipper: Clipper | null;
   portfolioImages: PortfolioImage[];
-  guidelines: string[];
+  guidelines: Guidelines[];
   loading: "idle" | "pending" | "succeeded" | "failed";
   error: string | null;
   portfolioLoading: "idle" | "pending" | "succeeded" | "failed";
@@ -50,13 +50,10 @@ const selectedClipperSlice = createSlice({
         state.loading = "pending";
         state.error = null;
       })
-      .addCase(
-        getClipperById.fulfilled,
-        (state, action: PayloadAction<{ data: Clipper }>) => {
-          state.loading = "succeeded";
-          state.clipper = action.payload.data;
-        }
-      )
+      .addCase(getClipperById.fulfilled, (state, action) => {
+        state.loading = "succeeded";
+        state.clipper = action.payload;
+      })
       .addCase(getClipperById.rejected, (state, action) => {
         state.loading = "failed";
         state.error = action.payload as string;
@@ -66,13 +63,10 @@ const selectedClipperSlice = createSlice({
         state.portfolioLoading = "pending";
         state.portfolioError = null;
       })
-      .addCase(
-        getClipperPortfolioImages.fulfilled,
-        (state, action: PayloadAction<{ data: PortfolioImage[] }>) => {
-          state.portfolioLoading = "succeeded";
-          state.portfolioImages = action.payload.data;
-        }
-      )
+      .addCase(getClipperPortfolioImages.fulfilled, (state, action) => {
+        state.portfolioLoading = "succeeded";
+        state.portfolioImages = action.payload;
+      })
       .addCase(getClipperPortfolioImages.rejected, (state, action) => {
         state.portfolioLoading = "failed";
         state.portfolioError = action.payload as string;
@@ -81,15 +75,10 @@ const selectedClipperSlice = createSlice({
       .addCase(getClipperGuidelines.pending, (state) => {
         state.guidelinesLoading = "pending";
         state.guidelinesError = null;
-      })
-      .addCase(
-        getClipperGuidelines.fulfilled,
-        (state, action: PayloadAction<{ data: string[] }>) => {
-          state.guidelinesLoading = "succeeded";
-          state.guidelines = action.payload.data;
-        }
-      )
-      .addCase(getClipperGuidelines.rejected, (state, action) => {
+      }).addCase(getClipperGuidelines.fulfilled, (state, action) => {
+        state.guidelinesLoading = "succeeded";
+        state.guidelines = action.payload;
+      }).addCase(getClipperGuidelines.rejected, (state, action) => {
         state.guidelinesLoading = "failed";
         state.guidelinesError = action.payload as string;
       });
