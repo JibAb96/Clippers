@@ -37,28 +37,28 @@ const guidelines = [
 
 const Guidlines = () => {
 	return (
-		<section className="w-full px-0 md:px-6 xl:px-16 py-8 bg-gradient-to-br from-white via-slate-50 to-slate-100">
-			<Card className="w-full max-w-7xl mx-auto shadow-2xl border-none bg-white/90 rounded-3xl">
+		<section className="w-full flex justify-center py-8 px-2 md:px-0">
+			<Card className="w-full max-w-2xl shadow-xl border-none bg-gradient-to-br from-white via-slate-50 to-slate-100">
 				<CardHeader className="flex flex-col items-center gap-2 pb-2">
-					<CardTitle className="text-2xl md:text-4xl font-bold text-secondary flex items-center gap-2">
-						<Info className="w-7 h-7 text-sky-500" /> Submission Guidelines
+					<CardTitle className="text-2xl md:text-3xl font-bold text-secondary flex items-center gap-2">
+						<Info className="w-6 h-6 text-sky-500" /> Submission Guidelines
 					</CardTitle>
-					<Badge className="text-xs md:text-base px-4 py-1 bg-sky-50 border-sky-200 text-sky-700 rounded-full">
+					<Badge className="text-xs md:text-sm px-3 py-1 bg-sky-50 border-sky-200 text-sky-700 rounded-full">
 						Please review before submitting your clip
 					</Badge>
 				</CardHeader>
-				<CardContent className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 p-4 md:p-8">
+				<CardContent className="flex flex-col gap-4 mt-2">
 					{guidelines.map((g, i) => (
 						<Alert
 							key={i}
-							className="flex items-start gap-4 bg-white/80 border-slate-200 shadow-sm rounded-xl"
+							className="flex items-center gap-3 bg-white/80 border-slate-200 shadow-sm"
 						>
-							<CheckCircle2 className="text-green-500 w-6 h-6 mt-1 shrink-0" />
+							<CheckCircle2 className="text-green-500 w-5 h-5 shrink-0" />
 							<div>
-								<AlertTitle className="font-semibold text-lg md:text-xl text-slate-800">
+								<AlertTitle className="font-semibold text-base md:text-lg text-slate-800">
 									{g.label}
 								</AlertTitle>
-								<AlertDescription className="text-slate-600 text-base md:text-lg">
+								<AlertDescription className="text-slate-600 text-sm md:text-base">
 									{g.value}
 								</AlertDescription>
 							</div>
