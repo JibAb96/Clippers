@@ -59,6 +59,8 @@ const commonRegistrationSchema = z.object({
     )
     .nonempty("Password is required"),
   cPassword: z.string().nonempty("Confirm password is required"),
+  socialMediaHandle: z.string().nonempty("Social media handle is required").regex(
+    /^[a-zA-Z0-9._-]{3,50}$/, "Social media handle must be 3-50 characters long and can include letters, numbers, dots, underscores, and hyphens."),
   brandProfilePicture: z
     .instanceof(File, { message: "Please upload a file." })
     .optional()
@@ -76,7 +78,6 @@ const commonRegistrationSchema = z.object({
 // Schema for Creator role
 const creatorSchema = commonRegistrationSchema.extend({
   role: z.literal("creator"),
-  socialMediaHandle: z.string().nonempty("Social media handle is required"),
   platform: PlatformEnum,
   niche: NicheEnum,
 });
@@ -84,7 +85,6 @@ const creatorSchema = commonRegistrationSchema.extend({
 // Schema for Clipper role
 const clipperSchema = commonRegistrationSchema.extend({
   role: z.literal("clipper"),
-  socialMediaHandle: z.string().nonempty("Social media handle is required"),
   platform: PlatformEnum,
   niche: NicheEnum,
   followerCount: z
