@@ -9,11 +9,11 @@ import { RootState } from "@/state/store";
 import {
   getCreatorProfileById,
   getClipperProfileById,
-} from "@/state/Profiles/profileThunks";
+} from "@/state/UserLookup/userLookupThunks";
 import {
   clearCreatorProfile,
   clearClipperProfile,
-} from "@/state/Profiles/profileSlices";
+} from "@/state/UserLookup/userLookupSlice";
 // Here we have the structure of the cards of each clip that will be displayed. Styled with
 // tailwindcss.
 
@@ -34,6 +34,7 @@ const DashboardCard = ({ clip }: { clip: Clip }) => {
   useEffect(() => {
     if (userType === "clipper" && clip.creatorId) {
       dispatch(getCreatorProfileById(clip.creatorId));
+      console.log("id of clip creator", clip.creatorId);
       return () => {
         dispatch(clearCreatorProfile());
       };
@@ -76,7 +77,7 @@ const DashboardCard = ({ clip }: { clip: Clip }) => {
   );
 
   const onClick = () => {
-    dispatch(setSubmittedClip()); // Opens the modal 
+    dispatch(setSubmittedClip()); // Opens the modal
     dispatch(setSelectedClip(clip)); // Sets the selected clip in our new clipsSlice state
   };
 
@@ -85,46 +86,85 @@ const DashboardCard = ({ clip }: { clip: Clip }) => {
       ? creatorProfile?.brandName
       : clipperProfile?.brandName;
 
+  const profilePicture =
+    userType === "clipper"
+      ? creatorProfile?.brandProfilePicture
+      : clipperProfile?.brandProfilePicture;
+
   const isLoadingProfile =
     userType === "clipper" ? creatorLoading : clipperLoading;
   const profileError = userType === "clipper" ? creatorError : clipperError;
 
   return (
     <div
-      className="max-w-72 rounded cursor-pointer sm:max-w-[17.5rem]"
+      className="w-full max-w-[320px] bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer overflow-hidden"
       onClick={onClick}
     >
-      <div className="relative h-56">
+      {/* Thumbnail container - optimized for vertical content */}
+      <div className="relative w-full h-[400px] bg-gray-100">
         <Image
-          className="object-cover rounded-2xl"
+          className="object-cover"
           src={clip.thumbnailUrl}
           alt={`Thumbnail for clip ${clip.id}`}
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
         />
-      </div>
-      <div className="px-1 py-4">
-        <div className={`text-xl ${statusStyle} font-bold py-1 inline-block`}>
-          {statusText}
-        </div>
-        <div>
-          <div
-            className="font-semibold text-xl truncate"
-            title={clip.description}
+
+        {/* Status badge overlay */}
+        <div className="absolute top-3 left-3">
+          <span
+            className={`px-3 py-1 rounded-full text-sm font-semibold bg-white/90 backdrop-blur-sm ${statusStyle}`}
           >
-            {clip.description || "Clip Title Placeholder"}
+            {statusText}
+          </span>
+        </div>
+      </div>
+
+      {/* Content section */}
+      <div className="p-5">
+        <div className="space-y-3">
+          {/* Clip title/description */}
+          <div>
+            <h3
+              className="font-bold text-lg text-gray-900 leading-tight line-clamp-2"
+              title={clip.title}
+            >
+              {clip.title || "Clip Title Placeholder"}
+            </h3>
           </div>
-          <div className="font-medium text-l text-tertiary">
-            {isLoadingProfile ? (
-              <span>Loading profile...</span>
-            ) : profileError ? (
-              <span className="text-red-500">Error loading profile</span>
-            ) : profileName ? (
-              <span>{profileName}</span>
-            ) : (
-              <span>
-                {userType === "clipper" ? clip.creatorId : clip.clipperId}
-              </span>
-            )}
+
+          {/* Profile information */}
+          <div className="flex items-center space-x-2">
+            <div className="relative w-8 h-8 flex-shrink-0">
+              {profilePicture ? (
+                <Image
+                  className="w-full h-full object-cover rounded-full"
+                  src={profilePicture}
+                  alt={`${profileName || "Profile"} picture`}
+                  width={32}
+                  height={32}
+                />
+              ) : (
+                <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
+              )}
+            </div>
+            <div className="min-w-0 flex-1">
+              {isLoadingProfile ? (
+                <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+              ) : profileError ? (
+                <span className="text-red-500 text-sm">Unable to find user name</span>
+              ) : profileName ? (
+                <span className="text-gray-600 font-medium truncate block">
+                  {profileName}
+                </span>
+              ) : (
+                <span className="text-gray-500 text-sm truncate block">
+                  {userType === "clipper"
+                    ? `Creator ${clip.creatorId}`
+                    : `Clipper ${clip.clipperId}`}
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </div>
