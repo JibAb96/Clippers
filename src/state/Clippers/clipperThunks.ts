@@ -1,78 +1,124 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import api from "../../services/api";
+import type { ThunkExtraArgument } from "../store";
+import {
+  Clipper,
+  PortfolioImage,
+  Guidelines,
+  ApiError,
+  ApiResponse,
+} from "@/model";
 
 // Fetch all clippers
-export const fetchClippers = createAsyncThunk(
-  "clippers/fetchClippers",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await api.get("/clippers");
-      return response.data;
-    } catch (error: unknown) {
-      return rejectWithValue(
-        error || "Failed to fetch clippers"
-      );
-    }
+export const fetchClippers = createAsyncThunk<
+  Clipper[],
+  void,
+  { rejectValue: string; extra: ThunkExtraArgument }
+>("clippers/fetchClippers", async (_, { rejectWithValue, extra }) => {
+  const { api } = extra;
+  try {
+    const response = await api.get<ApiResponse<Clipper[]>>("/clippers");
+    return response.data.data;
+  
+  } catch (error) {
+    const apiError = error as ApiError;
+    return rejectWithValue(
+      apiError.response?.data?.message ||
+        apiError.message ||
+        "Failed to fetch clippers"
+    );
   }
-);
+});
 
 // Search clippers
-export const searchClippers = createAsyncThunk(
+export const searchClippers = createAsyncThunk<
+  Clipper[],
+  string,
+  { rejectValue: string; extra: ThunkExtraArgument }
+>(
   "clippers/searchClippers",
-  async (searchQuery: string, { rejectWithValue }) => {
+  async (searchQuery: string, { rejectWithValue, extra }) => {
+    const { api } = extra;
     try {
-      const response = await api.get(
+      const response = await api.get<ApiResponse<Clipper[]>>(
         `/clippers/search?q=${encodeURIComponent(searchQuery)}`
       );
-      return response.data;
+      return response.data.data;
     } catch (error) {
+      const apiError = error as ApiError;
       return rejectWithValue(
-        (error as { response?: { data: unknown } })?.response?.data || "Failed to search clippers"
+        apiError.response?.data?.message ||
+          apiError.message ||
+          "Failed to search clippers"
       );
     }
   }
 );
 
 // Get clipper by ID
-export const getClipperById = createAsyncThunk(
-  "clippers/getClipperById",
-  async (id: string, { rejectWithValue }) => {
-    try {
-      const response = await api.get(`/clippers/${id}`);
-      return response.data;
-    } catch (error: unknown) {
-      return rejectWithValue(
-        (error as { response?: { data: unknown } })?.response?.data || "Failed to fetch clipper"
-      );
-    }
+export const getClipperById = createAsyncThunk<
+  Clipper,
+  string,
+  { rejectValue: string; extra: ThunkExtraArgument }
+>("clippers/getClipperById", async (id: string, { rejectWithValue, extra }) => {
+  const { api } = extra;
+  try {
+    const response = await api.get<ApiResponse<Clipper>>(`/clippers/${id}`);
+    console.log(response.data.data)
+    return response.data.data;
+  } catch (error) {
+    const apiError = error as ApiError;
+    return rejectWithValue(
+      apiError.response?.data?.message ||
+        apiError.message ||
+        "Failed to fetch clipper"
+    );
   }
-);
+});
 
 // Get clipper portfolio images by id
-
-export const getClipperPortfolioImages = createAsyncThunk(
+export const getClipperPortfolioImages = createAsyncThunk<
+  PortfolioImage[],
+  string,
+  { rejectValue: string; extra: ThunkExtraArgument }
+>(
   "clippers/getClipperPortfolioImages",
-  async (id: string, { rejectWithValue }) => {
+  async (id: string, { rejectWithValue, extra }) => {
+    const { api } = extra;
     try {
-      const response = await api.get(`/clippers/portfolio-images/${id}`);
-      return response.data;
-    } catch (error: unknown) {
+      const response = await api.get<ApiResponse<PortfolioImage[]>>(
+        `/clippers/portfolio-images/${id}`
+      );
+      return response.data.data;
+    } catch (error) {
+      const apiError = error as ApiError;
       return rejectWithValue(
-        (error as { response?: { data: unknown } })?.response?.data || "Failed to fetch clipper portfolio images"
+        apiError.response?.data?.message ||
+          apiError.message ||
+          "Failed to fetch clipper portfolio images"
       );
     }
   }
 );
 
-export const getClipperGuidelines = createAsyncThunk(
+export const getClipperGuidelines = createAsyncThunk<
+  Guidelines[],
+  string,
+  { rejectValue: string; extra: ThunkExtraArgument }
+>(
   "clippers/getClipperGuidelines",
-  async (id: string, { rejectWithValue }) => {
+  async (id: string, { rejectWithValue, extra }) => {
+    const { api } = extra;
     try {
-      const response = await api.get(`/clippers/guidelines/${id}`);
-      return response.data; 
-    } catch (error: unknown) {
+      const response = await api.get<ApiResponse<Guidelines[]>>(
+        `/clippers/guidelines/${id}`
+      );
+      return response.data.data;
+    } catch (error) {
+      const apiError = error as ApiError;
       return rejectWithValue(
-        (error as { response?: { data: unknown } })?.response?.data || "Failed to fetch clipper guidelines"
+        apiError.response?.data?.message ||
+          apiError.message ||
+          "Failed to fetch clipper guidelines"
       );
     }
   }
