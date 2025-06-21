@@ -31,7 +31,7 @@ const ClipStatusHeadings = ({
             {HeadingOne}
           </h2>
           <h3 className="text-center font-bold text-4xl text-blue-600">
-            {Clips.filter((clip) => clip.status === HeadingOne).length}
+            {Clips.filter((clip) => clip.status === "pending").length}
           </h3>
         </div>
 
@@ -41,7 +41,7 @@ const ClipStatusHeadings = ({
             {HeadingTwo}
           </h2>
           <h3 className="text-center font-bold text-4xl text-green-700">
-            {Clips.filter((clip) => clip.status === HeadingTwo).length}
+            {Clips.filter((clip) => clip.status === "approved").length}
           </h3>
         </div>
 
@@ -51,7 +51,7 @@ const ClipStatusHeadings = ({
             {HeadingThree}
           </h2>
           <h3 className="text-center font-bold text-4xl text-secondary">
-            {Clips.filter((clip) => clip.status === HeadingThree).length}
+            {Clips.filter((clip) => clip.status === "rejected").length}
           </h3>
         </div>
       </div>
