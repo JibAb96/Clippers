@@ -2,7 +2,6 @@
 import React, { useEffect } from "react";
 import ClipperInfo from "./ClipperInfo";
 import Guidlines from "./Guidlines";
-import Reviews from "./Reviews";
 import Link from "next/link";
 import { useAppSelector, useAppDispatch } from "@/app/hooks";
 import {
@@ -25,7 +24,6 @@ const ClipperProfile = ({ id }: { id: string }) => {
   const {
     clipper,
     portfolioImages,
-    guidelines,
     loading,
     error,
     portfolioLoading,
@@ -93,11 +91,8 @@ const ClipperProfile = ({ id }: { id: string }) => {
           Error loading guidelines: {guidelinesError}
         </div>
       )}
-      {guidelinesLoading === "succeeded" && !guidelinesError && guidelines && (
-        <Guidlines guidelines={guidelines} />
-      )}
+        <Guidlines />
       <hr />
-      <Reviews/>
     </div>
   );
 };
