@@ -19,7 +19,7 @@ import {
   deleteCreatorProfileImage,
   deleteClipperProfileImage,
 } from "@/state/User/profileManagementThunks";
-import { Creator, Clipper, IDeleteImage } from "../../../model";
+import { Creator, Clipper } from "../../../model";
 import { useToast } from "@/hooks/use-toast"; // Import custom hook
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
@@ -125,21 +125,12 @@ const ProfileImageManagementSection: React.FC<Props> = ({ user, userType }) => {
       toast({ title: "Info", description: "No profile picture to delete." });
       return;
     }
-    if (!user.brandName) {
-      toast({
-        title: "Error",
-        description: "Brand name is missing, cannot delete image.",
-        variant: "destructive",
-      });
-      return;
-    }
-    const deleteDto: IDeleteImage = { brandName: user.brandName };
 
     let deleteAction;
     if (userType === "creator") {
-      deleteAction = deleteCreatorProfileImage(deleteDto);
+      deleteAction = deleteCreatorProfileImage();
     } else if (userType === "clipper") {
-      deleteAction = deleteClipperProfileImage(deleteDto);
+      deleteAction = deleteClipperProfileImage();
     } else {
       toast({
         title: "Error",
@@ -197,21 +188,40 @@ const ProfileImageManagementSection: React.FC<Props> = ({ user, userType }) => {
             ref={fileInputRef}
             onChange={handleFileChange}
             accept=".jpg,.jpeg,.png,.webp"
-            className="hidden" // Hide the default input
+            className="hidden"
             id="profilePictureInput"
           />
-          <Button
-            variant="outline"
-            onClick={() => fileInputRef.current?.click()}
-            className="w-full max-w-xs"
-          >
-            <UploadCloud className="mr-2 h-4 w-4" />{" "}
-            {selectedFile ? "Change File" : "Select Image"}
-          </Button>
-          {selectedFile && (
-            <p className="text-sm text-muted-foreground">
-              Selected: {selectedFile.name}
-            </p>
+
+          {!currentProfilePictureUrl && (
+            <>
+              {!selectedFile ? (
+                <Button
+                  variant="outline"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-full max-w-xs"
+                >
+                  <UploadCloud className="mr-2 h-4 w-4" /> Select Image
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleUpload}
+                  disabled={imageUploadLoading}
+                  className="w-48 text-black"
+                >
+                  {imageUploadLoading ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <UploadCloud className="mr-2 h-4 w-4 " />
+                  )}
+                  Upload New Picture
+                </Button>
+              )}
+              {selectedFile && (
+                <p className="text-sm text-muted-foreground mt-2">
+                  Selected: {selectedFile.name}
+                </p>
+              )}
+            </>
           )}
         </div>
 
@@ -221,27 +231,17 @@ const ProfileImageManagementSection: React.FC<Props> = ({ user, userType }) => {
           </Alert>
         )}
 
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Button
-            onClick={handleUpload}
-            disabled={!selectedFile || imageUploadLoading}
-            className="flex-1"
-          >
-            {imageUploadLoading ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <UploadCloud className="mr-2 h-4 w-4" />
-            )}
-            Upload New Picture
-          </Button>
-          <Button
-            variant="destructive"
-            onClick={handleDeleteImage}
-            disabled={!currentProfilePictureUrl || imageUploadLoading} // Also disable if an upload is in progress
-            className="flex-1"
-          >
-            <Trash2 className="mr-2 h-4 w-4" /> Delete Current Picture
-          </Button>
+        <div className="flex justify-center mt-4">
+          {currentProfilePictureUrl && (
+            <Button
+              variant="destructive"
+              onClick={handleDeleteImage}
+              disabled={imageUploadLoading}
+              className="w-48"
+            >
+              <Trash2 className="mr-2 h-4 w-4" /> Delete Current Picture
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>
