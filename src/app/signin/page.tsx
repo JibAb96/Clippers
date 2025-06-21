@@ -1,10 +1,10 @@
 "use client"
 import React from "react"
-import Login from "./components/SignIn"
+import SignIn from "./components/SignIn"
 
 const Page = () => {
   return (
-    <Login/>
+    <SignIn/>
   )
 }
 
