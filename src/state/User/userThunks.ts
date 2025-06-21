@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import api from "../../services/api"; // Adjust path if your api service is located elsewhere
-import { Registration } from "../../zodschema/schemas"; // Path to your Zod schemas
+import { Registration } from "../../zodschema/schemas";
+import type { ThunkExtraArgument } from "../store"; // Import the extra argument type
 
 // Define a more specific error type
 interface ApiError {
@@ -26,13 +26,13 @@ export type ClipperDataForApi = Omit<
 // Thunk for registering a creator
 export const registerCreator = createAsyncThunk(
   "user/registerCreator",
-  async (creatorData: CreatorDataForApi, { rejectWithValue }) => {
+  async (creatorData: CreatorDataForApi, { rejectWithValue, extra }) => {
+    const { api } = extra as ThunkExtraArgument; // Get api from extra argument
     try {
       // The `creatorData` already has the correct shape based on CreatorDataForApi
       // No need to manually pick fields if the input to the thunk is already shaped correctly.
       const response = await api.post("auth/register/creator", creatorData);
-      // Assuming the API returns some user data or a success message upon successful registration
-      return response.data; // This could be user profile, auth token, etc.
+      return response.data; 
     } catch (error) {
       const apiError = error as ApiError;
       return rejectWithValue(
@@ -47,7 +47,8 @@ export const registerCreator = createAsyncThunk(
 // Thunk for registering a clipper
 export const registerClipper = createAsyncThunk(
   "user/registerClipper",
-  async (clipperData: ClipperDataForApi, { rejectWithValue }) => {
+  async (clipperData: ClipperDataForApi, { rejectWithValue, extra }) => {
+    const { api } = extra as ThunkExtraArgument;
     try {
       // The `clipperData` already has the correct shape based on ClipperDataForApi
       const response = await api.post("auth/register/clipper", clipperData);
@@ -64,6 +65,8 @@ export const registerClipper = createAsyncThunk(
   }
 );
 
+
+
 // Define login credentials type
 export interface LoginCredentials {
   email: string;
@@ -73,16 +76,20 @@ export interface LoginCredentials {
 // Thunk for logging in a creator
 export const loginCreator = createAsyncThunk(
   "user/loginCreator",
-  async (credentials: LoginCredentials, { rejectWithValue }) => {
+  async (credentials: LoginCredentials, { rejectWithValue, extra }) => {
+    const { api } = extra as ThunkExtraArgument;
     try {
       const response = await api.post("auth/login/creator", credentials);
-      // Assuming the API returns user data and a token
-      // Store token in localStorage for persistence
+      // Assuming the API returns user data, token, and refreshToken
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user)); // Store user role if available
+      if (response.data.refreshToken) {
+        // Check if refreshToken exists
+        localStorage.setItem("refreshToken", response.data.refreshToken);
+      }
+      localStorage.setItem("user", JSON.stringify(response.data.user));
       console.log("You have successfully logged in:", response);
 
-      return response.data; // This should include user profile and token
+      return response.data; // This should include user, token, and refreshToken
     } catch (error) {
       const apiError = error as ApiError;
       return rejectWithValue(
@@ -97,15 +104,20 @@ export const loginCreator = createAsyncThunk(
 // Thunk for logging in a clipper
 export const loginClipper = createAsyncThunk(
   "user/loginClipper",
-  async (credentials: LoginCredentials, { rejectWithValue }) => {
+  async (credentials: LoginCredentials, { rejectWithValue, extra }) => {
+    const { api } = extra as ThunkExtraArgument;
     try {
       const response = await api.post("auth/login/clipper", credentials);
-      // Store token in localStorage for persistence
+      // Assuming the API returns user data, token, and refreshToken
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user)); // Store user role if available
+      if (response.data.refreshToken) {
+        // Check if refreshToken exists
+        localStorage.setItem("refreshToken", response.data.refreshToken);
+      }
+      localStorage.setItem("user", JSON.stringify(response.data.user));
       console.log("You have successfully logged in:", response);
 
-      return response.data; // This should include user profile and token
+      return response.data; // This should include user, token, and refreshToken
     } catch (error) {
       const apiError = error as ApiError;
       return rejectWithValue(
