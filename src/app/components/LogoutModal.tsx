@@ -3,13 +3,14 @@ import React from 'react';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { LogOut } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { setIsSignedIn } from "@/state/isSignedIn/isSignedIn";
 import { setLogout } from "@/state/Modal/isOpen";
 import { useRouter } from "next/navigation";
+import { logout } from "@/state/User/user";
 
 const LogoutModal = () => {
   const open = useAppSelector((state) => state.isOpen.logout)
   const dispatch = useAppDispatch();
+  
   const router = useRouter();
   return (
     <AlertDialog open={open} >
@@ -20,11 +21,11 @@ const LogoutModal = () => {
               <LogOut className="w-5 h-5 text-[#D20B4E]" />
             </div>
             <AlertDialogTitle className="text-xl font-semibold text-[#101010]">
-              Sign Out
+              Log out
             </AlertDialogTitle>
           </div>
           <AlertDialogDescription className="text-[#101010]/80 text-base">
-            Are you sure you want to sign out? You will need to sign in again to access your account.
+            Are you sure you want to log out? You will need to log in again to access your account.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="p-6 pt-2">
@@ -38,13 +39,13 @@ const LogoutModal = () => {
             <AlertDialogAction 
               className="flex-1 px-4 py-2.5 rounded-lg bg-[#D20B4E] text-white hover:bg-[#D20B4E]/90 transition-colors"
               onClick={() => {
-                dispatch(setIsSignedIn())
+                dispatch(logout())
                 dispatch(setLogout())
                 router.push("/")
               }
                 }
             >
-              Sign Out
+              Log out
             </AlertDialogAction>
           </div>
         </AlertDialogFooter>
