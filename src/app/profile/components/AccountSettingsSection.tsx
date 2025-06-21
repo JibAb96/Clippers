@@ -47,7 +47,8 @@ const AccountSettingsSection = () => {
         description: "Account deleted successfully. You will be logged out.",
       });
       // Dispatch logout action from userSlice to clear local state and localStorage immediately
-      await dispatch(logout());
+      router.push("/");
+       dispatch(logout());
       // Redirect to home or login page after a short delay to allow toast to be seen
       setTimeout(() => {
         router.push("/"); // Or your login page
