@@ -17,6 +17,7 @@ export interface Clip {
   thumbnailUrl: string; // Assuming these are part of the ClipSubmission
   status: ClipStatus;
   // Add any other relevant fields from ClipSubmission
+  title: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -126,17 +127,19 @@ const clipsSlice = createSlice({
       .addCase(submitClip.pending, (state) => {
         state.submitLoading = true;
         state.submitError = null;
+
       })
       .addCase(submitClip.fulfilled, (state, action) => {
         state.submitLoading = false;
         // Optionally add the new clip to the state.clips array
         // Or refetch clips list depending on UX
         state.clips.unshift(action.payload as Clip); // Add to the beginning
-        state.selectedClip = action.payload as Clip; // Set as selected
+    
       })
       .addCase(submitClip.rejected, (state, action) => {
         state.submitLoading = false;
         state.submitError = action.payload as string;
+
       })
       // updateClipStatus
       .addCase(updateClipStatus.pending, (state) => {
