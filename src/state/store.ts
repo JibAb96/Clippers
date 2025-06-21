@@ -4,16 +4,21 @@ import searchReducer from "./Clippers/searchClippers";
 import selectCategoryReducer from "./Clippers/selectCategory";
 import filterClippersReducer from "./Clippers/clippers";
 import selectedClipperReducer from "./Clippers/selectedClipperSlice";
-
 import clipsReducer from "./Clips/clipsSlice";
-import isSignedInReducer from "./isSignedIn/isSignedIn";
 import isOpenReducer from "./Modal/isOpen";
 import userReducer from "./User/user";
 import statusReducer from "./Clips/statusSlice";
 import {
   creatorProfileReducer,
   clipperProfileReducer,
-} from "./Profiles/profileSlices";
+} from "./UserLookup/userLookupSlice";
+
+import api from "../services/api";
+import type { AxiosInstance } from "axios";
+
+export interface ThunkExtraArgument {
+  api: AxiosInstance;
+}
 
 export const store = configureStore({
   reducer: {
@@ -21,15 +26,20 @@ export const store = configureStore({
     selectCategory: selectCategoryReducer,
     clippers: filterClippersReducer,
     selectedClipper: selectedClipperReducer,
-
     clips: clipsReducer,
-    isSignedIn: isSignedInReducer,
     isOpen: isOpenReducer,
     user: userReducer,
     status: statusReducer,
     creatorProfile: creatorProfileReducer,
     clipperProfile: clipperProfileReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      thunk: {
+        extraArgument: { api } as ThunkExtraArgument,
+      },
+      serializableCheck: false,
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
