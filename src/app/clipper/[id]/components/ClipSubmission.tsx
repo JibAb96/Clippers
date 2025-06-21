@@ -1,306 +1,650 @@
-"use client"
-import React, { useState, useRef, useEffect } from "react";
-import { X, Upload, Loader } from "lucide-react";
+"use client";
+import React, { useState, useRef, useEffect, memo } from "react";
+import Image from "next/image";
+import { X, Loader, ImagePlus, Video, AlertTriangle } from "lucide-react";
 import { setClipSubmission } from "@/state/Modal/isOpen";
-import { useAppDispatch } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { useToast } from "@/hooks/use-toast";
+// Shadcn UI Components
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { submitClip } from "@/state/Clips/clipsThunks";
+
+// Completely separate FilePreviewArea component with memoization
+const FilePreviewArea = memo(
+  ({
+    id,
+    inputRef,
+    onChange,
+    previewUrl,
+    Icon,
+    accept,
+    label,
+    currentFile,
+    maxSizeMB,
+    aspectRatioText,
+    error,
+    imageDimensions,
+    onRemove,
+  }: {
+    id: string;
+    inputRef: React.RefObject<HTMLInputElement | null>;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    previewUrl: string;
+    Icon: React.ElementType;
+    accept: string;
+    label: string;
+    currentFile: File | null;
+    maxSizeMB: number;
+    aspectRatioText: string;
+    error?: string;
+    imageDimensions?: { width: number; height: number } | null;
+    onRemove: () => void;
+  }) => {
+    // Using a separate component prevents re-renders from parent state changes
+    return (
+      <div className="space-y-3">
+        <Label htmlFor={id} className={error ? "text-destructive" : ""}>
+          {label} <span className="text-destructive">*</span>
+        </Label>
+        <div
+          className={`flex flex-col items-center justify-center w-full h-80 lg:h-96 border-2 ${
+            error ? "border-destructive" : "border-border"
+          } border-dashed rounded-lg ${
+            currentFile ? "cursor-default" : "cursor-pointer"
+          } bg-card ${
+            !currentFile && !error ? "hover:border-primary/70" : ""
+          } transition-colors`}
+          onClick={() => !currentFile && inputRef.current?.click()}
+        >
+          <div className="flex flex-col items-center justify-center pt-5 pb-6 h-full w-full">
+            {previewUrl && currentFile ? (
+              accept.startsWith("video/") ? (
+                <video
+                  src={previewUrl}
+                  className="h-full w-auto rounded-md object-contain max-w-full"
+                  controls
+                />
+              ) : imageDimensions && previewUrl ? (
+                <Image
+                  src={previewUrl}
+                  alt="Preview"
+                  width={imageDimensions.width}
+                  height={imageDimensions.height}
+                  className="max-h-full w-auto rounded-md object-contain"
+                />
+              ) : previewUrl ? (
+                <Image
+                  src={previewUrl}
+                  alt="Preview loading..."
+                  width={400}
+                  height={600}
+                  className="max-h-full w-auto rounded-md object-contain"
+                />
+              ) : null
+            ) : (
+              <>
+                <Icon className="w-12 h-12 lg:w-14 lg:h-14 mb-4 text-muted-foreground" />
+                <p className="mb-2 text-base lg:text-lg text-muted-foreground font-medium">
+                  Click to upload
+                </p>
+                <p className="text-sm lg:text-base text-muted-foreground text-center px-4">
+                  {aspectRatioText}. Max {maxSizeMB}MB.
+                </p>
+              </>
+            )}
+          </div>
+          <input
+            id={id}
+            ref={inputRef}
+            type="file"
+            className="hidden"
+            accept={accept}
+            onChange={onChange}
+          />
+        </div>
+        {previewUrl && currentFile && (
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="w-full mt-2"
+            onClick={onRemove}
+          >
+            Remove {accept.startsWith("video/") ? "Video" : "Thumbnail"}
+          </Button>
+        )}
+        {error && (
+          <p className="text-sm font-medium text-destructive flex items-center">
+            <AlertTriangle className="w-4 h-4 mr-1.5" />
+            {error}
+          </p>
+        )}
+      </div>
+    );
+  }
+);
+FilePreviewArea.displayName = "FilePreviewArea";
 
 type Props = {
-  recipientId: string;
+  clipperId: string;
 };
 
 type FormDataType = {
-  title: string;
-  description: string;
-  date: string;
   videoFile: File | null;
+  thumbnailFile: File | null;
+  creatorId: string;
+  clipperId: string;
 };
-const ClipSubmission = ({ recipientId }: Props) => {
-  // State for form data and upload progress
-  const [formData, setFormData] = useState<FormDataType>({
+
+// Constants for validation
+const MAX_VIDEO_FILE_SIZE_MB = 50;
+const MAX_THUMBNAIL_FILE_SIZE_MB = 2; // Max 2MB for thumbnail
+const TARGET_ASPECT_RATIO = 9 / 16; // 9:16 as ideal
+const ASPECT_RATIO_TOLERANCE = 0.15; // To allow more phone formats
+
+const ClipSubmission = ({ clipperId }: Props) => {
+  const { user } = useAppSelector((state) => state.user);
+  const [textFields, setTextFields] = useState({
     title: "",
     description: "",
-    date: "",
-    videoFile: null,
   });
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [isUploading, setIsUploading] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState("");
+  const [formData, setFormData] = useState<FormDataType>({
+    videoFile: null,
+    thumbnailFile: null,
+    creatorId: user?.id || "",
+    clipperId: clipperId,
+  });
 
-  // Handle escape key
+  const [videoPreviewUrl, setVideoPreviewUrl] = useState("");
+  const [thumbnailPreviewUrl, setThumbnailPreviewUrl] = useState("");
+  const [thumbnailDimensions, setThumbnailDimensions] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+
+  const dispatch = useAppDispatch();
+  const videoFileInputRef = useRef<HTMLInputElement | null>(null);
+  const thumbnailFileInputRef = useRef<HTMLInputElement | null>(null);
+  const submitClipLoading = useAppSelector(
+    (state) => state.clips.submitLoading
+  );
+  // Handle escape key to close modal
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && !isUploading) {
+      if (e.key === "Escape" && !submitClipLoading) {
         handleClose();
       }
     };
-
     window.addEventListener("keydown", handleEscape);
     return () => window.removeEventListener("keydown", handleEscape);
-    // eslint-disable-next-line
-  }, [isUploading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [submitClipLoading]);
 
-  const dispatch = useAppDispatch();
+  const clearError = (field: string) => {
+    setFormErrors((prev) => {
+      const newErrors = { ...prev };
+      delete newErrors[field];
+      return newErrors;
+    });
+  };
 
-  // Ref for file input
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const setError = (field: string, message: string) => {
+    setFormErrors((prev) => ({ ...prev, [field]: message }));
+  };
 
-  // Handle file selection
+  // Helper to get video dimensions
   const getVideoDimensions = (
     file: File
   ): Promise<{ width: number; height: number }> => {
     return new Promise((resolve, reject) => {
       const video = document.createElement("video");
       video.preload = "metadata";
-
       video.onloadedmetadata = () => {
         URL.revokeObjectURL(video.src);
         resolve({ width: video.videoWidth, height: video.videoHeight });
       };
-
-      video.onerror = () => reject(new Error("Failed to load video metadata"));
+      video.onerror = () => {
+        URL.revokeObjectURL(video.src);
+        reject(
+          new Error(
+            "Failed to load video metadata. Please ensure it's a valid video file."
+          )
+        );
+      };
       video.src = URL.createObjectURL(file);
     });
   };
 
-  // Constants for validation
-  const MAX_FILE_SIZE_MB = 100;
-  const TARGET_ASPECT_RATIO = 9 / 16;
-  const ASPECT_RATIO_TOLERANCE = 0.01;
+  // Helper to get image dimensions
+  const getImageDimensions = (
+    file: File
+  ): Promise<{ width: number; height: number }> => {
+    return new Promise((resolve, reject) => {
+      const img: HTMLImageElement = new window.Image();
+      img.onload = () => {
+        URL.revokeObjectURL(img.src);
+        resolve({ width: img.naturalWidth, height: img.naturalHeight });
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(img.src);
+        reject(
+          new Error(
+            "Failed to load image metadata. Please ensure it's a valid image file."
+          )
+        );
+      };
+      img.src = URL.createObjectURL(file);
+    });
+  };
 
-  // Function to validate video aspect ratio
+  // Function to validate aspect ratio
   const isAspectRatioValid = (width: number, height: number): boolean => {
+    if (height === 0) return false;
     const aspectRatio = width / height;
     return (
       Math.abs(aspectRatio - TARGET_ASPECT_RATIO) <= ASPECT_RATIO_TOLERANCE
     );
   };
 
-  // Main file select handler
-  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Handle video file selection
+  const handleVideoFileSelect = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
-
     const file = files[0];
+    const fieldName = "videoFile";
+    clearError(fieldName);
 
-    // Validate file type
     if (!file.type.startsWith("video/")) {
-      alert("Please select a valid video file");
-      e.target.value = ""; // Reset file input
+      setError(fieldName, "Invalid file type. Please select a video.");
+      if (e.target) e.target.value = "";
       return;
     }
 
-    // Validate file size
-    const maxSizeInBytes = MAX_FILE_SIZE_MB * 1024 * 1024;
+    const maxSizeInBytes = MAX_VIDEO_FILE_SIZE_MB * 1024 * 1024;
     if (file.size > maxSizeInBytes) {
-      alert(`Please select a video file under ${MAX_FILE_SIZE_MB}MB`);
-      e.target.value = ""; // Reset file input
+      setError(
+        fieldName,
+        `File too large. Max size: ${MAX_VIDEO_FILE_SIZE_MB}MB`
+      );
+      if (e.target) e.target.value = "";
       return;
     }
 
     try {
-      // Get video dimensions and validate aspect ratio
       const { width, height } = await getVideoDimensions(file);
       if (!isAspectRatioValid(width, height)) {
-        alert(
-          "Please upload a video with a 9:16 aspect ratio (vertical video format)"
+        setError(
+          fieldName,
+          "Invalid aspect ratio. Please use vertical format (portrait orientation)."
         );
-        e.target.value = ""; // Reset file input
+        if (e.target) e.target.value = "";
         return;
       }
 
-      // If all validations pass
       setFormData((prev) => ({ ...prev, videoFile: file }));
-      setPreviewUrl(URL.createObjectURL(file));
-    } catch (error) {
-      console.error("Error validating video file:", error);
-      alert("An error occurred while processing the video file.");
+      if (videoPreviewUrl) URL.revokeObjectURL(videoPreviewUrl);
+      setVideoPreviewUrl(URL.createObjectURL(file));
+      clearError(fieldName);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(
+          fieldName,
+          error.message || "Error processing video. Please try another file."
+        );
+      } else {
+        setError(
+          fieldName,
+          "An unknown error occurred while processing the video."
+        );
+      }
+      if (e.target) e.target.value = "";
     }
   };
 
-  // Simulate upload progress
-  const simulateUpload = async () => {
-    setIsUploading(true);
-    for (let i = 0; i <= 100; i += 10) {
-      setUploadProgress(i);
-      await new Promise((resolve) => setTimeout(resolve, 500));
+  // Handle thumbnail file selection
+  const handleThumbnailSelect = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    const file = files[0];
+    const fieldName = "thumbnailFile";
+    clearError(fieldName);
+
+    const acceptedImageTypes = ["image/jpeg", "image/png", "image/webp"];
+    if (!acceptedImageTypes.includes(file.type)) {
+      setError(fieldName, "Invalid type. Use JPG, PNG, or WEBP.");
+      if (e.target) e.target.value = "";
+      setThumbnailDimensions(null);
+      return;
     }
-    setIsUploading(false);
+
+    const maxSizeInBytes = MAX_THUMBNAIL_FILE_SIZE_MB * 1024 * 1024;
+    if (file.size > maxSizeInBytes) {
+      setError(
+        fieldName,
+        `File too large. Max size: ${MAX_THUMBNAIL_FILE_SIZE_MB}MB`
+      );
+      if (e.target) e.target.value = "";
+      setThumbnailDimensions(null);
+      return;
+    }
+
+    try {
+      const { width, height } = await getImageDimensions(file);
+      if (!isAspectRatioValid(width, height)) {
+        setError(
+          fieldName,
+          "Invalid aspect ratio. Please use vertical format (portrait orientation)."
+        );
+        if (e.target) e.target.value = "";
+        setThumbnailDimensions(null);
+        return;
+      }
+
+      setFormData((prev) => ({ ...prev, thumbnailFile: file }));
+      if (thumbnailPreviewUrl) URL.revokeObjectURL(thumbnailPreviewUrl);
+      setThumbnailPreviewUrl(URL.createObjectURL(file));
+      setThumbnailDimensions({ width, height });
+      clearError(fieldName);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(
+          fieldName,
+          error.message ||
+            "Error processing thumbnail. Please try another file."
+        );
+      } else {
+        setError(
+          fieldName,
+          "An unknown error occurred while processing the thumbnail."
+        );
+      }
+      if (e.target) e.target.value = "";
+      setThumbnailDimensions(null);
+    }
+  };
+  const { toast } = useToast();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    let hasErrors = false;
+    if (!textFields.title.trim()) {
+      setError("title", "Title is required.");
+      hasErrors = true;
+    }
+    if (!textFields.description.trim()) {
+      setError("description", "Description is required.");
+      hasErrors = true;
+    }
+    if (!formData.videoFile) {
+      setError("videoFile", "Video file is required.");
+      hasErrors = true;
+    }
+    if (!formData.thumbnailFile) {
+      setError("thumbnailFile", "Thumbnail is required.");
+      hasErrors = true;
+    }
+
+    if (hasErrors || Object.values(formErrors).some((err) => !!err)) {
+      return;
+    }
+    let isSuccess = false;
+    if (formData.videoFile && formData.thumbnailFile) {
+      try {
+        const result = await dispatch(
+          submitClip({
+            videoFile: formData.videoFile,
+            thumbnailFile: formData.thumbnailFile,
+            creatorId: formData.creatorId,
+            clipperId: formData.clipperId,
+            title: textFields.title,
+            description: textFields.description,
+          })
+        );
+
+        // Check if the action was rejected using unwrapResult pattern
+        if (result.meta.requestStatus === "rejected") {
+          const errorMessage =
+            typeof result.payload === "string"
+              ? result.payload
+              : "Submission failed";
+          throw new Error(errorMessage);
+        }
+
+        isSuccess = true;
+      } catch (error) {
+        isSuccess = false;
+        console.error("Error submitting clip:", error);
+      } finally {
+        if (!submitClipLoading) {
+          toast({
+            title: isSuccess
+              ? "Clip submitted successfully!"
+              : "Clip submission failed!",
+            description: isSuccess
+              ? "Your clip has been submitted for review."
+              : "Please try again.",
+            variant: isSuccess ? "default" : "destructive",
+          });
+          handleClose();
+        }
+      }
+    }
   };
 
   // Handle modal close
   const handleClose = () => {
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
-      console.log(recipientId);
-    }
+    if (submitClipLoading) return; // Prevent closing during upload
+    if (videoPreviewUrl) URL.revokeObjectURL(videoPreviewUrl);
+    if (thumbnailPreviewUrl) URL.revokeObjectURL(thumbnailPreviewUrl);
+    setVideoPreviewUrl("");
+    setThumbnailPreviewUrl("");
+    setThumbnailDimensions(null);
+    setTextFields({
+      title: "",
+      description: "",
+    });
+    setFormData({
+      videoFile: null,
+      thumbnailFile: null,
+      creatorId: user?.id || "",
+      clipperId: clipperId,
+    });
+
+    setFormErrors({});
     dispatch(setClipSubmission());
   };
 
+  // Handle video remove
+  const handleVideoRemove = () => {
+    if (videoFileInputRef.current) videoFileInputRef.current.value = "";
+    if (videoPreviewUrl) URL.revokeObjectURL(videoPreviewUrl);
+    setVideoPreviewUrl("");
+    setFormData((prev) => ({ ...prev, videoFile: null }));
+    clearError("videoFile");
+  };
+
+  // Handle thumbnail remove
+  const handleThumbnailRemove = () => {
+    if (thumbnailFileInputRef.current) thumbnailFileInputRef.current.value = "";
+    if (thumbnailPreviewUrl) URL.revokeObjectURL(thumbnailPreviewUrl);
+    setThumbnailPreviewUrl("");
+    setThumbnailDimensions(null);
+    setFormData((prev) => ({ ...prev, thumbnailFile: null }));
+    clearError("thumbnailFile");
+  };
+
   return (
-    <div>
-      {/* Modal content */}
-      <button
+    <Card className="w-full max-w-7xl mx-auto relative border-none shadow-none sm:border sm:shadow-lg min-h-[80vh] lg:min-h-[85vh]">
+      <Button
+        variant="ghost"
+        size="icon"
         onClick={handleClose}
-        className="absolute top-4 right-4"
+        className="absolute top-6 right-6 rounded-full z-10 h-10 w-10"
         aria-label="Close modal"
-        disabled={isUploading}
+        disabled={submitClipLoading}
       >
         <X className="h-6 w-6" />
-      </button>
-
-      <label
-        id="modal-title"
-        className="text-xl text-secondary font-bold mb-4"
-        htmlFor="video-file"
-      >
-        Send Video Clip
-      </label>
-
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          simulateUpload();
-        }}
-      >
-        {/* Video upload area */}
-        <div
-          className="border-2 w-fit mx-auto border-dashed rounded-lg p-1 text-center cursor-pointer"
-          onClick={() => fileInputRef.current?.click()}
-        >
-          <input
-            id="video-file"
-            ref={fileInputRef}
-            type="file"
-            accept="video/*"
-            onChange={handleFileSelect}
-            className="hidden"
-          />
-
-          {previewUrl ? (
-            <video src={previewUrl} className="max-h-64" controls />
-          ) : (
-            <div className="py-8">
-              <Upload className="mx-auto h-12 w-12 text-gray-400 mb-2" />
-              <p>Click to select or drag a video file here</p>
-              <p className="text-sm text-gray-500">Maximum size: 100MB</p>
-            </div>
-          )}
-        </div>
-        {/* Thumbnail upload area */}
-        <label
-          className="block text-sm text-secondary font-semibold mb-1"
-          htmlFor="thumbnail"
-        >
-          Upload Thumbnail:
-        </label>
-        <input
-          type="file"
-          id="thumbnail"
-          accept=".jpg,.jpeg,.webp,.png"
-          className="w-full p-2 border rounded"
-        />
-        {/* Title field */}
-        <div>
-          <label
-            htmlFor="title"
-            className="block text-sm text-secondary font-semibold mb-1"
-          >
-            Title
-          </label>
-          <input
-            id="title"
-            type="text"
-            value={formData.title}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, title: e.target.value }))
-            }
-            className="w-full p-2 border rounded"
-            required
-            maxLength={100}
-          />
-        </div>
-        {/* Schedule Date field */}
-        <div>
-          <label
-            htmlFor="date"
-            className="block text-sm text-secondary font-semibold mb-1"
-          >
-            Post Date
-          </label>
-          <input
-            id="date"
-            type="date"
-            value={formData.date}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, date: e.target.value }))
-            }
-            className="w-full p-2 border rounded"
-            required
-          />
-        </div>
-
-        {/* Description field */}
-        <div>
-          <label
-            htmlFor="description"
-            className="block text-sm font-semibold mb-1 text-secondary"
-          >
-            Description{" "}
-            <span className="text-tertiary">(maximum 179 characters)</span>
-          </label>
-          <textarea
-            id="description"
-            value={formData.description}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                description: e.target.value,
-              }))
-            }
-            className="w-full p-2 border rounded"
-            rows={3}
-            maxLength={179}
-          />
-        </div>
-
-        {/* Upload progress */}
-        {isUploading && (
-          <div className="space-y-2">
-            <div className="h-2 bg-gray-200 rounded">
-              <div
-                className="h-full bg-secondry rounded"
-                style={{ width: `${uploadProgress}%` }}
-              />
-            </div>
-            <p className="text-sm text-center">
-              Uploading... {uploadProgress}%
-            </p>
+      </Button>
+      <CardHeader className="text-center pt-12 sm:pt-8 pb-8">
+        <CardTitle className="text-3xl lg:text-4xl xl:text-5xl font-bold">
+          Submit Your Clip
+        </CardTitle>
+        <CardDescription className="text-lg lg:text-xl mt-4 max-w-2xl mx-auto">
+          Fill in the details below to send your video for review. Make sure
+          your content follows our guidelines.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="p-6 sm:p-8 lg:p-12">
+        <form onSubmit={handleSubmit} className="space-y-8 lg:space-y-12">
+          {/* File Upload Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+            <FilePreviewArea
+              id="video-file"
+              inputRef={videoFileInputRef}
+              onChange={handleVideoFileSelect}
+              previewUrl={videoPreviewUrl}
+              Icon={Video}
+              accept="video/*"
+              label="Video File"
+              currentFile={formData.videoFile}
+              maxSizeMB={MAX_VIDEO_FILE_SIZE_MB}
+              aspectRatioText="9:16 ratio (vertical/portrait)"
+              error={formErrors.videoFile}
+              onRemove={handleVideoRemove}
+            />
+            <FilePreviewArea
+              id="thumbnail-file"
+              inputRef={thumbnailFileInputRef}
+              onChange={handleThumbnailSelect}
+              previewUrl={thumbnailPreviewUrl}
+              Icon={ImagePlus}
+              accept="image/jpeg,image/png,image/webp"
+              label="Thumbnail Image"
+              currentFile={formData.thumbnailFile}
+              maxSizeMB={MAX_THUMBNAIL_FILE_SIZE_MB}
+              aspectRatioText="9:16 ratio (vertical/portrait)"
+              error={formErrors.thumbnailFile}
+              imageDimensions={thumbnailDimensions}
+              onRemove={handleThumbnailRemove}
+            />
           </div>
-        )}
 
-        {/* Submit button */}
-        <button
-          type="submit"
-          disabled={
-            isUploading ||
-            !formData.videoFile ||
-            !formData.title ||
-            !formData.date ||
-            !formData.description
-          }
-          className="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
-        >
-          {isUploading ? (
-            <span className="flex items-center justify-center">
-              <Loader className="animate-spin mr-2" />
-              Uploading...
-            </span>
-          ) : (
-            "Send Video"
-          )}
-        </button>
-      </form>
-    </div>
+          {/* Text Fields Section */}
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 lg:gap-12">
+            <div className="space-y-3">
+              <Label
+                htmlFor="title"
+                className={`text-base lg:text-lg ${
+                  formErrors.title ? "text-destructive" : ""
+                }`}
+              >
+                Title <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="title"
+                type="text"
+                value={textFields.title}
+                onChange={(e) => {
+                  setTextFields((prev) => ({ ...prev, title: e.target.value }));
+                  if (e.target.value.trim()) clearError("title");
+                }}
+                onBlur={(e) => {
+                  if (!e.target.value.trim())
+                    setError("title", "Title is required.");
+                }}
+                className={`h-12 lg:h-14 text-base lg:text-lg ${
+                  formErrors.title
+                    ? "border-destructive focus-visible:ring-destructive"
+                    : ""
+                }`}
+                maxLength={100}
+                placeholder="e.g., My Awesome Gaming Moment"
+              />
+              {formErrors.title && (
+                <p className="text-sm font-medium text-destructive flex items-center">
+                  <AlertTriangle className="w-4 h-4 mr-1.5" />
+                  {formErrors.title}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-3">
+              <Label
+                htmlFor="description"
+                className={`text-base lg:text-lg ${
+                  formErrors.description ? "text-destructive" : ""
+                }`}
+              >
+                Description <span className="text-destructive">*</span>
+                <span className="text-sm text-muted-foreground ml-2">
+                  (max 179 chars)
+                </span>
+              </Label>
+              <Textarea
+                id="description"
+                value={textFields.description}
+                onChange={(e) => {
+                  setTextFields((prev) => ({
+                    ...prev,
+                    description: e.target.value,
+                  }));
+                  if (e.target.value.trim()) clearError("description");
+                }}
+                onBlur={(e) => {
+                  if (!e.target.value.trim())
+                    setError("description", "Description is required.");
+                }}
+                className={`min-h-[120px] lg:min-h-[140px] text-base lg:text-lg resize-none ${
+                  formErrors.description
+                    ? "border-destructive focus-visible:ring-destructive"
+                    : ""
+                }`}
+                maxLength={179}
+                placeholder="Briefly describe your clip, what makes it special, the game you're playing, or any context that viewers should know..."
+              />
+              {formErrors.description && (
+                <p className="text-sm font-medium text-destructive flex items-center">
+                  <AlertTriangle className="w-4 h-4 mr-1.5" />
+                  {formErrors.description}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <div className="flex justify-center pt-8">
+            <Button
+              type="submit"
+              size="lg"
+              className="w-64 lg:w-80 h-14 lg:h-16 text-lg lg:text-xl font-semibold text-black mx-auto"
+            >
+              {submitClipLoading ? (
+                <>
+                  <Loader className="animate-spin mr-3 h-6 w-6 lg:h-7 lg:w-7" />
+                  Processing...
+                </>
+              ) : (
+                "Send Video for Review"
+              )}
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
   );
 };
 
