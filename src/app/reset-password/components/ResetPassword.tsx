@@ -24,7 +24,7 @@ import {
 import { Loader2 } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { RootState } from "@/state/store";
-import { clearPasswordUpdateStatus } from "@/state/User/user";
+import { clearPasswordUpdateStatus } from "@/state/User/usersSlice";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";

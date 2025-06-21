@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../state/User/user";
+import { setUser } from "../../state/User/usersSlice";
 
 export default function ClientSessionProvider() {
   const dispatch = useDispatch();
