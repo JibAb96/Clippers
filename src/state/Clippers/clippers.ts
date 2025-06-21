@@ -48,15 +48,11 @@ const clippersSlice = createSlice({
       .addCase(fetchClippers.pending, (state) => {
         state.loading = true;
         state.error = null;
+      }).addCase(fetchClippers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.items = action.payload;
+        state.originalItems = action.payload;
       })
-      .addCase(
-        fetchClippers.fulfilled,
-        (state, action: PayloadAction<{ data: Clipper[] }>) => {
-          state.loading = false;
-          state.items = action.payload.data;
-          state.originalItems = action.payload.data;
-        }
-      )
       .addCase(fetchClippers.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
