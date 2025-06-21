@@ -2,7 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import CTAButton from "../../../../components/CTAButton";
-import { followersDisplay } from "../../../components/ClipperCard";
+import { followersDisplay } from "../../../find-clippers/components/ClipperCard";
 import { Clipper, PortfolioImage } from "../../../../model";
 import Modal from "@/components/Modal";
 import ClipSubmission from "./ClipSubmission";
@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { setClipSubmission } from "@/state/Modal/isOpen";
 import Thumbnail from "../../../../assets/images/thumbnail.png";
 import { capitalizeFirstLetter } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 const ClipperInfo = ({
   clipper,
@@ -22,6 +23,9 @@ const ClipperInfo = ({
   // Also a button to submit a clip to this particular clipper
   const open = useAppSelector((state) => state.isOpen.clipSubmission);
   const dispatch = useAppDispatch();
+  const { user, userType, token } = useAppSelector((state) => state.user);
+  const router = useRouter();
+  const isSignedIn = !!token && !!user;
   return (
     <div>
       <h1 className="text-3xl font-semibold text-gray-900 text-center sm:text-left sm:ml-10 md:ml-20 sm:pt-24 lg:pt-6 sm:mb-5">
@@ -39,13 +43,10 @@ const ClipperInfo = ({
           />
         </div>
         <div className="hidden sm:w-[49.5%] sm:h-full sm:flex-end sm:flex sm:flex-wrap sm:justify-between">
-          {portfolioImages.slice(0, 4).map((image, index) => (
-            <div
-              key={image.id || index}
-              className={`relative sm:w-[49.5%] sm:h-[49%]`}
-            >
+          {[0, 1, 2, 3].map((index) => (
+            <div key={index} className={`relative sm:w-[49.5%] sm:h-[49%]`}>
               <Image
-                src={image.imageUrl}
+                src={portfolioImages[index]?.imageUrl || Thumbnail.src}
                 alt={`Social media post ${index + 1}`}
                 layout="fill"
                 objectFit="cover"
@@ -81,9 +82,20 @@ const ClipperInfo = ({
         <div className=" mt-2 lg:mr-0  lg:flex lg:gap-20 xl:gap-48">
           <CTAButton
             CustomClass={"block"}
-            Text={"Submit Clip For Review"}
-            onClick={() => dispatch(setClipSubmission())}
-            AriaLabel="Submit clip for review"
+            Text={
+              userType === "creator"
+                ? "Submit clip for review"
+                : userType === "clipper"
+                ? "Clippers can't submit clips"
+                : "Sign in for clip submission"
+            }
+            onClick={
+              isSignedIn && userType === "creator"
+                ? () => dispatch(setClipSubmission())
+                : () => router.push("/signin")
+            }
+            disabled={userType === "clipper"}
+            AriaLabel={"Submit clip for review"}
           />
           <p className="text-center md:text-2xl mt-2 sm:m-0 font-medium">
             £{clipper.pricePerPost} per post
@@ -91,7 +103,7 @@ const ClipperInfo = ({
         </div>
       </div>
       <Modal isOpen={open}>
-        <ClipSubmission recipientId="12345" />
+        <ClipSubmission clipperId={clipper.id} />
       </Modal>
     </div>
   );
