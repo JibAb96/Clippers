@@ -2,23 +2,26 @@
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { RootState } from "@/state/store";
-import { getCurrentUserProfile } from "@/state/User/profileManagementThunks";
+import {
+  getCreatorProfile,
+  getClipperProfile,
+} from "@/state/User/profileManagementThunks";
 import { Loader2 } from "lucide-react"; // For loading spinner
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"; // ShadCN Alert
-// Removed unused Card imports since they're not being used in the code
 import ProfileDisplaySection from "./components/ProfileDisplaySection";
 import ProfileUpdateFormSection from "./components/ProfileUpdateFormSection";
 import ProfileImageManagementSection from "./components/ProfileImageManagementSection";
-import PortfolioManagementSection from "./components/PortfolioManagementSection"; // Clipper specific
+import PortfolioManagementSection from "./components/PortfolioManagementSection"; 
 import AccountSettingsSection from "./components/AccountSettingsSection";
-import { Clipper } from "../../model"; // Import Clipper type
+import PasswordUpdateSection from "./components/PasswordUpdateSection";
+import { getClipperPortfolioImages } from "@/state/Clippers/clipperThunks";
 
 const UserProfilePage = () => {
   const dispatch = useAppDispatch();
   const {
     user,
     userType,
-    loading: userLoading, // General loading for user slice (includes getCurrentUserProfile)
+    loading: userLoading, // General loading for user slice
     error: userError,
     portfolioImages, // For Clippers, managed in userSlice
     portfolioLoading,
@@ -26,13 +29,18 @@ const UserProfilePage = () => {
   } = useAppSelector((state: RootState) => state.user);
 
   useEffect(() => {
-    // Fetch profile only if user data isn't already available or needs refresh
-    // Consider if token exists as well before dispatching
-    if (!user) {
-      // Or some other condition to re-fetch if needed
-      dispatch(getCurrentUserProfile());
+    // Fetch profile only if user data isn't already available and userType is known
+    if (!user && userType) {
+      if (userType === "creator") {
+        dispatch(getCreatorProfile());
+      } else if (userType === "clipper") {
+        dispatch(getClipperProfile());
+      }
     }
-  }, [dispatch, user]);
+    if (userType === "clipper") {
+      dispatch(getClipperPortfolioImages(user?.id || ""));
+    }
+  }, [dispatch, user, userType]); 
 
   if (userLoading && !user) {
     return (
@@ -81,9 +89,10 @@ const UserProfilePage = () => {
 
       <ProfileUpdateFormSection user={user} userType={userType} />
 
+      <PasswordUpdateSection />
+
       {userType === "clipper" && (
         <PortfolioManagementSection
-          clipperUser={user as Clipper} // More specific type assertion
           portfolioImages={portfolioImages || []}
           loading={portfolioLoading || false}
           error={portfolioError || null} // Ensure it's string | null
