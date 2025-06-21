@@ -34,7 +34,7 @@ const CreatorDashboard = () => {
   }
 
   return (
-    <div className="pt-24 lg:pt-4 bg-primary">
+    <div className="pt-24 lg:pt-4 bg-primary h-full">
       <div className="flex flex-col gap-2 ml-10">
         <h1 className="text-2xl sm:text-3xl font-bold">Creator Dashboard</h1>
         <h2 className="text-sm sm:text-base text-tertiary">
