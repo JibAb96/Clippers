@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import {
   Card,
@@ -17,12 +17,11 @@ import {
   deletePortfolioImageById,
 } from "@/state/User/profileManagementThunks";
 import { clearPortfolioStatus } from "@/state/User/user";
-import { Clipper, PortfolioImage } from "../../../model";
+import { PortfolioImage } from "../../../model";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface Props {
-  clipperUser: Clipper; // User object, should be a Clipper
   portfolioImages: PortfolioImage[];
   loading: boolean; // This is portfolioLoading from userSlice
   error: string | null; // This is portfolioError from userSlice
@@ -45,11 +44,10 @@ const PortfolioManagementSection: React.FC<Props> = ({
   // The props `loading` and `error` are already passed from `state.user.portfolioLoading/Error`
   // const { portfolioLoading, portfolioError } = useAppSelector((state: RootState) => state.user);
 
-  React.useEffect(() => {
-    return () => {
-      dispatch(clearPortfolioStatus());
-    };
-  }, [dispatch]);
+  useEffect(() => {
+    dispatch(clearPortfolioStatus());
+    
+  }, [dispatch, portfolioImages]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -160,6 +158,7 @@ const PortfolioManagementSection: React.FC<Props> = ({
         {portfolioImages.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {portfolioImages.map((image) => (
+              
               <div key={image.id} className="relative group aspect-square">
                 <Image
                   src={image.imageUrl}
@@ -167,6 +166,7 @@ const PortfolioManagementSection: React.FC<Props> = ({
                   layout="fill"
                   objectFit="cover"
                   className="rounded-md"
+                  sizes="100%"
                 />
                 <Button
                   variant="destructive"
@@ -246,7 +246,7 @@ const PortfolioManagementSection: React.FC<Props> = ({
                 disabled={
                   loading || !selectedFiles || selectedFiles.length === 0
                 }
-                className="w-full sm:w-auto"
+                className="w-full sm:w-auto text-black"
               >
                 {loading ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
