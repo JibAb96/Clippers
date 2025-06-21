@@ -6,7 +6,7 @@ import filterClippersReducer from "./Clippers/clippers";
 import selectedClipperReducer from "./Clippers/selectedClipperSlice";
 import clipsReducer from "./Clips/clipsSlice";
 import isOpenReducer from "./Modal/isOpen";
-import userReducer from "./User/user";
+import userReducer from "./User/usersSlice";
 import statusReducer from "./Clips/statusSlice";
 import {
   creatorProfileReducer,

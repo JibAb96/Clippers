@@ -16,7 +16,7 @@ import {
   uploadPortfolioImages,
   deletePortfolioImageById,
 } from "@/state/User/profileManagementThunks";
-import { clearPortfolioStatus } from "@/state/User/user";
+import { clearPortfolioStatus } from "@/state/User/usersSlice";
 import { PortfolioImage } from "../../../model";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription } from "@/components/ui/alert";

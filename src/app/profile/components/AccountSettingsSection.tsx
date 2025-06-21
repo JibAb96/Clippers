@@ -23,7 +23,7 @@ import { Loader2, ShieldAlert } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { RootState } from "@/state/store";
 import { deleteCurrentUserAccount } from "@/state/User/profileManagementThunks";
-import { logout } from "@/state/User/user"; // To log out after successful deletion
+import { logout } from "@/state/User/usersSlice"; // To log out after successful deletion
 import { useToast } from "@/hooks/use-toast"; // Import custom hook
 import { useRouter } from "next/navigation"; // To redirect after account deletion
 

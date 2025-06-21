@@ -34,7 +34,7 @@ import {
   updateCreatorProfile,
   updateClipperProfile,
 } from "@/state/User/profileManagementThunks";
-import { clearProfileUpdateStatus } from "@/state/User/user";
+import { clearProfileUpdateStatus } from "@/state/User/usersSlice";
 import {
   Creator,
   Clipper,

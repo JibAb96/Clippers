@@ -5,7 +5,7 @@ import { LogOut } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { setLogout } from "@/state/Modal/isOpen";
 import { useRouter } from "next/navigation";
-import { logout } from "@/state/User/user";
+import { logout } from "@/state/User/usersSlice";
 
 const LogoutModal = () => {
   const open = useAppSelector((state) => state.isOpen.logout)
@@ -17,8 +17,8 @@ const LogoutModal = () => {
       <AlertDialogContent className="bg-[#FAFAFA] max-w-[400px] rounded-lg p-0 overflow-hidden">
         <AlertDialogHeader className="p-6 pb-2">
           <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 rounded-full bg-[#D20B4E]/10">
-              <LogOut className="w-5 h-5 text-[#D20B4E]" />
+            <div className="p-2 rounded-full bg-secondary/10">
+              <LogOut className="w-5 h-5 text-secondary" />
             </div>
             <AlertDialogTitle className="text-xl font-semibold text-[#101010]">
               Log out
@@ -37,7 +37,7 @@ const LogoutModal = () => {
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction 
-              className="flex-1 px-4 py-2.5 rounded-lg bg-[#D20B4E] text-white hover:bg-[#D20B4E]/90 transition-colors"
+              className="flex-1 px-4 py-2.5 rounded-lg bg-secondary text-white hover:bg-secondary/90 transition-colors"
               onClick={() => {
                 dispatch(logout())
                 dispatch(setLogout())
