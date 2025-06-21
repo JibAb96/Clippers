@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -88,18 +87,9 @@ const baseProfileSchema = z.object({
     .max(50)
     .regex(/^[a-zA-Z0-9_.]+$/, "Invalid characters")
     .optional(),
-  platform: z.string().optional(), // Or z.enum for strict values if you have enums
-  niche: z.string().optional(), // Or z.enum
-  country: z.string().optional(), // Or z.enum
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters")
-    .regex(
-      /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
-      "Password must contain letters and numbers"
-    )
-    .optional()
-    .or(z.literal("")),
+  platform: z.string().optional(),
+  niche: z.string().optional(),
+  country: z.string().optional(),
 });
 
 const creatorProfileSchema = baseProfileSchema.extend({
@@ -160,7 +150,6 @@ const ProfileUpdateFormSection: React.FC<Props> = ({ user, userType }) => {
       platform: user.platform || "",
       niche: user.niche || "",
       country: user.country || "",
-      password: "", // Always start password empty for security
       ...(isClipper && {
         followerCount: (user as Clipper).followerCount ?? undefined, // Use undefined for optional numbers
         pricePerPost: (user as Clipper).pricePerPost ?? undefined,
@@ -177,7 +166,6 @@ const ProfileUpdateFormSection: React.FC<Props> = ({ user, userType }) => {
       platform: user.platform || "",
       niche: user.niche || "",
       country: user.country || "",
-      password: "",
       ...(isClipper && {
         followerCount: (user as Clipper).followerCount ?? undefined,
         pricePerPost: (user as Clipper).pricePerPost ?? undefined,
@@ -194,15 +182,11 @@ const ProfileUpdateFormSection: React.FC<Props> = ({ user, userType }) => {
 
   const onSubmit = async (values: CreatorFormValues | ClipperFormValues) => {
     // Filter out empty optional fields and unchanged password unless explicitly set
+    console.log(values)
     const cleanedValues: Record<string, string | number> = {};
     for (const key in values) {
       const typedKey = key as keyof typeof values;
-      if (typedKey === "password") {
-        if (values[typedKey]) {
-          // Only include password if it's not empty
-          cleanedValues[typedKey] = values[typedKey];
-        }
-      } else if (values[typedKey] !== undefined && values[typedKey] !== "") {
+      if (values[typedKey] !== undefined && values[typedKey] !== "") {
         cleanedValues[typedKey] = values[typedKey];
       }
     }
@@ -232,7 +216,7 @@ const ProfileUpdateFormSection: React.FC<Props> = ({ user, userType }) => {
         ).unwrap();
       }
       toast({ title: "Success", description: "Profile updated successfully!" });
-      form.reset({ ...form.getValues(), password: "" }); // Reset form, keep data, clear password
+      form.reset({ ...form.getValues() }); // Reset form, keep data, password field was already removed
       dispatch(clearProfileUpdateStatus()); // Clear any previous errors on success
     } catch (error) {
       const errorMessage =
@@ -439,27 +423,6 @@ const ProfileUpdateFormSection: React.FC<Props> = ({ user, userType }) => {
                   />
                 </>
               )}
-
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem className="md:col-span-2">
-                    <FormLabel>New Password (Optional)</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Leave blank to keep current password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Minimum 8 characters, including letters and numbers.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
 
             {profileUpdateError && (
@@ -471,7 +434,7 @@ const ProfileUpdateFormSection: React.FC<Props> = ({ user, userType }) => {
             <Button
               type="submit"
               disabled={profileUpdateLoading}
-              className="w-full sm:w-auto"
+              className="w-48 text-black"
             >
               {profileUpdateLoading ? (
                 <>
