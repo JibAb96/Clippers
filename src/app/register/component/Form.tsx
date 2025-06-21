@@ -16,6 +16,9 @@ import {
   uploadClipperImage,
 } from "../../../state/User/userProfileThunks";
 import type { RegistrationApiResponse } from "../../../model";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+import { deleteCurrentUserAccount } from "@/state/User/profileManagementThunks";
 
 // Options for Platform select, derived from DTO/Schema
 const platformOptions = [
@@ -71,7 +74,8 @@ const Form = () => {
       setValue("brandProfilePicture", undefined, { shouldValidate: true });
     }
   };
-
+  const { toast } = useToast();
+  const router = useRouter();
   const onSubmit: SubmitHandler<Registration> = async (data) => {
     console.log(data);
     const { role, brandProfilePicture, ...apiData } = data;
@@ -84,12 +88,12 @@ const Form = () => {
         registrationResponse = await dispatch(
           registerCreator(apiData as Extract<Registration, { role: "creator" }>)
         ).unwrap();
-        console.log("Creator registration successful!", registrationResponse);
+  
       } else if (role === "clipper") {
         registrationResponse = await dispatch(
           registerClipper(apiData as Extract<Registration, { role: "clipper" }>)
         ).unwrap();
-        console.log("Clipper registration successful!", registrationResponse);
+  
       } else {
         console.error("Invalid role selected");
         setError("root", { message: "Invalid role. Please select a role." });
@@ -103,20 +107,16 @@ const Form = () => {
         brandProfilePicture
       );
       if (brandProfilePicture && token) {
-        console.log(`Uploading brand profile picture with token: ${token}`);
         try {
           if (role === "creator") {
             await dispatch(
               uploadCreatorImage({ token, imageFile: brandProfilePicture })
             ).unwrap();
-            console.log("Creator profile picture uploaded successfully!");
           } else if (role === "clipper") {
             await dispatch(
               uploadClipperImage({ token, imageFile: brandProfilePicture })
             ).unwrap();
-            console.log("Clipper profile picture uploaded successfully!");
           }
-          // TODO: Add success message for image upload or update UI
         } catch (imageUploadError) {
           console.error(
             "Brand profile picture upload failed:",
@@ -139,10 +139,20 @@ const Form = () => {
             type: "manual",
             message: uploadErrorMessage,
           });
-          // setError("root", { message: "User registered, but profile picture upload failed." });
+          setError("root", {
+            message: "User registered, but profile picture upload failed.",
+          });
+          localStorage.setItem("token", token);
+          dispatch(deleteCurrentUserAccount());
         }
       }
-      // TODO: Handle overall success (e.g., redirect to profile page or dashboard)
+      router.push("/signin");
+      
+      toast({
+        title: "Registration successful",
+        description: "You have successfully registered",
+      });
+      
     } catch (registrationError) {
       console.error("Registration submission error:", registrationError);
       let errorMessage = "Registration failed. Please try again.";
@@ -159,6 +169,12 @@ const Form = () => {
       setError("root", {
         message: errorMessage,
       });
+      toast({
+        title: "Registration failed",
+        description: errorMessage,
+        variant: "destructive",
+      });
+      router.push("/register");
     }
   };
 
