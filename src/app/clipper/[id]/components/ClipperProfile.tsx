@@ -28,8 +28,6 @@ const ClipperProfile = ({ id }: { id: string }) => {
     error,
     portfolioLoading,
     portfolioError,
-    guidelinesLoading,
-    guidelinesError,
   } = useAppSelector((state) => state.selectedClipper);
 
   if (loading === "pending") {
@@ -83,14 +81,6 @@ const ClipperProfile = ({ id }: { id: string }) => {
         </div>
       )}
       <hr />
-      {guidelinesLoading === "pending" && (
-        <div className="text-center p-2">Loading guidelines...</div>
-      )}
-      {guidelinesError && (
-        <div className="text-red-500 text-center p-2">
-          Error loading guidelines: {guidelinesError}
-        </div>
-      )}
         <Guidlines />
       <hr />
     </div>
