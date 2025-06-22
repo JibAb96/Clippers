@@ -16,7 +16,7 @@ const HeroSection = () => {
     <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden">
       {/* Background Gradients */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary via-quarternary to-transparent"></div>
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-secondary/5 to-transparent"></div>
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#BCC6CC]/5 to-transparent"></div>
 
       {/* Floating Elements */}
       <div className="absolute top-20 left-10 w-20 h-20 bg-secondary/10 rounded-full blur-xl animate-pulse"></div>
@@ -35,9 +35,9 @@ const HeroSection = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-flex items-center px-4 py-2 bg-secondary/10 border border-secondary/20 rounded-full text-secondary font-medium text-sm"
+            className="inline-flex items-center px-4 py-2 bg-primary/10 border border-[#101010]/20 rounded-full text-[#101010] font-medium text-sm"
           >
-            <span className="w-2 h-2 bg-secondary rounded-full mr-2 animate-pulse"></span>
+            <span className="w-2 h-2 bg-[#101010] rounded-full mr-2 animate-pulse"></span>
             Revolutionizing Content Distribution
           </motion.div>
 
@@ -48,11 +48,11 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight"
           >
-            <span className="bg-gradient-to-r from-blue-700 via-secondary to-secondary bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#101010] via-[#101010] to-[#BCC6CC] bg-clip-text text-transparent">
               Connect Creators
             </span>
             <br />
-            <span className="bg-gradient-to-r from-secondary via-secondary to-blue-700 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#BCC6CC] via-[#101010] to-[#101010] bg-clip-text text-transparent">
               with Clippers
             </span>
           </motion.h1>
@@ -98,15 +98,15 @@ const HeroSection = () => {
             className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-16 max-w-2xl mx-auto"
           >
             <div className="text-center">
-              <div className="text-3xl font-bold text-secondary mb-2">10K+</div>
+              <div className="text-3xl font-bold text-[#101010] mb-2">10K+</div>
               <div className="text-gray-600">Active Creators</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-secondary mb-2">500+</div>
+              <div className="text-3xl font-bold text-[#101010] mb-2">500+</div>
               <div className="text-gray-600">Verified Clippers</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-secondary mb-2">1M+</div>
+              <div className="text-3xl font-bold text-[#101010] mb-2">1M+</div>
               <div className="text-gray-600">Clips Distributed</div>
             </div>
           </motion.div>
