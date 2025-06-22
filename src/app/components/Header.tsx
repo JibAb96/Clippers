@@ -1,7 +1,6 @@
 import React from "react";
 import Logo from "./Logo";
 import NavigationButton from "./NavigationButton";
-import CTAButton from "../../components/CTAButton";
 
 /**
  * Header Component
@@ -35,12 +34,6 @@ const Header = () => {
            lg:h-20"
         >
           <Logo />
-          <CTAButton
-            CustomClass="hidden absolute right-32 top-5"
-            Text={"Become a Clipper"}
-            onClick={"/dashboard/clipper"}
-            AriaLabel="navigation-button"
-          />
           <NavigationButton />
         </div>
       </div>
