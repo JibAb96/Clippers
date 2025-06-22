@@ -5,46 +5,56 @@ import { Clip, ClipStatus } from "../../../state/Clips/clipsSlice"; // Assuming 
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { setSubmittedClip } from "@/state/Modal/isOpen"; // This is for opening the modal
 import { setSelectedClip } from "../../../state/Clips/clipsSlice"; // Correct action for selected clip state
-import { RootState } from "@/state/store";
+
 import {
   getCreatorProfileById,
   getClipperProfileById,
 } from "@/state/UserLookup/userLookupThunks";
 import {
-  clearCreatorProfile,
-  clearClipperProfile,
+  selectCreatorProfileById,
+  selectClipperProfileById,
 } from "@/state/UserLookup/userLookupSlice";
+
 // Here we have the structure of the cards of each clip that will be displayed. Styled with
 // tailwindcss.
 
 const DashboardCard = ({ clip }: { clip: Clip }) => {
   const dispatch = useAppDispatch();
-  const { userType } = useAppSelector((state: RootState) => state.user);
-  const {
-    profile: creatorProfile,
-    loading: creatorLoading,
-    error: creatorError,
-  } = useAppSelector((state: RootState) => state.creatorProfile);
-  const {
-    profile: clipperProfile,
-    loading: clipperLoading,
-    error: clipperError,
-  } = useAppSelector((state: RootState) => state.clipperProfile);
+  const { userType } = useAppSelector((state) => state.user);
+  // Selectors for profile by ID
+  const creatorProfile = useAppSelector((state) =>
+    selectCreatorProfileById(state, clip.creatorId)
+  );
+  const clipperProfile = useAppSelector((state) =>
+    selectClipperProfileById(state, clip.clipperId)
+  );
+  const creatorsLoading = useAppSelector(
+    (state) => state.creatorProfile.loading
+  );
+  const clippersLoading = useAppSelector(
+    (state) => state.clipperProfile.loading
+  );
+  const creatorsError = useAppSelector(
+    (state) => state.creatorProfile.error
+  );
+  const clippersError = useAppSelector(
+    (state) => state.clipperProfile.error
+  );
 
   useEffect(() => {
-    if (userType === "clipper" && clip.creatorId) {
+    if (userType === "clipper" && clip.creatorId && !creatorProfile) {
       dispatch(getCreatorProfileById(clip.creatorId));
-      console.log("id of clip creator", clip.creatorId);
-      return () => {
-        dispatch(clearCreatorProfile());
-      };
-    } else if (userType === "creator" && clip.clipperId) {
+    } else if (userType === "creator" && clip.clipperId && !clipperProfile) {
       dispatch(getClipperProfileById(clip.clipperId));
-      return () => {
-        dispatch(clearClipperProfile());
-      };
     }
-  }, [dispatch, userType, clip.creatorId, clip.clipperId]);
+  }, [
+    dispatch,
+    userType,
+    clip.creatorId,
+    clip.clipperId,
+    creatorProfile,
+    clipperProfile,
+  ]);
 
   // Function to set bg color corresponding with status
   const getStatusTextAndColor = (status: ClipStatus) => {
@@ -81,19 +91,10 @@ const DashboardCard = ({ clip }: { clip: Clip }) => {
     dispatch(setSelectedClip(clip)); // Sets the selected clip in our new clipsSlice state
   };
 
-  const profileName =
-    userType === "clipper"
-      ? creatorProfile?.brandName
-      : clipperProfile?.brandName;
-
-  const profilePicture =
-    userType === "clipper"
-      ? creatorProfile?.brandProfilePicture
-      : clipperProfile?.brandProfilePicture;
-
+  const profile = userType === "clipper" ? creatorProfile : clipperProfile;
   const isLoadingProfile =
-    userType === "clipper" ? creatorLoading : clipperLoading;
-  const profileError = userType === "clipper" ? creatorError : clipperError;
+    userType === "clipper" ? creatorsLoading : clippersLoading;
+  const profileError = userType === "clipper" ? creatorsError : clippersError;
 
   return (
     <div
@@ -136,11 +137,11 @@ const DashboardCard = ({ clip }: { clip: Clip }) => {
           {/* Profile information */}
           <div className="flex items-center space-x-2">
             <div className="relative w-8 h-8 flex-shrink-0">
-              {profilePicture ? (
+              {profile?.brandProfilePicture ? (
                 <Image
                   className="w-full h-full object-cover rounded-full"
-                  src={profilePicture}
-                  alt={`${profileName || "Profile"} picture`}
+                  src={profile.brandProfilePicture}
+                  alt={`${profile.brandName || "Profile"} picture`}
                   width={32}
                   height={32}
                 />
@@ -152,10 +153,12 @@ const DashboardCard = ({ clip }: { clip: Clip }) => {
               {isLoadingProfile ? (
                 <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
               ) : profileError ? (
-                <span className="text-red-500 text-sm">Unable to find user name</span>
-              ) : profileName ? (
+                <span className="text-red-500 text-sm">
+                  Unable to find user name
+                </span>
+              ) : profile?.brandName ? (
                 <span className="text-gray-600 font-medium truncate block">
-                  {profileName}
+                  {profile.brandName}
                 </span>
               ) : (
                 <span className="text-gray-500 text-sm truncate block">
