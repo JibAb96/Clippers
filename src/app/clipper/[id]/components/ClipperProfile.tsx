@@ -70,7 +70,7 @@ const ClipperProfile = ({ id }: { id: string }) => {
   }
 
   return (
-    <div className="bg-primary">
+    <div className="bg-primary flex flex-col">
       <ClipperInfo clipper={clipper} portfolioImages={portfolioImages} />
       {portfolioLoading === "pending" && (
         <div className="text-center p-2">Loading portfolio...</div>
