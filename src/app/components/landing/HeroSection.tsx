@@ -15,7 +15,7 @@ const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden">
       {/* Background Gradients */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary via-quarternary to-transparent"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-primary via-[#fafafa] to-transparent"></div>
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-[#BCC6CC]/5 to-transparent"></div>
 
       {/* Floating Elements */}
@@ -23,7 +23,7 @@ const HeroSection = () => {
       <div className="absolute bottom-20 right-10 w-32 h-32 bg-secondary/5 rounded-full blur-2xl animate-pulse delay-1000"></div>
       <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-secondary/8 rounded-full blur-lg animate-pulse delay-500"></div>
 
-      <div className="relative z-10 max-w-7xl mx-auto text-center">
+      <div className="relative z-10 max-w-7xl mx-auto text-center mt-24 md:mt-0">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -48,11 +48,11 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight"
           >
-            <span className="bg-gradient-to-r from-[#101010] via-[#101010] to-[#BCC6CC] bg-clip-text text-transparent">
+            <span className="text-[#101010]">
               Connect Creators
             </span>
             <br />
-            <span className="bg-gradient-to-r from-[#BCC6CC] via-[#101010] to-[#101010] bg-clip-text text-transparent">
+            <span className="text-[#101010]">
               with Clippers
             </span>
           </motion.h1>
@@ -62,7 +62,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="text-xl sm:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
+            className="text-xl sm:text-2xl text-[#101010] max-w-3xl mx-auto leading-relaxed"
           >
             The ultimate platform where content creators meet social media
             influencers. Submit your clips and reach millions through our
@@ -95,7 +95,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9 }}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-16 max-w-2xl mx-auto"
+            className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-16 max-w-2xl mx-auto pb-8"
           >
             <div className="text-center">
               <div className="text-3xl font-bold text-[#101010] mb-2">10K+</div>
@@ -118,7 +118,7 @@ const HeroSection = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 hidden lg:block"
       >
         <div className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
           <motion.div
