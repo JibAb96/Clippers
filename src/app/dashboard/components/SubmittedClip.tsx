@@ -15,20 +15,20 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { selectClipperProfileById, selectCreatorProfileById } from "@/state/UserLookup/userLookupSlice";
+
 
 const SubmittedClip = () => {
   const dispatch = useAppDispatch();
   const clip = useAppSelector((state) => state.clips.selectedClip);
   const { userType } = useAppSelector((state) => state.user);
   const { statusUpdateLoading } = useAppSelector((state) => state.clips);
-
-  // Get profile information based on user type
-  const { profile: creatorProfile, loading: creatorLoading } = useAppSelector(
-    (state) => state.creatorProfile
-  );
-  const { profile: clipperProfile, loading: clipperLoading } = useAppSelector(
-    (state) => state.clipperProfile
-  );
+  const creatorProfile = useAppSelector((state) =>
+selectCreatorProfileById(state, (clip?.creatorId || ""))
+    );
+  const clipperProfile = useAppSelector((state) =>
+      selectClipperProfileById(state, (clip?.clipperId || ""))
+    );
 
   // Handle escape key
   useEffect(() => {
@@ -93,20 +93,7 @@ const SubmittedClip = () => {
     }
   };
 
-  const profileInfo =
-    userType === "clipper"
-      ? {
-          name: creatorProfile?.brandName || `Creator ${clip?.creatorId}`,
-          picture: creatorProfile?.brandProfilePicture,
-          loading: creatorLoading,
-          role: "Creator",
-        }
-      : {
-          name: clipperProfile?.brandName || `Clipper ${clip?.clipperId}`,
-          picture: clipperProfile?.brandProfilePicture,
-          loading: clipperLoading,
-          role: "Clipper",
-        };
+  const profile = userType === "clipper" ? creatorProfile : clipperProfile;
 
   if (!clip) {
     return (
@@ -175,16 +162,16 @@ const SubmittedClip = () => {
             {/* Profile Information */}
             <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
               <Avatar className="h-10 w-10">
-                <AvatarImage src={profileInfo.picture || undefined} />
+                <AvatarImage src={profile.brandProfilePicture || undefined} />
                 <AvatarFallback>
                   <User className="h-5 w-5" />
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900 truncate">
-                  {profileInfo.loading ? "Loading..." : profileInfo.name}
+                  {profile.brandName || "..."}
                 </p>
-                <p className="text-xs text-gray-500">{profileInfo.role}</p>
+                <p className="text-xs text-gray-500">{userType === "clipper" ? "Creator" : "Clipper"}</p>
               </div>
             </div>
           </div>
