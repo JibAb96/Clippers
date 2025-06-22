@@ -14,7 +14,7 @@ const Logo = () => {
         aria-hidden="false"
         className="size-7 rotate-180 pl-1 pt-2 text-secondary"
       />
-      <Link href="/find-clippers">
+      <Link href="/">
         <div className="text-secondary font-leagueSpartan text-2xl font-bold ">clippers</div>
       </Link>
     </div>
