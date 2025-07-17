@@ -116,15 +116,6 @@ const NavigationButton = () => {
                   <li>
                     <Link
                       onClick={closeDropdown}
-                      href="/register"
-                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >
-                      Register
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      onClick={closeDropdown}
                       href="/signin"
                       className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                     >
