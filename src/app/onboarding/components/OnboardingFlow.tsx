@@ -48,8 +48,8 @@ const OnboardingFlow: React.FC = () => {
   const [formData, setFormData] = useState<OnboardingFormData>({
     brandName: "",
     socialMediaHandle: "",
-    platform: "",
-    niche: "",
+    platform: "instagram",
+    niche: "sport",
     country: "",
     followerCount: 0,
     pricePerPost: 0,
