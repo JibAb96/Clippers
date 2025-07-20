@@ -1,14 +1,18 @@
 "use client";
 import React, { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useDispatch } from "react-redux";
 import { GoogleOAuthApi } from "@/lib/google-oauth";
 import { useToast } from "@/hooks/use-toast";
+import { setUser } from "../../../state/User/usersSlice";
+import { AppDispatch } from "../../../state/store";
 import Background from "../../signin/components/Background";
 
 const AuthCallbackPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     const handleCallback = async () => {
@@ -41,9 +45,18 @@ const AuthCallbackPage = () => {
 
         if (result.requiresOnboarding) {
           router.push(`/onboarding?token=${result.onboardingToken}`);
-        } else if (result.user && result.accessToken && result.refreshToken) {
-          localStorage.setItem('accessToken', result.accessToken);
+        } else if (result.user && result.token && result.refreshToken) {
+          // Use consistent token names
+          localStorage.setItem('token', result.token);
           localStorage.setItem('refreshToken', result.refreshToken);
+          
+          // Update Redux store with user info
+          dispatch(setUser({
+            user: result.user,
+            token: result.token,
+            refreshToken: result.refreshToken,
+            role: result.user.role,
+          }));
           
           toast({
             title: "Welcome back!",
@@ -69,11 +82,11 @@ const AuthCallbackPage = () => {
     };
 
     handleCallback();
-  }, [searchParams, router, toast]);
+  }, [searchParams, router, toast, dispatch]);
 
   return (
     <Background>
-      <div className="min-h-full flex items-center justify-center">
+      <div className="min-h-full flex items-center justify-center p-10">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
           <h2 className="text-xl font-semibold text-gray-900 mb-2">
