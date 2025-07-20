@@ -6,12 +6,19 @@ import DashboardSections from "./DashboardSections";
 import { useDispatch, useSelector } from "react-redux";
 import { getClipsByCreatorId } from "../../../state/Clips/clipsThunks";
 import { AppDispatch, RootState } from "../../../state/store"; // Assuming store types path
+import { useTutorialTrigger } from "../../../hooks/useTutorialTrigger";
 
 const CreatorDashboard = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { clips, loading, error } = useSelector(
     (state: RootState) => state.clips
   );
+
+  // Get userType from Redux state instead of hardcoding
+  const { userType } = useSelector((state: RootState) => state.user);
+
+  // Trigger tutorial for newly onboarded users - using actual userType from state
+  useTutorialTrigger({ userType });
 
   useEffect(() => {
     dispatch(getClipsByCreatorId());
@@ -41,12 +48,14 @@ const CreatorDashboard = () => {
           Manage and track all your submitted video clips in one place
         </h2>
       </div>
-      <ClipStatusHeadings
-        Clips={clips}
-        HeadingOne="Pending Review"
-        HeadingTwo="Posted"
-        HeadingThree="Rejected"
-      />
+      <div className="dashboard-status-headings">
+        <ClipStatusHeadings
+          Clips={clips}
+          HeadingOne="Pending Review"
+          HeadingTwo="Posted"
+          HeadingThree="Rejected"
+        />
+      </div>
       <DashboardSections
         HeadingOne="Pending Review"
         HeadingTwo="Posted"
