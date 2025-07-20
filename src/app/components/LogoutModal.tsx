@@ -39,9 +39,10 @@ const LogoutModal = () => {
             <AlertDialogAction 
               className="flex-1 px-4 py-2.5 rounded-lg bg-secondary text-white hover:bg-secondary/90 transition-colors"
               onClick={() => {
+                router.push("/")
                 dispatch(logout())
                 dispatch(setLogout())
-                router.push("/")
+                
               }
                 }
             >
