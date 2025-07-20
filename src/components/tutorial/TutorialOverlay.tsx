@@ -26,73 +26,6 @@ const TutorialOverlay: React.FC<TutorialOverlayProps> = ({ onNavigate }) => {
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    console.log("🎯 TutorialOverlay: Component mounting");
-    setMounted(true);
-    return () => {
-      console.log("🎯 TutorialOverlay: Component unmounting");
-    };
-  }, []);
-
-  // Debug tutorial state changes
-  useEffect(() => {
-    console.log("🎯 TutorialOverlay: State changed:", {
-      isActive: state.isActive,
-      currentFlow: state.currentFlow?.id,
-      currentStepIndex: state.currentStepIndex,
-      mounted,
-    });
-  }, [state.isActive, state.currentFlow, state.currentStepIndex, mounted]);
-
-  // Find and track target element
-  useEffect(() => {
-    if (!state.isActive) {
-      setTargetElement(null);
-      return;
-    }
-
-    const currentStep = getCurrentStep();
-    console.log(
-      "🎯 TutorialOverlay: Looking for target element for step:",
-      currentStep?.id
-    );
-
-    if (!currentStep?.targetElement) {
-      console.log(
-        "🎯 TutorialOverlay: No target element specified for this step"
-      );
-      setTargetElement(null);
-      return;
-    }
-
-    const findElement = () => {
-      console.log(
-        "🎯 TutorialOverlay: Searching for element:",
-        currentStep.targetElement
-      );
-      const element = document.querySelector(
-        currentStep.targetElement!
-      ) as HTMLElement;
-      if (element) {
-        console.log("🎯 TutorialOverlay: Found target element:", element);
-        setTargetElement(element);
-        updateTooltipPosition(element, currentStep.position);
-      } else {
-        console.log("🎯 TutorialOverlay: Element not found, retrying in 100ms");
-        // Element not found, retry after a short delay
-        setTimeout(findElement, 100);
-      }
-    };
-
-    findElement();
-  }, [
-    state.currentStepIndex,
-    state.isActive,
-    getCurrentStep,
-    updateTooltipPosition,
-  ]);
-
   const updateTooltipPosition = useCallback(
     (element: HTMLElement, position: string) => {
       const rect = element.getBoundingClientRect();
@@ -130,6 +63,59 @@ const TutorialOverlay: React.FC<TutorialOverlayProps> = ({ onNavigate }) => {
     },
     []
   );
+  useEffect(() => {
+    console.log("🎯 TutorialOverlay: Component mounting");
+    setMounted(true);
+    return () => {
+      console.log("🎯 TutorialOverlay: Component unmounting");
+    };
+  }, []);
+
+  // Debug tutorial state changes
+  useEffect(() => {
+    console.log("🎯 TutorialOverlay: State changed:", {
+      isActive: state.isActive,
+      currentFlow: state.currentFlow?.id,
+      currentStepIndex: state.currentStepIndex,
+      mounted,
+    });
+  }, [state.isActive, state.currentFlow, state.currentStepIndex, mounted]);
+
+  // Find and track target element
+  useEffect(() => {
+    if (!state.isActive) {
+      setTargetElement(null);
+      return;
+    }
+
+    const currentStep = getCurrentStep();
+    if (!currentStep?.targetElement) {
+      setTargetElement(null);
+      return;
+    }
+
+    const findElement = () => {
+      const element = document.querySelector(
+        currentStep.targetElement!
+      ) as HTMLElement;
+      if (element) {
+        setTargetElement(element);
+        updateTooltipPosition(element, currentStep.position);
+      } else {
+        // Element not found, retry after a short delay
+        setTimeout(findElement, 100);
+      }
+    };
+
+    findElement();
+  }, [
+    state.currentStepIndex,
+    state.isActive,
+    getCurrentStep,
+    updateTooltipPosition,
+  ]);
+
+
 
   // Handle navigation actions
   const handleStepAction = useCallback(() => {

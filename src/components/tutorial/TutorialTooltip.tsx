@@ -17,7 +17,7 @@ interface TutorialTooltipProps {
   onClose: () => void;
   canSkip: boolean;
   isFirstStep: boolean;
-  isLastStep: boolean;
+  isLastStep: boolean | null;
 }
 
 const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
@@ -43,7 +43,6 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
         zIndex: 60,
         maxWidth: "90vw",
         width: "100%",
-        maxWidth: "500px",
       };
     }
 
