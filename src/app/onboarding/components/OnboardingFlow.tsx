@@ -1,10 +1,22 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useDispatch } from "react-redux";
 import Background from "../../signin/components/Background";
-import { GoogleOAuthApi, type OnboardingData, type Platform, type Niche } from "@/lib/google-oauth";
+import { GoogleOAuthApi, type Platform, type Niche } from "@/lib/google-oauth";
 import { useToast } from "@/hooks/use-toast";
+import { setUser } from "../../../state/User/usersSlice";
+import { AppDispatch } from "../../../state/store";
+import { Clipper, Creator } from "@/model";
 import RoleSelectionStep from "./steps/RoleSelectionStep";
+import { markUserAsJustOnboarded } from "../../../hooks/useTutorialTrigger";
+
+interface OnboardingCompletionResponse {
+  user: Creator | Clipper;
+  role: "creator" | "clipper";
+  token: string;
+  refreshToken: string;
+}
 import BrandNameStep from "./steps/BrandNameStep";
 import SocialMediaStep from "./steps/SocialMediaStep";
 import NicheLocationStep from "./steps/NicheLocationStep";
@@ -22,12 +34,25 @@ interface FormData {
   password: string;
 }
 
+interface OnboardingState {
+  onboardingToken: string;
+  currentStep: number;
+  totalSteps: number;
+  role: "creator" | "clipper" | "";
+}
+
 const OnboardingFlow: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
-  
-  const [onboardingData, setOnboardingData] = useState<OnboardingData | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const [onboardingState, setOnboardingState] = useState<OnboardingState>({
+    onboardingToken: "",
+    currentStep: 0,
+    totalSteps: 4,
+    role: "",
+  });
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState<FormData>({
@@ -38,146 +63,181 @@ const OnboardingFlow: React.FC = () => {
     country: "",
     followerCount: 0,
     pricePerPost: 0,
-    password: ""
+    password: "",
   });
 
   useEffect(() => {
-    const token = searchParams.get('token');
+    const token = searchParams.get("token");
     if (!token) {
       toast({
         title: "Invalid Access",
         description: "No onboarding token found. Redirecting to sign in.",
-        variant: "destructive"
+        variant: "destructive",
       });
-      router.push('/signin');
+      router.push("/signin");
       return;
     }
 
-    const initializeOnboarding = async () => {
+    // Validate the token exists but don't get step status since we're managing steps locally
+    const validateToken = async () => {
       try {
-        const status = await GoogleOAuthApi.getOnboardingStatus(token);
-        setOnboardingData({
+        // Just verify the token is valid
+        await GoogleOAuthApi.getOnboardingStatus(token);
+        setOnboardingState((prev) => ({
+          ...prev,
           onboardingToken: token,
-          currentStep: status.currentStep,
-          totalSteps: status.totalSteps,
-          role: status.role
-        });
+        }));
       } catch (error) {
-        console.error('Failed to get onboarding status:', error);
+        console.error("Invalid onboarding token:", error);
         toast({
-          title: "Error",
-          description: "Failed to load onboarding data. Please try again.",
-          variant: "destructive"
+          title: "Invalid Token",
+          description:
+            "Your onboarding session has expired. Please sign in again.",
+          variant: "destructive",
         });
-        router.push('/signin');
+        router.push("/signin");
       } finally {
         setLoading(false);
       }
     };
 
-    initializeOnboarding();
+    validateToken();
   }, [searchParams, router, toast]);
 
-  const handleRoleSelection = (role: 'creator' | 'clipper') => {
-    if (onboardingData) {
-      setOnboardingData({
-        ...onboardingData,
-        role,
-        currentStep: 1,
-        totalSteps: role === 'clipper' ? 5 : 4
-      });
-    }
+  const handleRoleSelection = (role: "creator" | "clipper") => {
+    setOnboardingState((prev) => ({
+      ...prev,
+      role,
+      currentStep: 1,
+      totalSteps: role === "clipper" ? 5 : 4,
+    }));
   };
 
-  const processStep = async (stepNumber: number) => {
-    if (!onboardingData) return;
-
-    setSubmitting(true);
-    try {
-      let result;
-      
-      switch (stepNumber) {
-        case 1:
-          result = await GoogleOAuthApi.submitOnboardingStep1(
-            onboardingData.onboardingToken,
-            formData.brandName
-          );
-          break;
-        case 2:
-          result = await GoogleOAuthApi.submitOnboardingStep2(
-            onboardingData.onboardingToken,
-            formData.socialMediaHandle,
-            formData.platform as Platform
-          );
-          break;
-        case 3:
-          result = await GoogleOAuthApi.submitOnboardingStep3(
-            onboardingData.onboardingToken,
-            formData.niche as Niche,
-            formData.country
-          );
-          break;
-        case 4:
-          if (onboardingData.role === 'clipper') {
-            result = await GoogleOAuthApi.submitOnboardingStep4Clipper(
-              onboardingData.onboardingToken,
-              formData.followerCount,
-              formData.pricePerPost
-            );
-          } else {
-            return completeOnboarding();
-          }
-          break;
-      }
-
-      if (result?.success) {
-        setOnboardingData(prev => prev ? {
-          ...prev,
-          currentStep: result.currentStep
-        } : null);
-      }
-    } catch (error) {
-      console.error(`Step ${stepNumber} failed:`, error);
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to submit step",
-        variant: "destructive"
-      });
-    } finally {
-      setSubmitting(false);
-    }
+  const goToNextStep = () => {
+    setOnboardingState((prev) => ({
+      ...prev,
+      currentStep: prev.currentStep + 1,
+    }));
   };
 
   const completeOnboarding = async () => {
-    if (!onboardingData) return;
+    if (!onboardingState.onboardingToken) return;
+
+    // Validate all required fields are filled
+    const { brandName, socialMediaHandle, platform, niche, country, password } =
+      formData;
+
+    if (!brandName.trim()) {
+      toast({
+        title: "Missing Information",
+        description: "Please provide a brand name.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!socialMediaHandle.trim() || !platform) {
+      toast({
+        title: "Missing Information",
+        description: "Please provide your social media handle and platform.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!niche || !country.trim()) {
+      toast({
+        title: "Missing Information",
+        description: "Please select your niche and provide your country.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (
+      onboardingState.role === "clipper" &&
+      (formData.followerCount <= 0 || formData.pricePerPost <= 0)
+    ) {
+      toast({
+        title: "Missing Information",
+        description: "Please provide your follower count and price per post.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!password.trim()) {
+      toast({
+        title: "Missing Information",
+        description: "Please create a password.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     setSubmitting(true);
     try {
-      const result = await GoogleOAuthApi.completeOnboarding(
-        onboardingData.onboardingToken,
-        formData.password
-      );
+      // Prepare the complete onboarding data
+      const onboardingData = {
+        onboardingToken: onboardingState.onboardingToken,
+        role: onboardingState.role,
+        brandName: formData.brandName,
+        socialMediaHandle: formData.socialMediaHandle,
+        platform: formData.platform as Platform,
+        niche: formData.niche as Niche,
+        country: formData.country,
+        password: formData.password,
+        ...(onboardingState.role === "clipper" && {
+          followerCount: formData.followerCount,
+          pricePerPost: formData.pricePerPost,
+        }),
+      };
 
-      if (result.accessToken && result.refreshToken) {
-        localStorage.setItem('accessToken', result.accessToken);
-        localStorage.setItem('refreshToken', result.refreshToken);
-        
+      const result = (await GoogleOAuthApi.completeOnboarding(
+        onboardingData
+      )) as unknown as OnboardingCompletionResponse;
+
+      if (result.user && result.token && result.refreshToken && result.role) {
+        // Use consistent token names with auth callback
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("refreshToken", result.refreshToken);
+        localStorage.setItem("user", JSON.stringify(result.user));
+        localStorage.setItem("userType", result.role);
+
+        // Update Redux store with user info
+        dispatch(
+          setUser({
+            user: result.user,
+            token: result.token,
+            refreshToken: result.refreshToken,
+            role: result.role,
+          })
+        );
+
         toast({
           title: "Welcome!",
           description: "Your account has been created successfully.",
         });
 
-        const dashboardPath = onboardingData.role === 'creator' 
-          ? '/dashboard/creator' 
-          : '/dashboard/clipper';
+        // Mark user as just onboarded to trigger tutorial
+        markUserAsJustOnboarded();
+
+        // Redirect to role-specific dashboard for better UX
+        const dashboardPath =
+          result.role === "creator"
+            ? "/dashboard/creator"
+            : "/dashboard/clipper";
         router.push(dashboardPath);
       }
     } catch (error) {
-      console.error('Onboarding completion failed:', error);
+      console.error("Onboarding completion failed:", error);
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to complete onboarding",
-        variant: "destructive"
+        description:
+          error instanceof Error
+            ? error.message
+            : "Failed to complete onboarding",
+        variant: "destructive",
       });
     } finally {
       setSubmitting(false);
@@ -185,19 +245,17 @@ const OnboardingFlow: React.FC = () => {
   };
 
   const renderStep = () => {
-    if (!onboardingData) return null;
-
     const stepProps = {
       formData,
       setFormData,
-      onNext: () => processStep(onboardingData.currentStep + 1),
-      submitting
+      onNext: goToNextStep,
+      submitting,
     };
 
-    switch (onboardingData.currentStep) {
+    switch (onboardingState.currentStep) {
       case 0:
         return (
-          <RoleSelectionStep 
+          <RoleSelectionStep
             onRoleSelect={handleRoleSelection}
             submitting={submitting}
           />
@@ -209,9 +267,11 @@ const OnboardingFlow: React.FC = () => {
       case 3:
         return <NicheLocationStep {...stepProps} />;
       case 4:
-        return onboardingData.role === 'clipper' ? 
-          <ClipperDetailsStep {...stepProps} /> :
-          <PasswordStep {...stepProps} onComplete={completeOnboarding} />;
+        return onboardingState.role === "clipper" ? (
+          <ClipperDetailsStep {...stepProps} />
+        ) : (
+          <PasswordStep {...stepProps} onComplete={completeOnboarding} />
+        );
       case 5:
         return <PasswordStep {...stepProps} onComplete={completeOnboarding} />;
       default:
@@ -236,24 +296,28 @@ const OnboardingFlow: React.FC = () => {
     <Background>
       <div className="min-h-full flex flex-col items-center justify-center pt-28 lg:pt-8">
         <div className="w-full max-w-md mx-auto">
-          {onboardingData && (
-            <div className="mb-6 text-center">
+          {onboardingState.role && (
+            <div className="mb-6 text-center p-10">
               <div className="flex justify-center mb-4">
                 <div className="flex space-x-2">
-                  {Array.from({ length: onboardingData.totalSteps }, (_, i) => (
-                    <div
-                      key={i}
-                      className={`w-3 h-3 rounded-full ${
-                        i <= onboardingData.currentStep
-                          ? 'bg-gray-800'
-                          : 'bg-gray-300'
-                      }`}
-                    />
-                  ))}
+                  {Array.from(
+                    { length: onboardingState.totalSteps },
+                    (_, i) => (
+                      <div
+                        key={i}
+                        className={`w-3 h-3 rounded-full ${
+                          i <= onboardingState.currentStep
+                            ? "bg-gray-800"
+                            : "bg-gray-300"
+                        }`}
+                      />
+                    )
+                  )}
                 </div>
               </div>
               <p className="text-sm text-gray-600">
-                Step {onboardingData.currentStep + 1} of {onboardingData.totalSteps}
+                Step {onboardingState.currentStep + 1} of{" "}
+                {onboardingState.totalSteps}
               </p>
             </div>
           )}
