@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, Dispatch, SetStateAction } from "react";
 import {
   Card,
   CardContent,
@@ -17,11 +17,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PLATFORMS, type Platform } from "@/lib/google-oauth";
+import { PLATFORMS, type Platform, type Niche } from "@/lib/google-oauth";
+
+interface FormData {
+  brandName: string;
+  socialMediaHandle: string;
+  platform: Platform | "";
+  niche: Niche | "";
+  country: string;
+  followerCount: number;
+  pricePerPost: number;
+  password: string;
+}
 
 interface SocialMediaStepProps {
-  formData: { socialMediaHandle: string; platform: Platform | "" };
-  setFormData: (data: { socialMediaHandle: string; platform: Platform | "" }) => void;
+  formData: FormData;
+  setFormData: Dispatch<SetStateAction<FormData>>;
   onNext: () => void;
   submitting: boolean;
 }

@@ -1,15 +1,26 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, Dispatch, SetStateAction } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { NICHES, type Niche } from "@/lib/google-oauth";
+import { NICHES, type Niche, type Platform } from "@/lib/google-oauth";
+
+interface FormData {
+  brandName: string;
+  socialMediaHandle: string;
+  platform: Platform | "";
+  niche: Niche | "";
+  country: string;
+  followerCount: number;
+  pricePerPost: number;
+  password: string;
+}
 
 interface NicheLocationStepProps {
-  formData: { niche: Niche | ""; country: string };
-  setFormData: (data: { niche: Niche | ""; country: string }) => void;
+  formData: FormData;
+  setFormData: Dispatch<SetStateAction<FormData>>;
   onNext: () => void;
   submitting: boolean;
 }

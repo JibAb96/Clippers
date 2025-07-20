@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, Dispatch, SetStateAction } from "react";
 import {
   Card,
   CardContent,
@@ -11,9 +11,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+interface FormData {
+  brandName: string;
+  socialMediaHandle: string;
+  platform: string;
+  niche: string;
+  country: string;
+  followerCount: number;
+  pricePerPost: number;
+  password: string;
+}
+
 interface BrandNameStepProps {
-  formData: { brandName: string };
-  setFormData: (data: { brandName: string }) => void;
+  formData: FormData;
+  setFormData: Dispatch<SetStateAction<FormData>>;
   onNext: () => void;
   submitting: boolean;
 }
