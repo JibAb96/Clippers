@@ -6,6 +6,7 @@ import { GoogleOAuthApi } from "@/lib/google-oauth";
 import { useToast } from "@/hooks/use-toast";
 import { setUser } from "../../../state/User/usersSlice";
 import { AppDispatch } from "../../../state/store";
+import { Clipper, Creator } from "@/model";
 import Background from "../../signin/components/Background";
 
 const AuthCallbackPage = () => {
@@ -16,17 +17,17 @@ const AuthCallbackPage = () => {
 
   useEffect(() => {
     const handleCallback = async () => {
-      const code = searchParams.get('code');
-      const state = searchParams.get('state');
-      const error = searchParams.get('error');
+      const code = searchParams.get("code");
+      const state = searchParams.get("state");
+      const error = searchParams.get("error");
 
       if (error) {
         toast({
           title: "Authentication Error",
           description: "Google authentication was cancelled or failed.",
-          variant: "destructive"
+          variant: "destructive",
         });
-        router.push('/signin');
+        router.push("/signin");
         return;
       }
 
@@ -34,50 +35,91 @@ const AuthCallbackPage = () => {
         toast({
           title: "Invalid Request",
           description: "No authorization code received from Google.",
-          variant: "destructive"
+          variant: "destructive",
         });
-        router.push('/signin');
+        router.push("/signin");
         return;
       }
 
       try {
-        const result = await GoogleOAuthApi.handleGoogleCallback(code, state || undefined);
+        const result = await GoogleOAuthApi.handleGoogleCallback(
+          code,
+          state || undefined
+        );
 
         if (result.requiresOnboarding) {
           router.push(`/onboarding?token=${result.onboardingToken}`);
         } else if (result.user && result.token && result.refreshToken) {
           // Use consistent token names
-          localStorage.setItem('token', result.token);
-          localStorage.setItem('refreshToken', result.refreshToken);
-          
+          localStorage.setItem("token", result.token);
+          localStorage.setItem("refreshToken", result.refreshToken);
+
+          // Transform the user object to match expected structure
+          const transformedUser: Clipper | Creator =
+            result.user.role === "clipper"
+              ? ({
+                  id: result.user.id,
+                  email: result.user.email,
+                  fullName: result.user.profile.fullName || "",
+                  brandName: result.user.profile.brandName || "",
+                  socialMediaHandle:
+                    result.user.profile.socialMediaHandle || "",
+                  platform: result.user.profile.platform || "",
+                  niche: result.user.profile.niche || "",
+                  country: result.user.profile.country || "",
+                  brandProfilePicture:
+                    result.user.profile.brandProfilePicture || null,
+                  followerCount: result.user.profile.followerCount || 0,
+                  pricePerPost: result.user.profile.pricePerPost || 0,
+                } as Clipper)
+              : ({
+                  id: result.user.id,
+                  email: result.user.email,
+                  fullName: result.user.profile.fullName || "",
+                  brandName: result.user.profile.brandName || "",
+                  socialMediaHandle:
+                    result.user.profile.socialMediaHandle || "",
+                  platform: result.user.profile.platform || "",
+                  niche: result.user.profile.niche || "",
+                  country: result.user.profile.country || "",
+                  brandProfilePicture:
+                    result.user.profile.brandProfilePicture || null,
+                } as Creator);
+
           // Update Redux store with user info
-          dispatch(setUser({
-            user: result.user,
-            token: result.token,
-            refreshToken: result.refreshToken,
-            role: result.user.role,
-          }));
-          
+          dispatch(
+            setUser({
+              user: transformedUser,
+              token: result.token,
+              refreshToken: result.refreshToken,
+              role: result.user.role as "creator" | "clipper",
+            })
+          );
+
           toast({
             title: "Welcome back!",
             description: "You have been successfully signed in.",
           });
 
-          const dashboardPath = result.user.role === 'creator' 
-            ? '/dashboard/creator' 
-            : '/dashboard/clipper';
+          const dashboardPath =
+            result.user.role === "creator"
+              ? "/dashboard/creator"
+              : "/dashboard/clipper";
           router.push(dashboardPath);
         } else {
-          throw new Error('Invalid response from authentication service');
+          throw new Error("Invalid response from authentication service");
         }
       } catch (error) {
-        console.error('Google callback error:', error);
+        console.error("Google callback error:", error);
         toast({
           title: "Authentication Failed",
-          description: error instanceof Error ? error.message : "Failed to authenticate with Google",
-          variant: "destructive"
+          description:
+            error instanceof Error
+              ? error.message
+              : "Failed to authenticate with Google",
+          variant: "destructive",
         });
-        router.push('/signin');
+        router.push("/signin");
       }
     };
 
