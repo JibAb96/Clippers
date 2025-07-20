@@ -99,13 +99,6 @@ const ClipperInfo = ({
         <div className="mt-2 lg:mr-0 lg:flex lg:gap-20 xl:gap-48">
           <CTAButton
             CustomClass={"block"}
-            Text={
-              userType === "creator"
-                ? "Submit clip for review"
-                : userType === "clipper"
-                ? "Clippers can't submit clips"
-                : "Sign in for clip submission"
-            }
             onClick={
               isSignedIn && userType === "creator"
                 ? () => dispatch(setClipSubmission())
@@ -113,7 +106,13 @@ const ClipperInfo = ({
             }
             disabled={userType === "clipper"}
             AriaLabel={"Submit clip for review"}
-          />
+          >{
+              userType === "creator"
+                ? "Submit clip for review"
+                : userType === "clipper"
+                ? "Clippers can't submit clips"
+                  : "Sign in for clip submission"
+            }</CTAButton>
           <p className="text-center md:text-2xl mt-2 sm:m-0 font-medium">
             £{clipper.pricePerPost} per post
           </p>
