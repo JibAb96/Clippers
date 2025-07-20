@@ -1,8 +1,8 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
+// Redux imports removed as they're not used
 import ForgotPasswordModal from "../ForgotPasswordModal";
+import { supabase } from "@/services/supabase";
 
 // Mock Supabase
 jest.mock("@/services/supabase", () => ({
@@ -49,19 +49,19 @@ jest.mock("@/state/Modal/isOpen", () => ({
 // Mock app hooks
 jest.mock("@/app/hooks", () => ({
   useAppDispatch: () => jest.fn(),
-  useAppSelector: (selector: any) =>
-    selector({ isOpen: { forgotPassword: true } }),
+  useAppSelector: (
+    selector: (state: { isOpen: { forgotPassword: boolean } }) => boolean
+  ) => selector({ isOpen: { forgotPassword: true } }),
 }));
-
-// Get the mocked function from the module
-const { supabase } = require("@/services/supabase");
 
 describe("ForgotPasswordModal Component", () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
     // Setup the mock implementation
-    supabase.auth.resetPasswordForEmail.mockResolvedValue({ error: null });
+    (supabase.auth.resetPasswordForEmail as jest.Mock).mockResolvedValue({
+      error: null,
+    });
   });
 
   it("renders the modal when open", () => {

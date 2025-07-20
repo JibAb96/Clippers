@@ -11,7 +11,6 @@ interface TutorialTooltipProps {
   position: { x: number; y: number };
   isCenter: boolean;
   stepNumber: number;
-  totalSteps: number;
   onNext: () => void;
   onPrevious: () => void;
   onSkip: () => void;
@@ -26,7 +25,6 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
   position,
   isCenter,
   stepNumber,
-  totalSteps,
   onNext,
   onPrevious,
   onSkip,

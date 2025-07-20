@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 
 interface PasswordStepProps {
   formData: { password: string };
-  setFormData: (data: any) => void;
+  setFormData: (data: { password: string }) => void;
   onComplete: () => void;
   submitting: boolean;
 }

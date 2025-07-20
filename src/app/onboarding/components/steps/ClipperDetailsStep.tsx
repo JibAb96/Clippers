@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 
 interface ClipperDetailsStepProps {
   formData: { followerCount: number; pricePerPost: number };
-  setFormData: (data: any) => void;
+  setFormData: (data: { followerCount: number; pricePerPost: number }) => void;
   onNext: () => void;
   submitting: boolean;
 }

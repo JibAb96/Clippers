@@ -21,7 +21,7 @@ import { PLATFORMS, type Platform } from "@/lib/google-oauth";
 
 interface SocialMediaStepProps {
   formData: { socialMediaHandle: string; platform: Platform | "" };
-  setFormData: (data: any) => void;
+  setFormData: (data: { socialMediaHandle: string; platform: Platform | "" }) => void;
   onNext: () => void;
   submitting: boolean;
 }

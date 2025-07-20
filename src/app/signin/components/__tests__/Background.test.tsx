@@ -47,7 +47,7 @@ describe("Background Component", () => {
   });
 
   it("has correct CSS classes for content wrapper", () => {
-    const { container } = render(
+    render(
       <Background>
         <div data-testid="content">Content</div>
       </Background>

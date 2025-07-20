@@ -1,8 +1,10 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { useRouter } from "next/navigation";
+import { loginCreator, loginClipper } from "@/state/User/userThunks";
+import { setForgotPassword } from "@/state/Modal/isOpen";
 import Form from "../Form";
 
 // Mock Next.js router
@@ -37,7 +39,7 @@ jest.mock("@/state/Modal/isOpen", () => ({
 }));
 
 describe("Form Component", () => {
-  let mockStore: any;
+  let mockStore: ReturnType<typeof configureStore>;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -148,8 +150,7 @@ describe("Form Component", () => {
     const submitButton = screen.getByRole("button", { name: "Log in" });
     await user.click(submitButton);
 
-    // Get the mocked function to check if it was called
-    const { loginCreator } = require("@/state/User/userThunks");
+    // Check if loginCreator was called
     expect(loginCreator).toHaveBeenCalledWith({
       email: "creator@example.com",
       password: "password123",
@@ -174,8 +175,7 @@ describe("Form Component", () => {
     const submitButton = screen.getByRole("button", { name: "Log in" });
     await user.click(submitButton);
 
-    // Get the mocked function to check if it was called
-    const { loginClipper } = require("@/state/User/userThunks");
+    // Check if loginClipper was called
     expect(loginClipper).toHaveBeenCalledWith({
       email: "clipper@example.com",
       password: "password123",
@@ -195,7 +195,6 @@ describe("Form Component", () => {
     await user.click(forgotPasswordLink);
 
     // Check that the action creator was called
-    const { setForgotPassword } = require("@/state/Modal/isOpen");
     expect(setForgotPassword).toHaveBeenCalled();
   });
 

@@ -9,7 +9,7 @@ import { NICHES, type Niche } from "@/lib/google-oauth";
 
 interface NicheLocationStepProps {
   formData: { niche: Niche | ""; country: string };
-  setFormData: (data: any) => void;
+  setFormData: (data: { niche: Niche | ""; country: string }) => void;
   onNext: () => void;
   submitting: boolean;
 }

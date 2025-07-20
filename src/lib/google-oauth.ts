@@ -4,7 +4,19 @@ export interface GoogleAuthResponse {
     id: string;
     email: string;
     role: string;
-    profile: any;
+    profile: {
+      id: string;
+      email: string;
+      fullName?: string;
+      brandName?: string;
+      socialMediaHandle?: string;
+      platform?: Platform;
+      niche?: Niche;
+      country?: string;
+      followerCount?: number;
+      pricePerPost?: number;
+      brandProfilePicture?: string | null;
+    };
   };
   onboardingToken?: string;
   token?: string;
