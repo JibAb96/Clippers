@@ -10,21 +10,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-interface FormData {
-  brandName: string;
-  socialMediaHandle: string;
-  platform: string;
-  niche: string;
-  country: string;
-  followerCount: number;
-  pricePerPost: number;
-  password: string;
-}
+import { OnboardingFormData } from "../types";
 
 interface BrandNameStepProps {
-  formData: FormData;
-  setFormData: Dispatch<SetStateAction<FormData>>;
+  formData: OnboardingFormData;
+  setFormData: Dispatch<SetStateAction<OnboardingFormData>>;
   onNext: () => void;
   submitting: boolean;
 }

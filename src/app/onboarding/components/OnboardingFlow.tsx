@@ -3,11 +3,12 @@ import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
 import Background from "../../signin/components/Background";
-import { GoogleOAuthApi, type Platform, type Niche } from "@/lib/google-oauth";
+import { GoogleOAuthApi } from "@/lib/google-oauth";
 import { useToast } from "@/hooks/use-toast";
 import { setUser } from "../../../state/User/usersSlice";
 import { AppDispatch } from "../../../state/store";
 import { Clipper, Creator } from "@/model";
+import { OnboardingFormData } from "./types";
 import RoleSelectionStep from "./steps/RoleSelectionStep";
 import { markUserAsJustOnboarded } from "../../../hooks/useTutorialTrigger";
 
@@ -22,17 +23,6 @@ import SocialMediaStep from "./steps/SocialMediaStep";
 import NicheLocationStep from "./steps/NicheLocationStep";
 import ClipperDetailsStep from "./steps/ClipperDetailsStep";
 import PasswordStep from "./steps/PasswordStep";
-
-interface FormData {
-  brandName: string;
-  socialMediaHandle: string;
-  platform: Platform | "";
-  niche: Niche | "";
-  country: string;
-  followerCount: number;
-  pricePerPost: number;
-  password: string;
-}
 
 interface OnboardingState {
   onboardingToken: string;
@@ -55,7 +45,7 @@ const OnboardingFlow: React.FC = () => {
   });
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<OnboardingFormData>({
     brandName: "",
     socialMediaHandle: "",
     platform: "",
@@ -183,8 +173,8 @@ const OnboardingFlow: React.FC = () => {
         role: onboardingState.role,
         brandName: formData.brandName,
         socialMediaHandle: formData.socialMediaHandle,
-        platform: formData.platform as Platform,
-        niche: formData.niche as Niche,
+        platform: formData.platform,
+        niche: formData.niche,
         country: formData.country,
         password: formData.password,
         ...(onboardingState.role === "clipper" && {

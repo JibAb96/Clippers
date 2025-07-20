@@ -10,22 +10,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { type Platform, type Niche } from "@/lib/google-oauth";
-
-interface FormData {
-  brandName: string;
-  socialMediaHandle: string;
-  platform: Platform | "";
-  niche: Niche | "";
-  country: string;
-  followerCount: number;
-  pricePerPost: number;
-  password: string;
-}
+import { OnboardingFormData } from "../types";
 
 interface PasswordStepProps {
-  formData: FormData;
-  setFormData: Dispatch<SetStateAction<FormData>>;
+  formData: OnboardingFormData;
+  setFormData: Dispatch<SetStateAction<OnboardingFormData>>;
   onComplete: () => void;
   submitting: boolean;
 }

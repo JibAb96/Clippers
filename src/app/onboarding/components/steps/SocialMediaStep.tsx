@@ -17,22 +17,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PLATFORMS, type Platform, type Niche } from "@/lib/google-oauth";
-
-interface FormData {
-  brandName: string;
-  socialMediaHandle: string;
-  platform: Platform | "";
-  niche: Niche | "";
-  country: string;
-  followerCount: number;
-  pricePerPost: number;
-  password: string;
-}
+import { PLATFORMS, type Platform } from "@/lib/google-oauth";
+import { OnboardingFormData } from "../types";
 
 interface SocialMediaStepProps {
-  formData: FormData;
-  setFormData: Dispatch<SetStateAction<FormData>>;
+  formData: OnboardingFormData;
+  setFormData: Dispatch<SetStateAction<OnboardingFormData>>;
   onNext: () => void;
   submitting: boolean;
 }

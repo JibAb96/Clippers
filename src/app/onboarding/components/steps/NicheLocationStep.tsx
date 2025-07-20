@@ -5,22 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { NICHES, type Niche, type Platform } from "@/lib/google-oauth";
-
-interface FormData {
-  brandName: string;
-  socialMediaHandle: string;
-  platform: Platform | "";
-  niche: Niche | "";
-  country: string;
-  followerCount: number;
-  pricePerPost: number;
-  password: string;
-}
+import { NICHES, type Niche } from "@/lib/google-oauth";
+import { OnboardingFormData } from "../types";
 
 interface NicheLocationStepProps {
-  formData: FormData;
-  setFormData: Dispatch<SetStateAction<FormData>>;
+  formData: OnboardingFormData;
+  setFormData: Dispatch<SetStateAction<OnboardingFormData>>;
   onNext: () => void;
   submitting: boolean;
 }
