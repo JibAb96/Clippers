@@ -1,10 +1,22 @@
 "use client";
 import React, { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { PLATFORMS, type Platform } from "@/lib/google-oauth";
 
 interface SocialMediaStepProps {
@@ -14,48 +26,56 @@ interface SocialMediaStepProps {
   submitting: boolean;
 }
 
-const SocialMediaStep: React.FC<SocialMediaStepProps> = ({ 
-  formData, 
-  setFormData, 
-  onNext, 
-  submitting 
+const SocialMediaStep: React.FC<SocialMediaStepProps> = ({
+  formData,
+  setFormData,
+  onNext,
+  submitting,
 }) => {
-  const [errors, setErrors] = useState<{ handle?: string; platform?: string }>({});
+  const [errors, setErrors] = useState<{ handle?: string; platform?: string }>(
+    {}
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const newErrors: { handle?: string; platform?: string } = {};
-    
+
     if (!formData.socialMediaHandle.trim()) {
       newErrors.handle = "Social media handle is required";
-    } else if (formData.socialMediaHandle.length < 3 || formData.socialMediaHandle.length > 50) {
+    } else if (
+      formData.socialMediaHandle.length < 3 ||
+      formData.socialMediaHandle.length > 50
+    ) {
       newErrors.handle = "Handle must be between 3 and 50 characters";
     } else if (!/^[a-zA-Z0-9._]+$/.test(formData.socialMediaHandle)) {
-      newErrors.handle = "Handle can only contain letters, numbers, dots, and underscores";
+      newErrors.handle =
+        "Handle can only contain letters, numbers, dots, and underscores";
     }
-    
+
     if (!formData.platform) {
       newErrors.platform = "Platform selection is required";
     }
-    
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-    
+
     setErrors({});
+
     onNext();
   };
 
   const handleHandleChange = (value: string) => {
-    setFormData(prev => ({ ...prev, socialMediaHandle: value }));
-    if (errors.handle) setErrors(prev => ({ ...prev, handle: undefined }));
+    setFormData((prev) => ({ ...prev, socialMediaHandle: value }));
+    if (errors.handle) setErrors((prev) => ({ ...prev, handle: undefined }));
   };
 
   const handlePlatformChange = (value: Platform) => {
-    setFormData(prev => ({ ...prev, platform: value }));
-    if (errors.platform) setErrors(prev => ({ ...prev, platform: undefined }));
+    setFormData((prev) => ({ ...prev, platform: value }));
+    if (errors.platform)
+      setErrors((prev) => ({ ...prev, platform: undefined }));
   };
 
   return (
@@ -71,7 +91,10 @@ const SocialMediaStep: React.FC<SocialMediaStepProps> = ({
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="handle" className="text-sm font-medium text-gray-700">
+            <Label
+              htmlFor="handle"
+              className="text-sm font-medium text-gray-700"
+            >
               Social Media Handle
             </Label>
             <Input
@@ -92,8 +115,8 @@ const SocialMediaStep: React.FC<SocialMediaStepProps> = ({
             <Label className="text-sm font-medium text-gray-700">
               Platform
             </Label>
-            <Select 
-              value={formData.platform} 
+            <Select
+              value={formData.platform}
               onValueChange={handlePlatformChange}
               disabled={submitting}
             >
@@ -111,10 +134,14 @@ const SocialMediaStep: React.FC<SocialMediaStepProps> = ({
               <p className="text-sm text-red-600">{errors.platform}</p>
             )}
           </div>
-          
+
           <Button
             type="submit"
-            disabled={submitting || !formData.socialMediaHandle.trim() || !formData.platform}
+            disabled={
+              submitting ||
+              !formData.socialMediaHandle.trim() ||
+              !formData.platform
+            }
             className="w-full bg-gray-800 hover:bg-gray-900 text-white"
           >
             {submitting ? "Saving..." : "Continue"}
