@@ -83,6 +83,7 @@ const UserProfilePage = () => {
     <div className="container mx-auto p-4 md:p-8 space-y-8">
       <h1 className="text-3xl font-bold tracking-tight">Your Profile</h1>
 
+      <div className="profile-sections space-y-8">
       <ProfileDisplaySection user={user} userType={userType} />
 
       <ProfileImageManagementSection user={user} userType={userType} />
@@ -100,6 +101,7 @@ const UserProfilePage = () => {
       )}
 
       <AccountSettingsSection />
+      </div>
     </div>
   );
 };
