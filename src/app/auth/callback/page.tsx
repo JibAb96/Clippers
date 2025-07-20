@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { GoogleOAuthApi } from "@/lib/google-oauth";
@@ -9,7 +9,7 @@ import { AppDispatch } from "../../../state/store";
 import { Clipper, Creator } from "@/model";
 import Background from "../../signin/components/Background";
 
-const AuthCallbackPage = () => {
+const AuthCallbackInner = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
@@ -142,5 +142,11 @@ const AuthCallbackPage = () => {
     </Background>
   );
 };
+
+const AuthCallbackPage = () => (
+  <Suspense fallback={<div />}> 
+    <AuthCallbackInner />
+  </Suspense>
+);
 
 export default AuthCallbackPage;
