@@ -41,7 +41,7 @@ const ClipperCard = ({
   return (
     // Main container with Tailwind styling for card layout
     <Link href={`/clipper/${id}`}>
-      <div className="max-w-72 rounded overflow-hidden m-5 cursor-pointer">
+      <div className="clipper-card max-w-72 rounded overflow-hidden m-5 cursor-pointer">
         {/* Image section with an overlay badge displaying the clipper's niche */}
         <div className="relative">
           <Image
