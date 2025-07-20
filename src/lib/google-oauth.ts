@@ -7,7 +7,7 @@ export interface GoogleAuthResponse {
     profile: any;
   };
   onboardingToken?: string;
-  accessToken?: string;
+  token?: string;
   refreshToken?: string;
 }
 
@@ -15,189 +15,142 @@ export interface OnboardingData {
   onboardingToken: string;
   currentStep: number;
   totalSteps: number;
-  role: 'creator' | 'clipper';
+  role: "creator" | "clipper";
   email?: string;
   name?: string;
   picture?: string;
 }
 
-export interface OnboardingStepResponse {
-  success: boolean;
-  message: string;
-  nextStep?: number;
-  totalSteps: number;
-  currentStep: number;
+export interface CompleteOnboardingData {
+  onboardingToken: string;
+  role: "creator" | "clipper" | "";
+  brandName: string;
+  socialMediaHandle: string;
+  platform: Platform;
+  niche: Niche;
+  country: string;
+  password: string;
+  followerCount?: number;
+  pricePerPost?: number;
 }
 
 export const PLATFORMS = {
-  INSTAGRAM: 'instagram',
-  TIKTOK: 'tiktok',
-  YOUTUBE: 'youtube',
-  X: 'x'
+  INSTAGRAM: "instagram",
+  TIKTOK: "tiktok",
+  YOUTUBE: "youtube",
+  X: "x",
 } as const;
 
 export const NICHES = {
-  TRAVEL: 'travel',
-  FOOD: 'food',
-  ENTERTAINMENT: 'entertainment',
-  SPORT: 'sport',
-  FASHION: 'fashion',
-  TECHNOLOGY: 'technology',
-  GAMING: 'gaming',
-  BEAUTY: 'beauty',
-  FITNESS: 'fitness',
-  OTHER: 'other'
+  TRAVEL: "travel",
+  FOOD: "food",
+  ENTERTAINMENT: "entertainment",
+  SPORT: "sport",
+  FASHION: "fashion",
+  TECHNOLOGY: "technology",
+  GAMING: "gaming",
+  BEAUTY: "beauty",
+  FITNESS: "fitness",
+  OTHER: "other",
 } as const;
 
-export type Platform = typeof PLATFORMS[keyof typeof PLATFORMS];
-export type Niche = typeof NICHES[keyof typeof NICHES];
+export type Platform = (typeof PLATFORMS)[keyof typeof PLATFORMS];
+export type Niche = (typeof NICHES)[keyof typeof NICHES];
 
 export class GoogleOAuthApi {
-  private static readonly BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
+  private static readonly BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
 
   static async getGoogleOAuthUrl(): Promise<{ authUrl: string }> {
+    if (!this.BASE_URL) {
+      throw new Error(
+        "API base URL is not configured. Please set NEXT_PUBLIC_API_BASE_URL in your environment variables."
+      );
+    }
+
     const response = await fetch(`${this.BASE_URL}/auth/google/url`);
-    const result = await response.json();
-    
-    if (result.status !== 'success') {
-      throw new Error(result.message || 'Failed to get Google OAuth URL');
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
-    
+
+    const result = await response.json();
+
+    if (result.status !== "success") {
+      throw new Error(result.message || "Failed to get Google OAuth URL");
+    }
+
     return result.data;
   }
 
-  static async handleGoogleCallback(code: string, state?: string): Promise<GoogleAuthResponse> {
+  static async handleGoogleCallback(
+    code: string,
+    state?: string
+  ): Promise<GoogleAuthResponse> {
     const response = await fetch(`${this.BASE_URL}/auth/google/callback`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code, state })
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code, state }),
     });
-    
+
     const result = await response.json();
-    
-    if (result.status !== 'success') {
-      throw new Error(result.message || 'Google authentication failed');
+
+    if (result.status !== "success") {
+      throw new Error(result.message || "Google authentication failed");
     }
-    
+
     return result.data;
   }
 
-  static async authenticateWithToken(idToken: string): Promise<GoogleAuthResponse> {
+  static async authenticateWithToken(
+    idToken: string
+  ): Promise<GoogleAuthResponse> {
     const response = await fetch(`${this.BASE_URL}/auth/google/token`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ idToken })
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ idToken }),
     });
-    
+
     const result = await response.json();
-    
-    if (result.status !== 'success') {
-      throw new Error(result.message || 'Token authentication failed');
+
+    if (result.status !== "success") {
+      throw new Error(result.message || "Token authentication failed");
     }
-    
+
     return result.data;
   }
 
-  static async getOnboardingStatus(token: string): Promise<{currentStep: number; totalSteps: number; role: 'creator' | 'clipper'}> {
-    const response = await fetch(`${this.BASE_URL}/auth/onboarding/status/${token}`);
+  static async getOnboardingStatus(token: string): Promise<{
+    currentStep: number;
+    totalSteps: number;
+    role: "creator" | "clipper";
+  }> {
+    const response = await fetch(
+      `${this.BASE_URL}/auth/onboarding/status/${token}`
+    );
     const result = await response.json();
-    
-    if (result.status !== 'success') {
-      throw new Error(result.message || 'Failed to get onboarding status');
+
+    if (result.status !== "success") {
+      throw new Error(result.message || "Failed to get onboarding status");
     }
-    
+
     return result.data;
   }
 
-  static async submitOnboardingStep1(onboardingToken: string, brandName: string): Promise<OnboardingStepResponse> {
-    const response = await fetch(`${this.BASE_URL}/auth/onboarding/step-1`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ onboardingToken, brandName })
-    });
-    
-    const result = await response.json();
-    
-    if (result.status !== 'success') {
-      throw new Error(result.message || 'Step 1 submission failed');
-    }
-    
-    return result.data;
-  }
-
-  static async submitOnboardingStep2(
-    onboardingToken: string, 
-    socialMediaHandle: string, 
-    platform: Platform
-  ): Promise<OnboardingStepResponse> {
-    const response = await fetch(`${this.BASE_URL}/auth/onboarding/step-2`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ onboardingToken, socialMediaHandle, platform })
-    });
-    
-    const result = await response.json();
-    
-    if (result.status !== 'success') {
-      throw new Error(result.message || 'Step 2 submission failed');
-    }
-    
-    return result.data;
-  }
-
-  static async submitOnboardingStep3(
-    onboardingToken: string, 
-    niche: Niche, 
-    country: string
-  ): Promise<OnboardingStepResponse> {
-    const response = await fetch(`${this.BASE_URL}/auth/onboarding/step-3`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ onboardingToken, niche, country })
-    });
-    
-    const result = await response.json();
-    
-    if (result.status !== 'success') {
-      throw new Error(result.message || 'Step 3 submission failed');
-    }
-    
-    return result.data;
-  }
-
-  static async submitOnboardingStep4Clipper(
-    onboardingToken: string, 
-    followerCount: number, 
-    pricePerPost: number
-  ): Promise<OnboardingStepResponse> {
-    const response = await fetch(`${this.BASE_URL}/auth/onboarding/step-4-clipper`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ onboardingToken, followerCount, pricePerPost })
-    });
-    
-    const result = await response.json();
-    
-    if (result.status !== 'success') {
-      throw new Error(result.message || 'Step 4 submission failed');
-    }
-    
-    return result.data;
-  }
-
-  static async completeOnboarding(onboardingToken: string, password: string): Promise<GoogleAuthResponse> {
+  static async completeOnboarding(
+    onboardingData: CompleteOnboardingData
+  ): Promise<GoogleAuthResponse> {
     const response = await fetch(`${this.BASE_URL}/auth/onboarding/complete`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ onboardingToken, password })
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(onboardingData),
     });
-    
+
     const result = await response.json();
-    
-    if (result.status !== 'success') {
-      throw new Error(result.message || 'Onboarding completion failed');
+
+    if (result.status !== "success") {
+      throw new Error(result.message || "Onboarding completion failed");
     }
-    
+
     return result.data;
   }
 }
