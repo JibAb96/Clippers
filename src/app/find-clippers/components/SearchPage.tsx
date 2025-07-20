@@ -10,8 +10,10 @@ const SearchPage = () => {
       <hr />
       {/* Horizontal line to separate sections */}
       <div className="mt-16 md:mt-24 lg:mt-64">
+        <div className="search-filter-section">
         <Filter />
         {/* Render the Filter component for the user to select filters */}
+        </div>
         <ClippersDisplay />
         {/* Render the ClippersDisplay component to show filtered clippers */}
       </div>
