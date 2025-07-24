@@ -85,7 +85,7 @@ const CREATOR_TUTORIAL_FLOW: TutorialFlow = {
       title: "Discover Clippers",
       message:
         "Ready to find clippers who can amplify your content? Click here to browse available clippers.",
-      targetElement: '[href="/find-clippers"]',
+      targetElement: '[aria-label="navigation button"]',
       position: "bottom",
       action: "navigate",
       route: "/find-clippers",
@@ -105,9 +105,9 @@ const CREATOR_TUTORIAL_FLOW: TutorialFlow = {
     },
     {
       id: "clipper-cards",
-      title: "Clipper Profiles",
+      title: "Submit Clips Directly",
       message:
-        "Each card shows key information: follower count, niche, platform, and price. Click any card to view their full profile.",
+        "Each card shows key clipper information and allows you to submit clips directly! You can submit your content right from this search page without visiting their full profile.",
       targetElement: ".clipper-card:first-child",
       position: "top",
       action: "demo",
@@ -120,7 +120,7 @@ const CREATOR_TUTORIAL_FLOW: TutorialFlow = {
       message:
         "This is where the magic happens! Click this button to submit your content to this clipper.",
       targetElement: '[aria-label="Submit clip for review"]',
-      position: "left",
+      position: "top",
       action: "demo",
       highlightType: "spotlight",
       allowSkip: true,
