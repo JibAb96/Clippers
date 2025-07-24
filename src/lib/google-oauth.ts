@@ -70,65 +70,126 @@ export type Platform = (typeof PLATFORMS)[keyof typeof PLATFORMS];
 export type Niche = (typeof NICHES)[keyof typeof NICHES];
 
 export class GoogleOAuthApi {
-  private static readonly BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+  private static readonly BASE_URL =
+    process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/+$/, "") || "";
+
+  private static buildUrl(path: string): string {
+    return `${this.BASE_URL}${path.startsWith("/") ? path : "/" + path}`;
+  }
 
   static async getGoogleOAuthUrl(): Promise<{ authUrl: string }> {
     if (!this.BASE_URL) {
+      console.error("Environment check:", {
+        NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
+        NODE_ENV: process.env.NODE_ENV,
+        BASE_URL: this.BASE_URL,
+      });
       throw new Error(
         "API base URL is not configured. Please set NEXT_PUBLIC_API_BASE_URL in your environment variables."
       );
     }
 
-    const response = await fetch(`${this.BASE_URL}/auth/google/url`);
+    const url = this.buildUrl("/auth/google/url");
+    console.log("Making request to:", url);
 
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    try {
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        console.error("Google OAuth URL request failed:", {
+          status: response.status,
+          statusText: response.statusText,
+          url: url,
+          BASE_URL: this.BASE_URL,
+        });
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+
+      if (result.status !== "success") {
+        console.error("Google OAuth URL response error:", result);
+        throw new Error(result.message || "Failed to get Google OAuth URL");
+      }
+
+      return result.data;
+    } catch (error) {
+      console.error("Google OAuth URL fetch error:", error);
+      throw error;
     }
-
-    const result = await response.json();
-
-    if (result.status !== "success") {
-      throw new Error(result.message || "Failed to get Google OAuth URL");
-    }
-
-    return result.data;
   }
 
   static async handleGoogleCallback(
     code: string,
     state?: string
   ): Promise<GoogleAuthResponse> {
-    const response = await fetch(`${this.BASE_URL}/auth/google/callback`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code, state }),
-    });
+    const url = this.buildUrl("/auth/google/callback");
+    console.log("Making callback request to:", url);
 
-    const result = await response.json();
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code, state }),
+      });
 
-    if (result.status !== "success") {
-      throw new Error(result.message || "Google authentication failed");
+      if (!response.ok) {
+        console.error("Google callback request failed:", {
+          status: response.status,
+          statusText: response.statusText,
+          url: url,
+        });
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+
+      if (result.status !== "success") {
+        console.error("Google callback response error:", result);
+        throw new Error(result.message || "Google authentication failed");
+      }
+
+      return result.data;
+    } catch (error) {
+      console.error("Google callback fetch error:", error);
+      throw error;
     }
-
-    return result.data;
   }
 
   static async authenticateWithToken(
     idToken: string
   ): Promise<GoogleAuthResponse> {
-    const response = await fetch(`${this.BASE_URL}/auth/google/token`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ idToken }),
-    });
+    const url = this.buildUrl("/auth/google/token");
+    console.log("Making token auth request to:", url);
 
-    const result = await response.json();
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idToken }),
+      });
 
-    if (result.status !== "success") {
-      throw new Error(result.message || "Token authentication failed");
+      if (!response.ok) {
+        console.error("Google token auth request failed:", {
+          status: response.status,
+          statusText: response.statusText,
+          url: url,
+        });
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+
+      if (result.status !== "success") {
+        console.error("Google token auth response error:", result);
+        throw new Error(result.message || "Token authentication failed");
+      }
+
+      return result.data;
+    } catch (error) {
+      console.error("Google token auth fetch error:", error);
+      throw error;
     }
-
-    return result.data;
   }
 
   static async getOnboardingStatus(token: string): Promise<{
@@ -137,7 +198,7 @@ export class GoogleOAuthApi {
     role: "creator" | "clipper";
   }> {
     const response = await fetch(
-      `${this.BASE_URL}/auth/onboarding/status/${token}`
+      this.buildUrl(`/auth/onboarding/status/${token}`)
     );
     const result = await response.json();
 
@@ -151,7 +212,7 @@ export class GoogleOAuthApi {
   static async completeOnboarding(
     onboardingData: CompleteOnboardingData
   ): Promise<GoogleAuthResponse> {
-    const response = await fetch(`${this.BASE_URL}/auth/onboarding/complete`, {
+    const response = await fetch(this.buildUrl("/auth/onboarding/complete"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(onboardingData),

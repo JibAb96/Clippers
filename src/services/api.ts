@@ -3,8 +3,7 @@ import { store } from "@/state/store"; // Import the store
 import { setUser, logout } from "@/state/User/usersSlice"; // Import actions
 import { supabase } from "./supabase";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/+$/, "");
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -99,7 +98,7 @@ api.interceptors.response.use(
         }
 
         const newAccessToken = sessionData.session.access_token;
-        const newRefreshToken = sessionData.session.refresh_token; 
+        const newRefreshToken = sessionData.session.refresh_token;
 
         // Update Redux state and localStorage
         store.dispatch(
